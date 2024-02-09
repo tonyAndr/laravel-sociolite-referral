@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\OAuthProvider;
+use App\Models\Referral;
 
 class User extends Authenticatable
 {
@@ -22,11 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'oath_id',
-        'oath_provider',
-        'oath_token',
-        'oath_refresh_token',
+        'oauth_id',
+        'oauth_provider',
+        'oauth_token',
+        'oauth_refresh_token',
         'avatar_url',
+        'robux'
     ];
 
     /**
@@ -37,8 +39,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'oath_token',
-        'oath_refresh_token',
+        'oauth_token',
+        'oauth_refresh_token',
     ];
 
     /**
@@ -50,7 +52,24 @@ class User extends Authenticatable
         'oauth_provider' => OAuthProvider::class,
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'oath_token' => 'encrypted',
-        'oath_refresh_token' => 'encrypted',
+        'oauth_token' => 'encrypted',
+        'oauth_refresh_token' => 'encrypted',
     ];
+
+
+    /**
+     * Get referrals associated with specified user
+     */
+    public function referrals()
+    {
+        return $this->hasMany(Referral::class);
+    }
+
+    /**
+     * Get referrals associated with specified user
+     */
+    public function addRobux(int $robux)
+    {
+        $this->robux = $this->robux + $robux;
+    }
 }

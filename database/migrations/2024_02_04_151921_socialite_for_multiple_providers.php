@@ -15,8 +15,8 @@ return new class extends Migration
             //
             $table->string('oauth_id')->nullable();
             $table->string('oauth_provider')->nullable();
-            $table->string('oauth_token')->nullable();
-            $table->string('oauth_refresh_token')->nullable();
+            $table->text('oauth_token')->nullable();
+            $table->text('oauth_refresh_token')->nullable();
             $table->string('avatar_url')->nullable();
         });
     }

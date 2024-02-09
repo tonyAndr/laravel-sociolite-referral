@@ -39,6 +39,12 @@ class OAuthController extends Controller
         ]);
  
         Auth::login($user);
+
+        $req_cookie = request()->cookie('referral');
+        $referral = $request->referral($req_cookie);
+        if ($referral) {
+            $referral->complete();
+        }
  
         return redirect()->route('dashboard');
     }

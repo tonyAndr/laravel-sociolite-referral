@@ -6,6 +6,11 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use App\Events\ReferralCompleted;
+use App\Listeners\ForgetReferralCookie;
+use App\Events\ReferralDetected;
+use App\Listeners\RegisterNewReferralConnection;
+
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
             \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class.'@handle',
             \SocialiteProviders\TikTok\TikTokExtendSocialite::class.'@handle',
         ],
+        ReferralCompleted::class => [
+            ForgetReferralCookie::class,
+        ],
+        ReferralDetected::class => [
+            RegisterNewReferralConnection::class,
+        ]
     ];
 
     /**

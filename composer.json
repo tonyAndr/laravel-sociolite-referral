@@ -8,6 +8,7 @@
         "php": "^8.1",
         "anhskohbo/no-captcha": "^3.5",
         "guzzlehttp/guzzle": "^7.2",
+        "kudashevs/laravel-share-buttons": "^4.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.11",

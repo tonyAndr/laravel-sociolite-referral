@@ -47,6 +47,11 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        
+        if ($referral = $request->referral(request()->cookie('referral'))) {
+            $referral->complete();
+        }
+
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);

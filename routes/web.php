@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReferralController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -29,12 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+require __DIR__.'/auth.php';
+
 Route::controller(OAuthController::class)->group(function () {
     Route::get('/auth/redirect/{provider}', 'redirect')->name('oauth.redirect');
     Route::get('/auth/callback/{provider}', 'callback')->name('oauth.callback');
 });
 
-// Route::get('/auth/redirect/{provider}', [OAuthController::class, 'redirect'])->name('oauth.redirect');
-// Route::get('/auth/callback/{provider}', [OAuthController::class, 'callback'])->name('oauth.callback');
+Route::group(['prefix' => 'referrals'], function () {
+    Route::get('/', [ReferralController::class, 'index'])->name('referrals');
+    Route::get('/create', [ReferralController::class, 'create'])->name('referrals.create');
+    Route::post('/', [ReferralController::class, 'store']);
+});
 
-require __DIR__.'/auth.php';
