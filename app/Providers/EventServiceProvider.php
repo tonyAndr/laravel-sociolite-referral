@@ -25,10 +25,11 @@ class EventServiceProvider extends ServiceProvider
         ],
         \SocialiteProviders\Manager\SocialiteWasCalled::class => [
             // ... other providers
-            \SocialiteProviders\Telegram\TelegramExtendSocialite::class.'@handle',
-            \SocialiteProviders\Yandex\YandexExtendSocialite::class.'@handle',
-            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class.'@handle',
-            \SocialiteProviders\TikTok\TikTokExtendSocialite::class.'@handle',
+            \SocialiteProviders\Telegram\TelegramExtendSocialite::class . '@handle',
+            \SocialiteProviders\Yandex\YandexExtendSocialite::class . '@handle',
+            \SocialiteProviders\VKontakte\VKontakteExtendSocialite::class . '@handle',
+            \SocialiteProviders\TikTok\TikTokExtendSocialite::class . '@handle',
+            \SocialiteProviders\Google\GoogleExtendSocialite::class . '@handle',
         ],
         ReferralCompleted::class => [
             ForgetReferralCookie::class,

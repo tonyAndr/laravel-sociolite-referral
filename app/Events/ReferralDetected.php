@@ -2,14 +2,13 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Model\User;
+use App\Models\User;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Cookie;
 
 class ReferralDetected
 {
@@ -34,9 +33,10 @@ class ReferralDetected
      * @param  \App\Models\Referral  $referral
      * @return void
      */
-    public function __construct(unsignedBigInteger $referral, User $invited)
+    public function __construct(string $referral_cookie, User $invited)
     {
-        $this->referral = $referral;
+
+        $this->referral = intval($referral_cookie);
         $this->invited = $invited;
     }
 }

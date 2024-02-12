@@ -17,12 +17,7 @@ class CreateReferralsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('parent_id')->index();
             $table->unsignedBigInteger('child_id')->index();
-            $table->string('token');
-            $table->string('email');
-            $table->boolean('completed')->default(false);
-            $table->timestamp('completed_at')->nullable();
             $table->foreign('parent_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('child_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

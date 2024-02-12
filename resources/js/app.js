@@ -6,14 +6,55 @@ window.Alpine = Alpine;
 
 Alpine.start();
 
+let Toast;
+try {
+    Toast = Swal.mixin({
+        toast: true,
+        position: 'bottom-end',
+        iconColor: 'white',
+        customClass: {
+          popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: false,
+      })
+} catch (err) {
+    //
+}
+
+
+
 document.addEventListener("DOMContentLoaded", () => {
     let socialButtons = document.querySelectorAll('.social-button');
 
     socialButtons.forEach((button) => {
         button.addEventListener('click', socialButtonClickHandler)
     })
+
+    let ref_copy_btn = document.querySelector("#ref_copy_btn");
+    let ref_link_textbox = document.querySelector("#ref_link_textbox");
+    if (ref_copy_btn) {
+        ref_copy_btn.addEventListener('click', referralButtonClickHandler);
+    }
+    if (ref_link_textbox) {
+        ref_link_textbox.addEventListener('click', referralButtonClickHandler);
+    }
 });
 
+function referralButtonClickHandler(e) {
+    let el = document.querySelector("#ref_link_textbox");
+    if (el === undefined) return;
+    if (window.clipboardData && window.clipboardData.setData) {
+        clipboardData.setData("Text", el.textContent);
+    } else {
+        navigator.clipboard.writeText(el.textContent)
+    }
+    Toast.fire({
+        icon: 'info',
+        title: 'Ссылка скопирована!',
+    })
+}
 function socialButtonClickHandler(e) {
     const popupWidth = 780;
     const popupHeight = 550;
@@ -34,6 +75,10 @@ function socialButtonClickHandler(e) {
             document.execCommand("copy");  // Security exception may be thrown by some browsers.
             textArea.remove();
         }
+        Toast.fire({
+            icon: 'info',
+            title: 'Ссылка скопирована!',
+        })
         return;
     }
 
@@ -82,3 +127,4 @@ function provideMissingTargetElementHandler(e) {
     return (name) => {
     }
 }
+

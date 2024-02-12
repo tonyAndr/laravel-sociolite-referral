@@ -7,6 +7,7 @@ enum OAuthProvider: string
     case Yandex = 'yandex';
     case Vkontakte = 'vkontakte';
     case Tiktok = 'tiktok';
+    case Google = 'google';
  
     public function driver(): string
     {
@@ -15,6 +16,7 @@ enum OAuthProvider: string
             self::Yandex => 'yandex',
             self::Vkontakte => 'vkontakte',
             self::Tiktok => 'tiktok',
+            self::Google => 'google',
         };
     }
 }

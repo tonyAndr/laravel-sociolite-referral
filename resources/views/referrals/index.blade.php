@@ -3,7 +3,7 @@
     
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Referral list') }}
+            {{ __('Пригласить друзей') }}
         </h2>
     </x-slot>
 
@@ -13,7 +13,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <p>
-                        Пригласи друзей и получай % от каждого заработанного ими робукса! {{ Auth::user()->id }} 
+                        Пригласи друзей и получай % от каждого заработанного ими робукса! 
                     </p>
                     <!--
                     Heads up! 👋
@@ -22,24 +22,24 @@
                         - @tailwindcss/forms
                     -->
 
-                    <div>
-                        <label for="OrderNotes" class="sr-only">Order notes</label>
-                    
+                    <div class="mt-3">
                         <div
                         class="overflow-hidden rounded-lg border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
                         >
                         <textarea
-                            id="OrderNotes"
+                            id="ref_link_textbox"
                             class="w-full resize-none border-none align-top focus:ring-0 sm:text-sm"
-                            rows="1"
+                            rows="2"
                             placeholder="Enter any additional order notes..."
                             disabled
                         >{!! route('register').'?referral='.Auth::user()->id !!}</textarea>
                     
                         <div class="flex items-center justify-end gap-2 bg-white p-3">
                             <button
+                            id="ref_copy_btn"
                             type="button"
                             class="rounded bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
+             \
                             >
                             Копировать
                             </button>
@@ -47,7 +47,7 @@
                         </div>
                     </div>
 
-                    {!! ShareButtons::page('https://site.com', 'Присоединяйся и получай робуксы!', [
+                    {!! ShareButtons::page(route('register').'?referral='.Auth::user()->id, 'Присоединяйся и получай робуксы!', [
                         'title' => 'Присоединяйся и получай робуксы!',
                         'rel' => 'nofollow noopener noreferrer',
                     ])
@@ -65,30 +65,11 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- Referral list -->
                     <div class="referral-list">
-                        <h2>List of referrals</h2>
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight mb-3">Приглашения</h2>
                         @if($referrals->count())
-                        <table>
-                            <tr>
-                                <th>Email</th>
-                                <th>Date</th>
-                                <th>Completed</th>
-                            </tr>
-                            @foreach($referrals as $referral)
-                            <tr>
-                                <td>{{ $referral->email }}</td>
-                                <td>{{ $referral->created_at->toDateString() }}</td>
-                                <td>
-                                    @if ($referral->completed)
-                                        Yes
-                                    @else
-                                        No <a href="{{ route('index', ['referral' => $referral->token]) }}" target="_blank">Get a link</a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </table>
+                            <p>Вы уже пригласили <strong>{{$referrals->count()}}</strong> человек. Так держать!</p>
                         @else
-                            <p>There is no referrals</p>
+                            <p>Вы еще никого не пригласили</p>
                         @endif
                     </div>
                     <!-- /.Referral list -->

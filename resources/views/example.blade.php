@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <title>Заработать Robux бесплатно без обмана Roblox 2024</title>
-    <meta name="description" content="Зарабатывайте Robux, проходя викторины, загружая игры на свое мобильное устройство и просматривая видео!">
+    <title>Example Title</title>
+    <meta name="description" content="Example description">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/png" sizes="16x16" href="/logo.png">
@@ -10,7 +10,6 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-    
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <x-external-scripts />

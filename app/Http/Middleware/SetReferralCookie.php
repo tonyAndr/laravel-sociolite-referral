@@ -16,8 +16,8 @@ class SetReferralCookie
      */
     public function handle(Request $request, Closure $next)
     {
-        if ($referral = $request->referral($request->referral)) {
-            cookie()->queue(cookie()->forever('referral', $referral->token));
+        if (!empty($request->referral)) {
+            cookie()->queue(cookie()->forever('referral', $request->referral));
         }
         return $next($request);
     }

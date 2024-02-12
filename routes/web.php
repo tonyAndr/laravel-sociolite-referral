@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GiveawayController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralController;
@@ -42,4 +43,6 @@ Route::group(['prefix' => 'referrals'], function () {
     Route::get('/create', [ReferralController::class, 'create'])->name('referrals.create');
     Route::post('/', [ReferralController::class, 'store']);
 });
+
+Route::get('/giveaway', [GiveawayController::class, 'index'])->name('giveaway');
 

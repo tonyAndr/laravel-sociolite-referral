@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Events\ReferralDetected;
 
 class RegisteredUserController extends Controller
 {
@@ -48,8 +49,9 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         
-        if ($referral = $request->referral(request()->cookie('referral'))) {
-            $referral->complete();
+        $req_cookie = request()->cookie('referral');
+        if ($req_cookie) {
+            event(new ReferralDetected(intval($req_cookie), $user));
         }
 
         Auth::login($user);

@@ -13,6 +13,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
+        "socialiteproviders/google": "^4.1",
         "socialiteproviders/telegram": "^4.1",
         "socialiteproviders/tiktok": "*",
         "socialiteproviders/vkontakte": "^5.0",
