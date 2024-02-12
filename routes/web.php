@@ -4,6 +4,7 @@ use App\Http\Controllers\GiveawayController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,3 +47,6 @@ Route::group(['prefix' => 'referrals'], function () {
 
 Route::get('/giveaway', [GiveawayController::class, 'index'])->name('giveaway');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
+});

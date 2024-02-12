@@ -2,6 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    h1 {
+        @apply text-2xl;
+    }
+
+    h2 {
+        @apply text-2xl;
+    }
+
+    h3 {
+        @apply text-2xl;
+    }
+
+    ul {
+        @apply list-inside list-disc;
+    }
+
+    ol {
+        @apply list-inside list-decimal;
+    }
+
+    p {
+        @apply my-2;
+    }
+
+    /* ... */
+}
+
+.main-content p a,
+.main-content ol a,
+.main-content ul a {
+    text-decoration: underline;
+}
+
+/* ... */
+
+
 #social-buttons {}
 
 #social-buttons a {
@@ -120,4 +157,66 @@
 
 .colored-toast .swal2-html-container {
     color: white;
+}
+
+nav i {
+
+    width: 26px;
+}
+
+.footer {
+    /* position: absolute; */
+    margin-top: 2rem;
+    bottom: 0;
+    width: 99.5%;
+    text-align: center;
+    background-color: #0a5cb5;
+    color: white;
+}
+
+.home-main-action-btn {
+    background-color: #4CAF50;
+    /* Задаем начальный цвет фона */
+    color: white;
+    /* Задаем цвет текста */
+    padding: 20px 40px;
+    /* Задаем отступы внутри кнопки */
+    font-size: 24px;
+    border: none;
+    /* Убираем границу кнопки */
+    border-radius: 5px;
+    /* Задаем скругление углов кнопки */
+    cursor: pointer;
+    /* Задаем вид курсора при наведении на кнопку */
+    text-decoration: none;
+    animation: pulse 2s alternate infinite, waves 1s infinite;
+}
+
+.home-main-action-btn:hover {
+    background-color: #118619;
+    /* Задаем цвет фона при наведении на кнопку */
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes waves {
+    0% {
+        box-shadow: 0 0 0 0 rgba(41, 223, 77, 0.3), 0 0 0 0 rgba(41, 223, 77, 0.3);
+    }
+
+    100% {
+        box-shadow: 0 0 0 20px rgba(41, 223, 77, 0), 0 0 0 40px rgba(41, 223, 77, 0);
+    }
 }

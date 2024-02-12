@@ -15,14 +15,20 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Заработай') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('giveaway')" :active="request()->routeIs('giveaway')">
+                        {{ __('Раздача робуксов') }}
+                    </x-nav-link>
+
                     @auth                        
                     <x-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
                         {{ __('Пригласи друга') }}
                     </x-nav-link>
-                    @endauth
-                    <x-nav-link :href="route('giveaway')" :active="request()->routeIs('giveaway')">
-                        {{ __('Раздача робуксов') }}
+                    
+                    <x-nav-link :href="route('withdrawal.index')" :active="request()->routeIs('withdrawal.index')">
+                        {{ __('Вывод робуксов') }}
                     </x-nav-link>
+                    @endauth
                 </div>
             </div>
 
@@ -103,17 +109,25 @@
         <div class="pt-2 pb-3 space-y-1">
 
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                <i class="fa-solid fa-coins text-yellow-500 pr-2"></i>
                 {{ __('Заработай') }}
+            </x-responsive-nav-link>
+            
+            <x-responsive-nav-link :href="route('giveaway')" :active="request()->routeIs('giveaway')">
+                <i class="fa-solid fa-gift text-red-500 pr-2"></i>
+                {{ __('Раздача робуксов') }}
             </x-responsive-nav-link>
             @auth                
                 <x-responsive-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
+                    <i class="fa-solid fa-user-plus text-blue-500 pr-2"></i>
                     {{ __('Пригласи друга') }}
                 </x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('withdrawal.index')" :active="request()->routeIs('withdrawal.index')">
+                    <i class="fa-solid fa-money-bill-transfer text-green-500 pr-2"></i>
+                    {{ __('Вывод робуксов') }}
+                </x-responsive-nav-link>
             @endauth
-            
-            <x-responsive-nav-link :href="route('giveaway')" :active="request()->routeIs('giveaway')">
-                {{ __('Раздача робуксов') }}
-            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -127,6 +141,7 @@
 
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">
+                        <i class="fa-solid fa-address-card pr-2"></i>
                         {{ __('Мой профиль') }}
                     </x-responsive-nav-link>
 
@@ -137,6 +152,7 @@
                         <x-responsive-nav-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                             this.closest('form').submit();">
+                            <i class="fa-solid fa-right-from-bracket"></i>
                             {{ __('Выйти') }}
                         </x-responsive-nav-link>
                     </form>
