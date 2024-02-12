@@ -17,3 +17,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/public/robots.txt
+/app/resources/views/components/external-scripts.blade.php
