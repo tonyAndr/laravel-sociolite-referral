@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdPartnersController;
 use App\Http\Controllers\GiveawayController;
 use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\ProfileController;
@@ -37,6 +38,10 @@ require __DIR__.'/auth.php';
 Route::controller(OAuthController::class)->group(function () {
     Route::get('/auth/redirect/{provider}', 'redirect')->name('oauth.redirect');
     Route::get('/auth/callback/{provider}', 'callback')->name('oauth.callback');
+});
+Route::controller(AdPartnersController::class)->group(function () {
+    // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
+    Route::get('/partner/callback/{provider}', 'callback')->name('partner.callback');
 });
 
 Route::group(['prefix' => 'referrals'], function () {
