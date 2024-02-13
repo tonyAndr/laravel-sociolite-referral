@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdPartnersController extends Controller
 {
@@ -23,6 +24,8 @@ class AdPartnersController extends Controller
     public function callback(Request $request, AdPartnersProvider $provider)
     {
         $current_provider = $provider->driver();
+        $request_params  = $request->all();
+        Log::info("Hit the callback URL " . var_export($request_params, true));
 
         echo json_encode(['status' => 'OK', 'provider' => $current_provider]);
     }
