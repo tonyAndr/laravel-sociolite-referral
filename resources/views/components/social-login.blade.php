@@ -12,7 +12,7 @@
         <a class="block text-center" href="{{ route('oauth.redirect', 'vkontakte') }}">
             <i class="fa-brands fa-vk text-3xl"></i>
         </a>
-        <a class="block text-center" href="{{ route('oauth.redirect', 'tiktok') }}">
+        <a class="block text-center" href="#">
             <i class="fa-brands fa-tiktok text-3xl"></i>
         </a>
     </div>
