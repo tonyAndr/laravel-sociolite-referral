@@ -9,8 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("Новые задания каждый день!") }}
+                    {{ __('Новые задания каждый день!') }}
                 </div>
+            </div>
+            <div class="flex flex-col flex-wrap content-stretch h-screen">
+                <iframe class="min-w-full h-full" src="{!! $offerwall_url !!}" />
             </div>
         </div>
     </div>
