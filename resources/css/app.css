@@ -30,6 +30,12 @@
     /* ... */
 }
 
+@layer components {
+    .main-content {
+        @apply max-w-screen-lg container mx-auto;
+    }
+}
+
 .main-content p a,
 .main-content ol a,
 .main-content ul a {
@@ -166,9 +172,8 @@ nav i {
 
 .footer {
     /* position: absolute; */
-    margin-top: 2rem;
     bottom: 0;
-    width: 99.5%;
+    width: 100%;
     text-align: center;
     background-color: #0a5cb5;
     color: white;
