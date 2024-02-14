@@ -19,3 +19,4 @@ yarn-error.log
 /.vscode
 /public/robots.txt
 /resources/views/components/external-scripts.blade.php
+composer.lock

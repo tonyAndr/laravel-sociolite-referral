@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireScripts
+    @livewireStyles
+
     <x-external-scripts />
 </head>
 <body>

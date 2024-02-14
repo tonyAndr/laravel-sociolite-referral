@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdPartnersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GiveawayController;
@@ -53,4 +54,7 @@ Route::get('/giveaway', [GiveawayController::class, 'index'])->name('giveaway');
 
 Route::middleware('auth')->group(function () {
     Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
+});
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });

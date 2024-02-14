@@ -16,6 +16,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireScripts
+        @livewireStyles
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <x-external-scripts />
     </head>
@@ -36,6 +39,8 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <x-footer-copyright />
         </div>
     </body>
 </html>
