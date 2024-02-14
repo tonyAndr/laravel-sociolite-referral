@@ -71,6 +71,7 @@ class User extends Authenticatable
     public function addRobux(int $robux)
     {
         $this->robux = $this->robux + $robux;
+        $this->save();
     }
 
     public function isAdmin(): bool

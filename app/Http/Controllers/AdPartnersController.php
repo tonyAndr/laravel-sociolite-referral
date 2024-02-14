@@ -25,7 +25,17 @@ class AdPartnersController extends Controller
     {
         $current_provider = $provider->driver();
         $request_params  = $request->all();
-        Log::info("Hit the callback URL " . var_export($request_params, true));
+        Log::info("Hit the callback URL $current_provider: " . var_export($request_params, true));
+
+        if ($current_provider === 'cpalead') {
+
+            $user_id = intval($request_params['subid']);
+            $user = User::find($user_id);
+            $robux = floatval($request_params['payout']) / 2;
+            $user->addRobux($robux);
+
+            Log::info("Robux rewarded to user $user_id");
+        }
 
         echo json_encode(['status' => 'OK', 'provider' => $current_provider]);
     }

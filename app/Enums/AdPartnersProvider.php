@@ -4,13 +4,13 @@ namespace App\Enums;
 enum AdPartnersProvider: string
 {
     case Generic = 'generic';
-    case Second = 'second';
+    case CPALEAD = 'cpalead';
  
     public function driver(): string
     {
         return match ($this) {
             self::Generic => 'generic',
-            self::Second => 'second',
+            self::CPALEAD => 'cpalead',
         };
     }
 }

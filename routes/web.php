@@ -5,6 +5,7 @@ use App\Http\Controllers\AdPartnersController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GiveawayController;
 use App\Http\Controllers\OAuthController;
+use App\Http\Controllers\OffersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralController;
 use App\Http\Controllers\WithdrawalController;
@@ -58,3 +59,14 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
+
+Route::controller(AdPartnersController::class)->group(function () {
+    // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
+    Route::get('/partner/callback/{provider}', 'callback')->name('partner.callback');
+});
+
+Route::controller(OffersController::class)->group(function () {
+    // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
+    Route::get('/offerwall/cpalead', 'cpalead')->name('offerwall.cpalead');
+    Route::get('/offerwall/ayetstudios', 'ayetstudios')->name('offerwall.ayetstudios');
+})->middleware('auth');
