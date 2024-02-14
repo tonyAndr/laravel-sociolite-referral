@@ -31,7 +31,7 @@ class AdPartnersController extends Controller
 
             $user_id = intval($request_params['subid']);
             $user = User::find($user_id);
-            $robux = floatval($request_params['payout']) / 2;
+            $robux = floatval($request_params['payout']);
             $user->addRobux($robux);
 
             Log::info("Robux rewarded to user $user_id");
