@@ -5,7 +5,7 @@
                 << К списку офферов</x-primary-button></a>
         <div class="{{ $bg }} overflow-hidden shadow-sm rounded-lg my-6">
             <div class="p-6">
-                <div class=""><img src="{{ $logo }}" /></div>
+                <div ><img src="{{ $logo }}" /></div>
                 <p class="pt-4 {{$text_color}}">{{ __('Complete any offer from the offerwall below to get robux!') }}</p>
             </div>
         </div>

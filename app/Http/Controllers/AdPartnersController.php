@@ -66,10 +66,11 @@ class AdPartnersController extends Controller
         $hash = hash_hmac('sha256', $url, "kcQyDJ7FOB85mEVi5B34h8AINXlB4BrXbv25iZNgREZIdiLqbrBDcHjftRjq");
         if ($_SERVER['HTTP_X_MYLEAD_SECURITY_HASH'] === $hash) {
             // successful verification. It is safe to process the postback
-
-            $user_id = intval($request_params['ml_sub1']) ?? null;
-            $robux = floatval($request_params['payout']) ?? 0;
-            return [$user_id, $robux];
+            if ($request_params['status'] === 'approved') {
+                $user_id = intval($request_params['ml_sub1']) ?? null;
+                $robux = floatval($request_params['payout']) ?? 0;
+                return [$user_id, $robux];
+            }
         }
         return [null, 0];
     }
