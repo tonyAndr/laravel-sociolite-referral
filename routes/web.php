@@ -69,5 +69,6 @@ Route::controller(AdPartnersController::class)->group(function () {
 Route::controller(OffersController::class)->group(function () {
     // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
     Route::get('/offerwall/cpalead', 'cpalead')->name('offerwall.cpalead');
+    Route::get('/offerwall/mylead', 'mylead')->name('offerwall.mylead');
     Route::get('/offerwall/ayetstudios', 'ayetstudios')->name('offerwall.ayetstudios');
 })->middleware('auth');

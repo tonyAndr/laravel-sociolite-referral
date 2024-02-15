@@ -27,8 +27,20 @@ class OffersController extends Controller
     {
         $user_id = $request->user()->id;
         $logo = "/images/offers/cpa_lead.png";
+        $bg = "bg-white";
+        $text_color = "text-black";
         $offerwall_url = "https://fastsvr.com/list/519960?subid=$user_id";
         
-        return view('offers.index', ['offerwall_url' => $offerwall_url, 'logo' => $logo]);
+        return view('offers.index', ['offerwall_url' => $offerwall_url, 'logo' => $logo, 'bg' => $bg, 'text_color' => $text_color]);
+    }
+    public function mylead(Request $request): View
+    {
+        $user_id = $request->user()->id;
+        $logo = "/images/offers/mylead_logo.png";
+        $bg = "bg-slate-600";
+        $text_color = "text-white";
+        $offerwall_url = "https://mobile-rewards.pl/iframe/08df4560-cbb2-11ee-bae5-f3dc63b08ead?ml_sub1=$user_id";
+        
+        return view('offers.index', ['offerwall_url' => $offerwall_url, 'logo' => $logo, 'bg' => $bg, 'text_color' => $text_color]);
     }
 }

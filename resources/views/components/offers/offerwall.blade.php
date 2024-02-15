@@ -1,11 +1,12 @@
-@props(['logo' => '', 'offerwall_url' => ''])
+@props(['logo' => '', 'offerwall_url' => '', 'bg' => 'bg-white', 'text_color' => 'text-black'])
 <div class="py-12">
     <div class="max-w-7xl mx-auto px-4 lg:px-8">
-        <a href="{{route('dashboard')}}" ><x-primary-button type=""><< К списку офферов</x-primary-button></a>
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg my-6">
-            <div class="p-6 text-gray-900 dark:text-gray-100">
+        <a href="{{ route('dashboard') }}"><x-primary-button type="">
+                << К списку офферов</x-primary-button></a>
+        <div class="{{ $bg }} overflow-hidden shadow-sm rounded-lg my-6">
+            <div class="p-6">
                 <div class=""><img src="{{ $logo }}" /></div>
-                <p class="pt-4">{{ __('Complete any offer from the offerwall below to get robux!') }}</p>
+                <p class="pt-4 {{$text_color}}">{{ __('Complete any offer from the offerwall below to get robux!') }}</p>
             </div>
         </div>
     </div>

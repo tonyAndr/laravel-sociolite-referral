@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\AdPartnersProvider;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -28,15 +29,48 @@ class AdPartnersController extends Controller
         Log::info("Hit the callback URL $current_provider: " . var_export($request_params, true));
 
         if ($current_provider === 'cpalead') {
-
-            $user_id = intval($request_params['subid']);
-            $user = User::find($user_id);
-            $robux = floatval($request_params['payout']);
-            $user->addRobux($robux);
-
-            Log::info("Robux rewarded to user $user_id");
+            list($user_id, $robux) = $this->cpalead($request_params);
         }
 
+
+        if ($current_provider === 'mylead') {
+
+            list($user_id, $robux) = $this->mylead($request_params);
+
+        }
+
+        try {
+            $user = User::find($user_id);
+            if (!$user) {
+                throw new Exception("User not found");
+            }
+            $user->addRobux($robux);
+            Log::info("Robux rewarded to user $user_id");
+        } catch (Exception $e) {
+            Log::info("User not found ".$e->getMessage());
+        }
+
+
         echo json_encode(['status' => 'OK', 'provider' => $current_provider]);
+    }
+
+    private function cpalead ($request_params) {
+        $user_id = intval($request_params['subid']) ?? null;
+        $robux = floatval($request_params['payout']) ?? 0;
+        return [$user_id, $robux];
+    }
+    private function mylead ($request_params) {
+        $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+        $protocol = 'https';
+        $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $hash = hash_hmac('sha256', $url, "kcQyDJ7FOB85mEVi5B34h8AINXlB4BrXbv25iZNgREZIdiLqbrBDcHjftRjq");
+        if ($_SERVER['HTTP_X_MYLEAD_SECURITY_HASH'] === $hash) {
+            // successful verification. It is safe to process the postback
+
+            $user_id = intval($request_params['ml_sub1']) ?? null;
+            $robux = floatval($request_params['payout']) ?? 0;
+            return [$user_id, $robux];
+        }
+        return [null, 0];
     }
 }
