@@ -55,6 +55,7 @@ Route::get('/giveaway', [GiveawayController::class, 'index'])->name('giveaway');
 
 Route::middleware('auth')->group(function () {
     Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
+    Route::post('/withdrawal/create', [WithdrawalController::class, 'create'])->name('withdrawal.create');
 });
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');

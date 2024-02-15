@@ -194,7 +194,7 @@ nav i {
     cursor: pointer;
     /* Задаем вид курсора при наведении на кнопку */
     text-decoration: none;
-    animation: pulse 2s alternate infinite, waves 1s infinite;
+    animation: pulse 4s alternate infinite, waves 2s infinite;
 }
 
 .home-main-action-btn:hover {

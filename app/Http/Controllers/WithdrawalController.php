@@ -17,4 +17,9 @@ class WithdrawalController extends Controller
     {
         return view('withdrawal.index');
     }
+
+
+    public function create() {
+        
+    }
 }
