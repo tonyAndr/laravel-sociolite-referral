@@ -1,26 +1,28 @@
 import './bootstrap';
+import './toast';
+import './tasks';
 // import Alpine from 'alpinejs';
 
 // window.Alpine = Alpine;
 
 // Alpine.start();
 
-let Toast;
-try {
-    Toast = Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        iconColor: 'white',
-        customClass: {
-          popup: 'colored-toast',
-        },
-        showConfirmButton: false,
-        timer: 1500,
-        timerProgressBar: false,
-      })
-} catch (err) {
-    //
-}
+// let Toast;
+// try {
+//     Toast = Swal.mixin({
+//         toast: true,
+//         position: 'top-end',
+//         iconColor: 'white',
+//         customClass: {
+//           popup: 'colored-toast',
+//         },
+//         showConfirmButton: false,
+//         timer: 1500,
+//         timerProgressBar: false,
+//       })
+// } catch (err) {
+//     //
+// }
 
 
 document.addEventListener("DOMContentLoaded", () => {
