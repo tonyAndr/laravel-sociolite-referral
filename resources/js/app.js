@@ -23,7 +23,6 @@ try {
 }
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
     let socialButtons = document.querySelectorAll('.social-button');
 

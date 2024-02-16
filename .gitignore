@@ -20,3 +20,4 @@ yarn-error.log
 /public/robots.txt
 /resources/views/components/external-scripts.blade.php
 composer.lock
+resources/views/components/external-scripts.blade.php

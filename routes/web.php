@@ -67,4 +67,5 @@ Route::middleware('auth')->controller(OffersController::class)->group(function (
     Route::get('/offerwall/cpalead', 'cpalead')->name('offerwall.cpalead');
     Route::get('/offerwall/mylead', 'mylead')->name('offerwall.mylead');
     Route::get('/offerwall/ayetstudios', 'ayetstudios')->name('offerwall.ayetstudios');
+    Route::get('/tasks/yandex', 'yandex_reward')->name('tasks.yandex_reward');
 });

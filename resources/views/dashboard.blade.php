@@ -34,5 +34,18 @@
                 </div>
             </a> --}}
         </div>
+        @if (Auth::user()->is_admin)
+            <h3 class="m-6">Задания</h3>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="{{ route('tasks.yandex_reward') }}">
+                    <div
+                        class="grow sm:grow-0 sm:w-60 h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center relative text-black">
+                        <p class="uppercase font-bold"><span class="text-red-500">П</span>росмотр <span class="text-red-500">р</span>екламы<p>
+                        <p class="absolute bottom-2 end-4 uppercase rounded bg-white px-2 font-bold text-cyan-600">+ 1 Robux</p>
+                    </div>
+                </a>
+
+            </div>
+        @endif
     </div>
 </x-app-layout>

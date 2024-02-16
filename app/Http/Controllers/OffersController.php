@@ -43,4 +43,13 @@ class OffersController extends Controller
         
         return view('offers.index', ['offerwall_url' => $offerwall_url, 'logo' => $logo, 'bg' => $bg, 'text_color' => $text_color]);
     }
+    public function yandex_reward(Request $request): View
+    {
+        $user_id = $request->user()->id;
+        $logo = "/images/offers/yandex_logo.png";
+        $bg = "bg-amber-400";
+        $text_color = "text-black";
+        
+        return view('tasks.yandex', ['logo' => $logo, 'bg' => $bg, 'text_color' => $text_color]);
+    }
 }

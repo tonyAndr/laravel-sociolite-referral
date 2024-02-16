@@ -50,7 +50,7 @@ class AdPartnersController extends Controller
     private function cpalead ($request_params) {
         // !! TODO: add security check
         $user_id = intval($request_params['subid']) ?? null;
-        $robux = floatval($request_params['payout']) ? floatval($request_params['payout'])*100 : 0;
+        $robux = floatval($request_params['payout']) ? floatval($request_params['payout'])*100/2 : 0;
         return [$user_id, $robux];
     }
     private function mylead ($request_params) {
