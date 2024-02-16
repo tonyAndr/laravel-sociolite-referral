@@ -1,28 +1,22 @@
+import axios from 'axios';
 import './bootstrap';
-import './toast';
-import './tasks';
-// import Alpine from 'alpinejs';
 
-// window.Alpine = Alpine;
-
-// Alpine.start();
-
-// let Toast;
-// try {
-//     Toast = Swal.mixin({
-//         toast: true,
-//         position: 'top-end',
-//         iconColor: 'white',
-//         customClass: {
-//           popup: 'colored-toast',
-//         },
-//         showConfirmButton: false,
-//         timer: 1500,
-//         timerProgressBar: false,
-//       })
-// } catch (err) {
-//     //
-// }
+let Toast;
+try {
+    Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        iconColor: 'white',
+        customClass: {
+          popup: 'colored-toast',
+        },
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: false,
+      })
+} catch (err) {
+    //
+}
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -48,6 +42,67 @@ document.addEventListener("DOMContentLoaded", () => {
                 icon: 'warning',
                 title: 'Скоро будет работать!',
             })
+        });
+    }
+
+
+    let yandex_reward_start_btn = document.querySelector("#yandex_reward_start_btn");
+    if (yandex_reward_start_btn) {
+        yandex_reward_start_btn.addEventListener('click', function (e) {
+            e.preventDefault()
+
+            let rewardUser = (isRewarded) => {
+                if (isRewarded) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Награда получена!',
+                    })
+                    axios.get('/partner/callback/yandex')
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        })
+                        .finally(function () {
+                            // always executed
+                            setTimeout(function() {
+                                window.location = "/dashboard";
+                            }, 1000)
+                        });
+                } else {
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Реклама закрыта раньше времени!',
+                    })
+
+                }
+
+
+
+            }
+
+            window.yaContextCb.push(() => {
+                if (Ya.Context.AdvManager.getPlatform() === 'desktop') {
+                  // вызов блока Rewarded для десктопной версии
+                  Ya.Context.AdvManager.render({
+                    blockId: 'R-A-6005102-2',
+                    type: 'rewarded',
+                    platform: 'desktop',
+                    onRewarded: (isRewarded) => rewardUser(isRewarded)
+                  });
+                } else {
+                  // вызов блока Rewarded для мобильной версии
+                  Ya.Context.AdvManager.render({
+                    blockId: 'R-A-6005102-1',
+                    type: 'rewarded',
+                    platform: 'touch',
+                    onRewarded: (isRewarded) => rewardUser(isRewarded)
+                  });
+                }
+            });
         });
     }
 });
@@ -138,3 +193,6 @@ function provideMissingTargetElementHandler(e) {
     }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    
+});

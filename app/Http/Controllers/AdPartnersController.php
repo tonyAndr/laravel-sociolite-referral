@@ -31,14 +31,18 @@ class AdPartnersController extends Controller
         if ($current_provider === 'mylead') {
             list($user_id, $robux) = $this->mylead($request_params);
         }
+        if ($current_provider === 'yandex') {
+            $user = $request->user();
+            $robux = 1;
+        }
 
         try {
-            $user = User::find($user_id);
+            $user = $user ?? User::find($user_id);
             if (!$user) {
                 throw new Exception("User not found");
             }
             $user->addRobux($robux);
-            Log::info("Robux rewarded to user $user_id");
+            Log::info("Robux rewarded to user " . $user->id);
         } catch (Exception $e) {
             Log::info("User not found ".$e->getMessage());
         }
@@ -68,4 +72,5 @@ class AdPartnersController extends Controller
         }
         return [null, 0];
     }
+
 }
