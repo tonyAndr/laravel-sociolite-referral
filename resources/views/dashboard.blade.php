@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 bark:text-gray-200 leading-tight">
             {{ __('Заработай робуксы') }}
         </h2>
     </x-slot>
@@ -17,19 +17,19 @@
         <div class="flex flex-col sm:flex-row gap-4">
             <a href="{{ route('offerwall.cpalead') }}">
                 <div
-                    class="grow sm:grow-0 sm:w-60 h-32 bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
+                    class="grow sm:grow-0 sm:w-60 h-32 bg-white bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
                     <img class="p-4" src="/images/offers/cpa_lead.png">
                 </div>
             </a>
             <a href="{{ route('offerwall.mylead') }}">
                 <div
-                    class="grow sm:grow-0 sm:w-60 h-32 bg-slate-600 dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
+                    class="grow sm:grow-0 sm:w-60 h-32 bg-slate-600 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
                     <img class="p-4" src="/images/offers/mylead_logo.png">
                 </div>
             </a>
             {{-- <a href="{{ route('offerwall.ayetstudios') }}">
                 <div
-                    class="grow sm:grow-0 sm:w-60 h-32 bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
+                    class="grow sm:grow-0 sm:w-60 h-32 bg-white bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center">
                     <img src="/images/offers/ayetstudios.png">
                 </div>
             </a> --}}

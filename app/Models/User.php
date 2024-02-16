@@ -65,6 +65,14 @@ class User extends Authenticatable
         return $this->hasMany(Referral::class, 'parent_id');
     }
 
+        /**
+     * Get referrals associated with specified user
+     */
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class, 'user_id');
+    }
+
     /**
      * Get referrals associated with specified user
      */

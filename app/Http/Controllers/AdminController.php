@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Withdrawal;
 
 class AdminController extends Controller
 {
@@ -18,9 +19,9 @@ class AdminController extends Controller
     public function index(Request $request)
     {
 
-        $users = User::paginate(20);
-        
+        // $users = User::paginate(20, pageName: 'users');
+        // $withdrawals = Withdrawal::paginate(20, pageName: 'withdrawals');
 
-        return view('admin.index', ['users' => $users]);
+        return view('admin.index');
     }
 }

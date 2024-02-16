@@ -39,15 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (ref_link_textbox) {
         ref_link_textbox.addEventListener('click', referralButtonClickHandler);
     }
-
     let btn_withdraw = document.querySelector("#btn_withdraw");
-    btn_withdraw.addEventListener('click', function (e) {
-        e.preventDefault()
-        Toast.fire({
-            icon: 'warning',
-            title: 'Скоро будет работать!',
-        })
-    });
+    if (btn_withdraw) {
+        btn_withdraw.addEventListener('click', function (e) {
+            e.preventDefault()
+            Toast.fire({
+                icon: 'warning',
+                title: 'Скоро будет работать!',
+            })
+        });
+    }
 });
 
 function referralButtonClickHandler(e) {

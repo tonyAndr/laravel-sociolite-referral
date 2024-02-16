@@ -33,7 +33,7 @@
 <body>
 
     <div
-        class="relative min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+        class="relative min-h-screen bg-dots-darker bg-center bg-gray-100 bark:bg-dots-lighter bark:bg-gray-900 selection:bg-red-500 selection:text-white">
         @include('layouts.navigation')
         <div class="main-content">
             <section class="action">

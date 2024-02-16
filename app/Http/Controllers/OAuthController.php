@@ -11,9 +11,12 @@ use Laravel\Socialite\Facades\Socialite;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Events\ReferralDetected;
+use Exception;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Socialite\Two\InvalidStateException;
+use Illuminate\Support\Facades\Log;
 
 class OAuthController extends Controller
 {
@@ -27,29 +30,35 @@ class OAuthController extends Controller
 
     public function callback(Request $request, OAuthProvider $provider): RedirectResponse
     {
-        $oAuthUser = Socialite::driver($provider->driver())->user();
-
         $everything = $request->all();
+        try {
 
-        $user = User::updateOrCreate([
-            'oauth_id' => $oAuthUser->getId(),
-            'oauth_provider' => $provider,
-        ], [
-            'name' => $oAuthUser->getName(),
-            'email' => $oAuthUser->getEmail(),
-            'password' => Hash::make(Str::random(50)),
-            'avatar_url' => $oAuthUser->getAvatar(),
-            'oauth_token' => $oAuthUser->token,
-            'oauth_refresh_token' => $oAuthUser->refreshToken,
-        ]);
+            $oAuthUser = Socialite::driver($provider->driver())->user();
+            $email = $oAuthUser->getEmail();
+            $user = User::updateOrCreate([
+                'oauth_id' => $oAuthUser->getId(),
+                'oauth_provider' => $provider,
+            ], [
+                'name' => $oAuthUser->getName(),
+                'email' => (null !== $email && !empty(trim($email))) ? $email : null,
+                'password' => Hash::make(Str::random(50)),
+                'avatar_url' => $oAuthUser->getAvatar(),
+                'oauth_token' => $oAuthUser->token,
+                'oauth_refresh_token' => $oAuthUser->refreshToken,
+            ]);
 
-        Auth::login($user);
+            Auth::login($user);
 
-        // $req_cookie = Crypt::decryptString(Cookie::get('laravel_session'));
-        $req_cookie = request()->cookie('referral');
-        // $req_cookie = Cookie::get('referral');
-        if ($req_cookie) {
-            event(new ReferralDetected($req_cookie, $user));
+            $req_cookie = request()->cookie('referral');
+            if ($req_cookie) {
+                event(new ReferralDetected($req_cookie, $user));
+            }
+        } catch (InvalidStateException $e) {
+            Log::error("LOGIN ERROR: " . $e->getMessage());
+            Log::error("REQUEST DATA: " . var_export($everything, true));
+        } catch (Exception $e) {
+            Log::error("LOGIN ERROR: " . $e->getMessage());
+            Log::error("REQUEST DATA: " . var_export($everything, true));
         }
 
         return redirect()->route('dashboard');

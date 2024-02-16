@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\AdPartnersProvider;
 use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -32,11 +28,8 @@ class AdPartnersController extends Controller
             list($user_id, $robux) = $this->cpalead($request_params);
         }
 
-
         if ($current_provider === 'mylead') {
-
             list($user_id, $robux) = $this->mylead($request_params);
-
         }
 
         try {
@@ -55,8 +48,9 @@ class AdPartnersController extends Controller
     }
 
     private function cpalead ($request_params) {
+        // !! TODO: add security check
         $user_id = intval($request_params['subid']) ?? null;
-        $robux = floatval($request_params['payout']) ?? 0;
+        $robux = floatval($request_params['payout']) ? floatval($request_params['payout'])*100 : 0;
         return [$user_id, $robux];
     }
     private function mylead ($request_params) {

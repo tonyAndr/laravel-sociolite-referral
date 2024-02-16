@@ -40,10 +40,6 @@ Route::controller(OAuthController::class)->group(function () {
     Route::get('/auth/redirect/{provider}', 'redirect')->name('oauth.redirect');
     Route::get('/auth/callback/{provider}', 'callback')->name('oauth.callback');
 });
-Route::controller(AdPartnersController::class)->group(function () {
-    // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
-    Route::get('/partner/callback/{provider}', 'callback')->name('partner.callback');
-});
 
 Route::group(['prefix' => 'referrals'], function () {
     Route::get('/', [ReferralController::class, 'index'])->name('referrals');
@@ -66,9 +62,9 @@ Route::controller(AdPartnersController::class)->group(function () {
     Route::get('/partner/callback/{provider}', 'callback')->name('partner.callback');
 });
 
-Route::controller(OffersController::class)->group(function () {
+Route::middleware('auth')->controller(OffersController::class)->group(function () {
     // Route::get('/partner/redirect/{provider}', 'redirect')->name('partner.redirect');
     Route::get('/offerwall/cpalead', 'cpalead')->name('offerwall.cpalead');
     Route::get('/offerwall/mylead', 'mylead')->name('offerwall.mylead');
     Route::get('/offerwall/ayetstudios', 'ayetstudios')->name('offerwall.ayetstudios');
-})->middleware('auth');
+});

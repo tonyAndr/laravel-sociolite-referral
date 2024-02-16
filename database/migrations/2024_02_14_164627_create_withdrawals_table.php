@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->foreign('user_id')->references('id')->on('users');
             $table->double('amount')->default(0);
-            $table->string('nickname')->nullable();
+            $table->string('status')->nullable()->default('pending');
             $table->timestamps();
         });
     }
