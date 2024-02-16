@@ -4,14 +4,14 @@ document.addEventListener("DOMContentLoaded", () => {
         yandex_reward_start_btn.addEventListener('click', function (e) {
             e.preventDefault()
 
-            let rewardUser = (isRewarded, Toast) => {
+            let rewardUser = (isRewarded, tst) => {
                 if (isRewarded) {
-                    Toast.fire({
+                    tst.fire({
                         icon: 'success',
                         title: 'Награда получена!',
                     })
                 } else {
-                    Toast.fire({
+                    tst.fire({
                         icon: 'warning',
                         title: 'Реклама закрыта раньше времени!',
                     })
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     blockId: 'R-A-6005102-2',
                     type: 'rewarded',
                     platform: 'desktop',
-                    onRewarded: (isRewarded) => rewardUser(isRewarded, Toast)
+                    onRewarded: (isRewarded) => (rewardUser(isRewarded), Toast)
                   });
                 } else {
                   // вызов блока Rewarded для мобильной версии
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     blockId: 'R-A-6005102-1',
                     type: 'rewarded',
                     platform: 'touch',
-                    onRewarded: (isRewarded) => rewardUser(isRewarded, Toast)
+                    onRewarded: (isRewarded) => (rewardUser(isRewarded), Toast)
                   });
                 }
             });
