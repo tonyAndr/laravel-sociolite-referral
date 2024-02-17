@@ -33,7 +33,7 @@ class AdPartnersController extends Controller
         }
         if ($current_provider === 'yandex') {
             $user = $request->user();
-            $robux = 1;
+            $robux = 0.1;
         }
 
         try {
