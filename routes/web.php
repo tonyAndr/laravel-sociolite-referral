@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::post('/withdrawal/approve', [WithdrawalController::class, 'approve'])->name('withdrawal.approve');
 });
 
 Route::controller(AdPartnersController::class)->group(function () {

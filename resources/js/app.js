@@ -83,6 +83,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
+    let approve_withdrawal_btn = document.querySelector("#approve_withdrawal_btn");
+    if (approve_withdrawal_btn) {
+        approve_withdrawal_btn.addEventListener('click', function (e) {
+            e.preventDefault()
+            approve_withdrawal_btn.disabled = true
+            let withdrawal_id = approve_withdrawal_btn.getAttribute('data-withdrawal-id');
+            axios.post('/withdrawal/approve', {
+                id: withdrawal_id
+            })
+            .then(function (response) {
+                // handle success
+                console.log(response);
+
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+
+            })
+            .finally(function () {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Выплата подтверждена',
+                })
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000)
+            })
+
+        });
+    }
 
 
     let yandex_reward_start_btn = document.querySelector("#yandex_reward_start_btn");

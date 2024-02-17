@@ -8,16 +8,16 @@ use App\Models\Withdrawal;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-class WithdrawalsTable extends Component
+class WithdrawalsAdminTable extends Component
 {
     use WithPagination;
     public function render()
     {
         $user = Auth::getUser();
-        // $route_uri = Route::current()->uri;
+        $route_uri = Route::current()->uri;
 
-        $withdrawals = Withdrawal::where('user_id', $user->id)->paginate(20, pageName: 'withdrawals');
+        $withdrawals = Withdrawal::paginate(20, pageName: 'withdrawals');
 
-        return view('livewire.withdrawals-table', ['withdrawals' => $withdrawals]);
+        return view('livewire.withdrawals-admin-table', ['withdrawals' => $withdrawals]);
     }
 }

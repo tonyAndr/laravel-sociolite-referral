@@ -70,4 +70,19 @@ class WithdrawalController extends Controller
         ]);
         return;
     }
+
+    public function approve(Request $request) {
+        $withdrawal = Withdrawal::find($request->get('id'));
+        $withdrawal->status = 'approved';
+        $withdrawal->save();
+
+        $user = $withdrawal->getUser();
+        $user->robux = $user->robux - $withdrawal->amount;
+        $user->save();
+        echo json_encode([
+            "result" => true,
+            "msg" => "order_approved"
+        ]);
+        return;
+    }
 }

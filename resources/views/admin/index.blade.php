@@ -11,9 +11,22 @@
         </h2>
     </x-slot>
 
-    <!-- Users table -->
+    <!-- Withdrawals table -->
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+            <h3 class="py-2">Заявки на вывод</h3>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <livewire:withdrawals-admin-table />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.Withdrawals table -->
+
+    <!-- Users table -->
+    <div class="pb-6">
+        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
             <h3 class="py-2">Пользователи</h3>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -24,18 +37,6 @@
     </div>
     <!-- /.Users table -->
 
-    <!-- Withdrawals table -->
-    <div class="pb-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h3 class="py-2">Заявки на вывод</h3>
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <livewire:withdrawals-table />
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.Withdrawals table -->
 
 </x-app-layout>
 <!-- /.Layout -->

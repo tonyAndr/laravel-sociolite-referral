@@ -5,8 +5,8 @@
         <thead class="bg-blue-100">
             <tr>
                 <th class="border-b p-2 rounded-tl-lg">USER ID</th>
-                <th class="border-b ">Имя</th>
-                <th class="border-b rounded-tr-lg">R$</th>
+                <th class="border-b ">Создана</th>
+                <th class="border-b ">R$</th>
                 <th class="border-b rounded-tr-lg">Статус</th>
             </tr>
         </thead>
@@ -15,7 +15,7 @@
             @foreach ($withdrawals as $wd)
                 <tr class="group">
                     <td class="p-1 border-b group-last:border-none">{{ $wd->user_id }}</td>
-                    <td class="text-center border-b group-last:border-none">{{ $wd->getUser()->name }}</td>
+                    <td class="text-center border-b group-last:border-none">{{ $wd->created_at }}</td>
                     <td class="text-center border-b group-last:border-none">{{ $wd->amount }}</td>
                     <td class="text-center border-b group-last:border-none">{{ $wd->status }}</td>
                 </tr>
