@@ -26,6 +26,14 @@ class WithdrawalController extends Controller
         $balance = $user->robux;
         $to_withdraw = floatval($request->get('amount'));
 
+        if ($to_withdraw < 20) {
+            echo json_encode([
+                "result" => false,
+                "msg" => "minimum_20"
+            ]);
+            return;
+        }
+
         if ($balance < $to_withdraw) {
             echo json_encode([
                 "result" => false,

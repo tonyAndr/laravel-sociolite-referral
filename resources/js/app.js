@@ -47,10 +47,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(response);
 
                 if (!response.data.result) {
-
+                    let msg = 'Недостаточно средств на балансе!';
+                    if (response.data.msg === 'insufficient_balance') {
+                        msg = 'Недостаточно средств на балансе!';
+                    }
+                    if (response.data.msg === 'minimum_20') {
+                        msg = 'Минимальная сумма для вывода - 20 робуксов';
+                    }
                     Toast.fire({
                         icon: 'warning',
-                        title: 'Недостаточно средств на балансе!',
+                        title: msg,
                     })
                     btn_withdraw.disabled = false
                 } else {
