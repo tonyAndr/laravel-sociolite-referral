@@ -38,10 +38,43 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn_withdraw) {
         btn_withdraw.addEventListener('click', function (e) {
             e.preventDefault()
-            Toast.fire({
-                icon: 'warning',
-                title: 'Скоро будет работать!',
+            btn_withdraw.disabled = true
+            axios.post('/withdrawal/create', {
+                amount: document.querySelector("#robux").value
             })
+            .then(function (response) {
+                // handle success
+                console.log(response);
+
+                if (!response.data.result) {
+
+                    Toast.fire({
+                        icon: 'warning',
+                        title: 'Недостаточно средств на балансе!',
+                    })
+                    btn_withdraw.disabled = false
+                } else {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Заявка отправлена',
+                    })
+                    setTimeout(function() {
+                        window.location = "/withdrawal";
+                    }, 1000)
+                }
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Ошибка при создании заявки!',
+                })
+            })
+            .finally(function () {
+                btn_withdraw.disabled = false
+            })
+
         });
     }
 
@@ -79,8 +112,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
 
                 }
-
-
 
             }
 

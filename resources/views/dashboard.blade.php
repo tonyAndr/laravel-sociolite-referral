@@ -34,7 +34,7 @@
                 </div>
             </a> --}}
         </div>
-        @if (Auth::user()->is_admin)
+        {{-- @if (Auth::user()->is_admin) --}}
             <h3 class="m-6">Задания</h3>
             <div class="flex flex-col sm:flex-row gap-4">
                 <a href="{{ route('tasks.yandex_reward') }}">
@@ -46,6 +46,6 @@
                 </a>
 
             </div>
-        @endif
+        {{-- @endif --}}
     </div>
 </x-app-layout>

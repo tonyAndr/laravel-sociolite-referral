@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Enums\OAuthProvider;
 use App\Models\Referral;
+use App\Models\Withdrawal;
 
 class User extends Authenticatable
 {
@@ -72,7 +73,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Withdrawal::class, 'user_id');
     }
-
     /**
      * Get referrals associated with specified user
      */

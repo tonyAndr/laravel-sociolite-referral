@@ -9,17 +9,17 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 bark:text-gray-100">
-                    <p class="text-rose-500 font-bold text-lg">Вывод робуксов заработает с 16.02.2024!</p>
                     <p>
                         Переведи заработанные робуксы на свой игровой счет. Введи нужное количество, нажмите "Перевести"
-                        и следуйте инструкции.
+                        и следуйте инструкции.</p>
+                        <p><strong>Минимальное количество - 20 робуксов</strong>.</p>
                     <form method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
                         @csrf
 
                         <div>
                             <x-input-label for="robux" :value="__('Robux')" />
                             <x-text-input id="robux" name="robux" type="number" class="mt-1 block w-full"
-                                value="10" min="10" required autofocus />
+                                value="20" min="20" required autofocus />
                             <x-input-error class="mt-2" :messages="$errors->get('robux')" />
                         </div>
 
@@ -29,9 +29,22 @@
                         </div>
                     </form>
                 </div>
+
             </div>
+            <!-- Withdrawals table -->
+            <div class="max-w-7xl mx-auto py-6">
+                <h3 class="py-2">Заявки на вывод</h3>
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 bg-white border-b border-gray-200">
+                        <livewire:withdrawals-table />
+                    </div>
+                </div>
+            </div>
+            <!-- /.Withdrawals table -->
         </div>
     </div>
+
+
 
     <x-modal name="enter-nickname" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('withdrawal.create') }}" class="p-6">
