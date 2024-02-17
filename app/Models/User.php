@@ -76,7 +76,7 @@ class User extends Authenticatable
     /**
      * Get referrals associated with specified user
      */
-    public function addRobux(int $robux)
+    public function addRobux($robux)
     {
         $this->robux = $this->robux + $robux;
         $this->save();
