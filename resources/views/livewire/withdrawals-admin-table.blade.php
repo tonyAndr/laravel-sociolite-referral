@@ -10,6 +10,7 @@
                     <th class="border-b ">Telegram ID</th>
                     <th class="border-b ">R$</th>
                     <th class="border-b ">Создана</th>
+                    <th class="border-b ">Коммент</th>
                     <th class="border-b ">Статус</th>
                     <th class="border-b rounded-tr-lg">Действия</th>
 
@@ -29,12 +30,13 @@
                         </td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->amount }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->created_at }}</td>
+                        <td class="text-center border-b group-last:border-none">{{ $wd->comment }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->status }}</td>
                         <td class="text-center border-b group-last:border-none">
                             <a data-withdrawal-id="{{ $wd->id }}" id="approve_withdrawal_btn" href="#"><i
-                                    class="fa-solid fa-circle-check"></i></a>
+                                    class="fa-solid fa-circle-check px-4  text-xl text-green-600"></i></a>
                             <a data-withdrawal-id="{{ $wd->id }}" id="cancel_withdrawal_btn" href="#"><i
-                                    class="fa-solid fa-circle-minus px-4"></i></a>
+                                    class="fa-solid fa-circle-minus text-xl text-red-600"></i></a>
                         </td>
                     </tr>
                 @endforeach
