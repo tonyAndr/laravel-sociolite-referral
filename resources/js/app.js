@@ -34,13 +34,44 @@ document.addEventListener("DOMContentLoaded", () => {
     if (ref_link_textbox) {
         ref_link_textbox.addEventListener('click', referralButtonClickHandler);
     }
+
+    let input_robux_withdraw = document.querySelector("#robux");
+    let robux_gamepass = document.querySelector("#gamepass_price");
+    if (input_robux_withdraw) {
+
+        input_robux_withdraw.addEventListener('input', function (e) {
+            let robux = parseInt(input_robux_withdraw.value)
+            let gamepass = robux + Math.ceil(robux*0.43)
+            robux_gamepass.innerHTML = gamepass
+        })
+    }
+
     let btn_withdraw = document.querySelector("#btn_withdraw");
     if (btn_withdraw) {
         btn_withdraw.addEventListener('click', function (e) {
             e.preventDefault()
+            let robux = document.querySelector("#robux").value
+            let robux_final = document.querySelector("#gamepass_price").innerHTML
+            let gamepass = document.querySelector("#gamepass").value
+            if (!robux) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Укажи количество робуксов',
+                })
+                return;
+            }
+            if (!gamepass.trim()) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Укажи ссылку на GamePass',
+                })
+                return;
+            }
             btn_withdraw.disabled = true
             axios.post('/withdrawal/create', {
-                amount: document.querySelector("#robux").value
+                amount: document.querySelector("#robux").value,
+                amount_final: robux_final,
+                gamepass: gamepass
             })
             .then(function (response) {
                 // handle success
@@ -53,6 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                     if (response.data.msg === 'minimum_20') {
                         msg = 'Минимальная сумма для вывода - 20 робуксов';
+                    }
+                    if (response.data.msg === 'gamepass_error') {
+                        msg = 'Ссылка не указана или неверная';
                     }
                     Toast.fire({
                         icon: 'warning',
@@ -83,35 +117,73 @@ document.addEventListener("DOMContentLoaded", () => {
 
         });
     }
-    let approve_withdrawal_btn = document.querySelector("#approve_withdrawal_btn");
-    if (approve_withdrawal_btn) {
-        approve_withdrawal_btn.addEventListener('click', function (e) {
-            e.preventDefault()
-            approve_withdrawal_btn.disabled = true
-            let withdrawal_id = approve_withdrawal_btn.getAttribute('data-withdrawal-id');
-            axios.post('/withdrawal/approve', {
-                id: withdrawal_id
-            })
-            .then(function (response) {
-                // handle success
-                console.log(response);
-
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-
-            })
-            .finally(function () {
-                Toast.fire({
-                    icon: 'success',
-                    title: 'Выплата подтверждена',
+    let approve_withdrawal_btn = document.querySelectorAll("#approve_withdrawal_btn");
+    let cancel_withdrawal_btn = document.querySelectorAll("#cancel_withdrawal_btn");
+    if (cancel_withdrawal_btn.length) {
+        cancel_withdrawal_btn.forEach(element => {
+            
+            element.addEventListener('click', function (e) {
+                e.preventDefault()
+                element.disabled = true
+                let withdrawal_id = element.getAttribute('data-withdrawal-id');
+                let reason = prompt('Причина отмены')
+                axios.post('/withdrawal/cancel', {
+                    id: withdrawal_id,
+                    reason: reason
                 })
-                setTimeout(function() {
-                    window.location.reload();
-                }, 1000)
-            })
-
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+    
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+    
+                })
+                .finally(function () {
+                    Toast.fire({
+                        icon: 'info',
+                        title: 'Выплата отменена',
+                    })
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000)
+                })
+            });
+        });
+    }
+    if (approve_withdrawal_btn.length) {
+        approve_withdrawal_btn.forEach(element => {
+            
+            element.addEventListener('click', function (e) {
+                e.preventDefault()
+                element.disabled = true
+                let withdrawal_id = element.getAttribute('data-withdrawal-id');
+                axios.post('/withdrawal/approve', {
+                    id: withdrawal_id
+                })
+                .then(function (response) {
+                    // handle success
+                    console.log(response);
+    
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+    
+                })
+                .finally(function () {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Выплата подтверждена',
+                    })
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000)
+                })
+    
+            });
         });
     }
 

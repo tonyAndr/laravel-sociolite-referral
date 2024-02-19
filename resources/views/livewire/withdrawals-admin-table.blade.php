@@ -24,14 +24,18 @@
                         <td class="text-center border-b group-last:border-none">{{ $wd->getUser()->email }}</td>
                         <td class="text-center border-b group-last:border-none">
                             @if (!empty($wd->getUser()->oauth_provider->value) && $wd->getUser()->oauth_provider->value === 'telegram')
-                            {{ $wd->getUser()->oauth_id }}
+                                {{ $wd->getUser()->oauth_id }}
                             @endif
                         </td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->amount }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->created_at }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->status }}</td>
-                        <td class="text-center border-b group-last:border-none"><a data-withdrawal-id="{{$wd->id}}" id="approve_withdrawal_btn"
-                                href="#"><i class="fa-solid fa-circle-check"></i></a></td>
+                        <td class="text-center border-b group-last:border-none">
+                            <a data-withdrawal-id="{{ $wd->id }}" id="approve_withdrawal_btn" href="#"><i
+                                    class="fa-solid fa-circle-check"></i></a>
+                            <a data-withdrawal-id="{{ $wd->id }}" id="cancel_withdrawal_btn" href="#"><i
+                                    class="fa-solid fa-circle-minus px-4"></i></a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

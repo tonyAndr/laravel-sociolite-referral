@@ -8,6 +8,7 @@
         "php": "^8.1",
         "anhskohbo/no-captcha": "^3.5",
         "fsasvari/laravel-trailing-slash": "^5.0",
+        "google/apiclient": "^2.15",
         "guzzlehttp/guzzle": "^7.2",
         "kudashevs/laravel-share-buttons": "^4.0",
         "laravel/framework": "^10.10",

@@ -7,12 +7,20 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-red-300 mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 bark:text-gray-100">
+                    <p>Перед выводом нужно создать GamePass в игре. Робуксы поступят на ваш игровой счет через геймпасс.
+                        Подробная инструкция, как это сделать тут:</p>
+                    <a href="{{ route('withdrawal.instruction') }}"><x-primary-button type="button">Инструкция как
+                            создать GamePass</x-primary-button></a>
+                </div>
+            </div>
             <div class="bg-white bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 bark:text-gray-100">
                     <p>
                         Переведи заработанные робуксы на свой игровой счет. Введи нужное количество, нажмите "Перевести"
                         и следуйте инструкции.</p>
-                        <p><strong>Минимальное количество - 20 робуксов</strong>.</p>
+                    <p><strong>Минимальное количество - 20 робуксов</strong>.</p>
                     <form method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
                         @csrf
 
@@ -23,9 +31,20 @@
                             <x-input-error class="mt-2" :messages="$errors->get('robux')" />
                         </div>
 
+                        <p>Создай геймпас в игре и укажи его цену такую, как в поле ниже.</p>
+
+                        <div class="font-bold text-xl">Цена на GamePass: <span id="gamepass_price"
+                                class="gamepass-price text-3xl">29</span> (укажите ее при создании геймпасса)</div>
+
+                        <div>
+                            <x-input-label for="gamepass" :value="__('Ссылка на GamePass')" />
+                            <x-text-input id="gamepass" name="gamepass" type="text" class="mt-1 block w-full"
+                                required autofocus />
+                            <x-input-error class="mt-2" :messages="$errors->get('gamepass')" />
+                        </div>
+
                         <div class="flex items-center gap-4">
                             <x-primary-button id="btn_withdraw">{{ __('Перевести') }}</x-primary-button>
-
                         </div>
                     </form>
                 </div>
@@ -46,7 +65,7 @@
 
 
 
-    <x-modal name="enter-nickname" :show="$errors->userDeletion->isNotEmpty()" focusable>
+    <x-modal name="insert-gamepass-link" :show="$errors->userDeletion->isNotEmpty()" focusable>
         <form method="post" action="{{ route('withdrawal.create') }}" class="p-6">
             @csrf
 

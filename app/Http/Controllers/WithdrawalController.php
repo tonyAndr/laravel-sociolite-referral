@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\WithdrawalCancelled;
+use App\Events\WithdrawalPlaced;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
@@ -19,12 +21,26 @@ class WithdrawalController extends Controller
     {
         return view('withdrawal.index');
     }
+    public function instruction(Request $request)
+    {
+        return view('withdrawal.instruction');
+    }
 
 
     public function create(Request $request) {
+
+        // $request->validate([
+        //     'robux' => ['required', 'integer', 'min:20'],
+        //     'gamepass' => ['required', 'string', 'url:http,https'],
+        // ],[
+        //     'robux' => 'Минимальная сумма вывода - 20 робуксов',
+        //     'gamepass' => 'Ссылка не указана или неправильная',
+        // ]);
+
         $user = $request->user();
         $balance = $user->robux;
-        $to_withdraw = floatval($request->get('amount'));
+        $to_withdraw = intval($request->get('amount'));
+        $gamepass = $request->get('gamepass');
 
         if ($to_withdraw < 20) {
             echo json_encode([
@@ -38,6 +54,13 @@ class WithdrawalController extends Controller
             echo json_encode([
                 "result" => false,
                 "msg" => "insufficient_balance"
+            ]);
+            return;
+        }
+        if (empty($gamepass) || !str_contains($gamepass, 'http') || !str_contains($gamepass, 'roblox.com/game-pass')) {
+            echo json_encode([
+                "result" => false,
+                "msg" => "gamepass_error"
             ]);
             return;
         }
@@ -61,8 +84,12 @@ class WithdrawalController extends Controller
         $withdrawal = new Withdrawal();
         $withdrawal->user_id = $user->id;
         $withdrawal->amount = $to_withdraw;
+        $withdrawal->amount_final = intval($request->get('amount_final'));
+        $withdrawal->gamepass_url = $gamepass;
         $withdrawal->status = 'pending';
         $withdrawal->save();
+
+        event(new WithdrawalPlaced($withdrawal));
     
         echo json_encode([
             "result" => true,
@@ -82,6 +109,26 @@ class WithdrawalController extends Controller
         echo json_encode([
             "result" => true,
             "msg" => "order_approved"
+        ]);
+        return;
+    }
+    public function cancel(Request $request) {
+        $withdrawal = Withdrawal::find($request->get('id'));
+        $withdrawal->status = 'cancelled';
+        $withdrawal->comment = $request->get('reason');
+        $withdrawal->save();
+
+        $user = $withdrawal->getUser();
+
+        //!! todo: notify user? 
+        if ($user->email) {
+            $reason = $request->get('reason');
+            event(new WithdrawalCancelled($reason, $user->email));
+        }
+
+        echo json_encode([
+            "result" => true,
+            "msg" => "order_cancelled"
         ]);
         return;
     }

@@ -6,7 +6,7 @@
         <div class="{{ $bg }} overflow-hidden shadow-sm rounded-lg my-6">
             <div class="p-6">
                 <div ><img src="{{ $logo }}" /></div>
-                <p class="pt-4 {{$text_color}}">{{ __('Click the Start viewing button to open the ad unit. Wait until the timer ends to receive your 0.1 Robux reward. If you close the ad before the timer ends, the reward will not be awarded.') }}</p>
+                <p class="pt-4 {{$text_color}}">{{ __('Click the Start viewing button to open the ad unit. Wait until the timer ends to receive your 0.05 Robux reward. If you close the ad before the timer ends, the reward will not be awarded.') }}</p>
             </div>
         </div>
     </div>

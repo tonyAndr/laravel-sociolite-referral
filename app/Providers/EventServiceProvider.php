@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Event;
 use App\Events\ReferralCompleted;
 use App\Listeners\ForgetReferralCookie;
 use App\Events\ReferralDetected;
+use App\Events\WithdrawalPlaced;
+use App\Events\WithdrawalCancelled;
 use App\Listeners\RegisterNewReferralConnection;
+use App\Listeners\AddWithdrawalToSpreadsheet;
+use App\Listeners\NotifyUserWithdrawalCancelled;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -36,6 +40,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         ReferralDetected::class => [
             RegisterNewReferralConnection::class,
+        ],
+        WithdrawalPlaced::class => [
+            AddWithdrawalToSpreadsheet::class,
+        ],
+        WithdrawalCancelled::class => [
+            NotifyUserWithdrawalCancelled::class,
         ]
     ];
 

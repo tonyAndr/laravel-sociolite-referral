@@ -51,11 +51,13 @@ Route::get('/giveaway', [GiveawayController::class, 'index'])->name('giveaway');
 
 Route::middleware('auth')->group(function () {
     Route::get('/withdrawal', [WithdrawalController::class, 'index'])->name('withdrawal.index');
+    Route::get('/withdrawal/instruction', [WithdrawalController::class, 'instruction'])->name('withdrawal.instruction');
     Route::post('/withdrawal/create', [WithdrawalController::class, 'create'])->name('withdrawal.create');
 });
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::post('/withdrawal/approve', [WithdrawalController::class, 'approve'])->name('withdrawal.approve');
+    Route::post('/withdrawal/cancel', [WithdrawalController::class, 'cancel'])->name('withdrawal.cancel');
 });
 
 Route::controller(AdPartnersController::class)->group(function () {
