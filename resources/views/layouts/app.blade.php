@@ -24,7 +24,6 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireScripts
     @livewireStyles
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -51,6 +50,8 @@
 
         <x-footer-copyright />
     </div>
+    
+    @livewireScripts
 </body>
 
 </html>
