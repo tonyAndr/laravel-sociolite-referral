@@ -30,12 +30,24 @@
             <h3 class="py-2">Пользователи</h3>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    <livewire:users-table />
+                    <livewire:users-table-enhanced />
                 </div>
             </div>
         </div>
     </div>
     <!-- /.Users table -->
+    {{-- <!-- Users table -->
+    <div class="pb-6">
+        <div class="max-w-full mx-auto sm:px-6 lg:px-8">
+            <h3 class="py-2">Пользователи</h3>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 bg-white border-b border-gray-200">
+                    <livewire:users-table />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.Users table --> --}}
 
 
 </x-app-layout>

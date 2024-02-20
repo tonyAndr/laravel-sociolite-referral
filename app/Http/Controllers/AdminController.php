@@ -24,4 +24,8 @@ class AdminController extends Controller
 
         return view('admin.index');
     }
+
+    public function delete_user(Request $request) {
+        
+    }
 }

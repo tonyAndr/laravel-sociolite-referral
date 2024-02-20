@@ -16,7 +16,7 @@ class WithdrawalsAdminTable extends Component
         $user = Auth::getUser();
         $route_uri = Route::current()->uri;
 
-        $withdrawals = Withdrawal::paginate(20, pageName: 'withdrawals');
+        $withdrawals = Withdrawal::orderBy('created_at', 'desc')->paginate(15, pageName: 'withdrawals');
 
         return view('livewire.withdrawals-admin-table', ['withdrawals' => $withdrawals]);
     }

@@ -16,7 +16,7 @@ class WithdrawalsTable extends Component
         $user = Auth::getUser();
         // $route_uri = Route::current()->uri;
 
-        $withdrawals = Withdrawal::where('user_id', $user->id)->paginate(20, pageName: 'withdrawals');
+        $withdrawals = Withdrawal::where('user_id', $user->id)->orderBy('created_at', 'desc')->paginate(15, pageName: 'withdrawals');
 
         return view('livewire.withdrawals-table', ['withdrawals' => $withdrawals]);
     }

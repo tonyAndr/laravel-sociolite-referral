@@ -1,3 +1,13 @@
+@php
+    function getStatus($code) {
+        $statuses = [
+            'pending' => 'На проверке',
+            'approved' => 'Выплачено',
+            'cancelled' => 'Отменено',
+        ];
+        return $statuses[$code];
+    }
+@endphp
 <div>
     @if ($withdrawals->count())
         {{-- The best athlete wants his opponent at his best. --}}
@@ -31,7 +41,7 @@
                         <td class="text-center border-b group-last:border-none">{{ $wd->amount }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->created_at }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->comment }}</td>
-                        <td class="text-center border-b group-last:border-none">{{ $wd->status }}</td>
+                        <td class="text-center border-b group-last:border-none">{{ getStatus($wd->status) }}</td>
                         <td class="text-center border-b group-last:border-none">
                             <a data-withdrawal-id="{{ $wd->id }}" id="approve_withdrawal_btn" href="#"><i
                                     class="fa-solid fa-circle-check px-4  text-xl text-green-600"></i></a>
