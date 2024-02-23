@@ -9,7 +9,7 @@ use Illuminate\Queue\SerializesModels;
 use App\Models\User;
 use App\Models\Referral;
 
-class WithdrawalCancelledMail extends Mailable
+class WithdrawalApprovedMail extends Mailable
 {
     use Queueable;
     use SerializesModels;
@@ -18,7 +18,7 @@ class WithdrawalCancelledMail extends Mailable
      * A user that sends an email.
      *
      */
-    public $reason;
+    public $comment;
 
     /**
      * Create a new message instance.
@@ -27,9 +27,9 @@ class WithdrawalCancelledMail extends Mailable
      * @param  \App\Models\Referral $referral
      * @return void
      */
-    public function __construct(string $reason)
+    public function __construct(string|null $comment)
     {
-        $this->reason = $reason;
+        $this->comment = $comment;
     }
 
     /**
@@ -42,6 +42,6 @@ class WithdrawalCancelledMail extends Mailable
         return $this
                 ->from(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'))
                 ->subject('Обновление по вашей заявке на вывод робуксов')
-                ->markdown('emails.withdrawal-cancelled');
+                ->markdown('emails.withdrawal-approved');
     }
 }

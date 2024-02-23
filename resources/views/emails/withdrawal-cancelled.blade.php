@@ -3,7 +3,7 @@
 Привет! Заявка на вывод робуксов была отменена. Причина: {{ $reason }}
 </p>
 
-@component('mail::button', ['url' => route('withdrawals.index')])
+@component('mail::button', ['url' => route('withdrawal.index')])
 Пересоздать заявку
 @endcomponent
 

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
+use App\Listeners\WithdrawalPlacedNotifyAdmin;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use App\Events\ReferralCompleted;
@@ -11,9 +12,11 @@ use App\Listeners\ForgetReferralCookie;
 use App\Events\ReferralDetected;
 use App\Events\WithdrawalPlaced;
 use App\Events\WithdrawalCancelled;
+use App\Events\WithdrawalApproved;
 use App\Listeners\RegisterNewReferralConnection;
 use App\Listeners\AddWithdrawalToSpreadsheet;
 use App\Listeners\NotifyUserWithdrawalCancelled;
+use App\Listeners\NotifyUserWithdrawalApproved;
 
 
 class EventServiceProvider extends ServiceProvider
@@ -43,9 +46,13 @@ class EventServiceProvider extends ServiceProvider
         ],
         WithdrawalPlaced::class => [
             AddWithdrawalToSpreadsheet::class,
+            WithdrawalPlacedNotifyAdmin::class,
         ],
         WithdrawalCancelled::class => [
             NotifyUserWithdrawalCancelled::class,
+        ],
+        WithdrawalApproved::class => [
+            NotifyUserWithdrawalApproved::class,
         ]
     ];
 

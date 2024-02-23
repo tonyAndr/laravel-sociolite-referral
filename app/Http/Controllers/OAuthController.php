@@ -32,20 +32,8 @@ class OAuthController extends Controller
     {
         $everything = $request->all();
         try {
-
             $oAuthUser = Socialite::driver($provider->driver())->user();
-            $email = $oAuthUser->getEmail();
-            $user = User::updateOrCreate([
-                'oauth_id' => $oAuthUser->getId(),
-                'oauth_provider' => $provider,
-            ], [
-                'name' => $oAuthUser->getName(),
-                'email' => (null !== $email && !empty(trim($email))) ? $email : null,
-                'password' => Hash::make(Str::random(50)),
-                'avatar_url' => $oAuthUser->getAvatar(),
-                'oauth_token' => $oAuthUser->token,
-                'oauth_refresh_token' => $oAuthUser->refreshToken,
-            ]);
+            $user = $this->createOrUpdateUser($oAuthUser, $provider);
 
             Auth::login($user);
 
@@ -62,5 +50,44 @@ class OAuthController extends Controller
         }
 
         return redirect()->route('dashboard');
+    }
+
+    private function createOrUpdateUser($oAuthUser, $provider) {
+        
+            $email = trim($oAuthUser->getEmail());
+
+            // check oauth first
+            $user = User::where('oauth_id', $oAuthUser->getId())->where('oauth_provider', $provider)->first();
+            if (!$user) {
+                // now check by email
+                if ($email) {
+                    $user = User::where('email', $email)->first();
+                }
+                if (!$user) {
+                    $user = User::create([
+                        'oauth_id' => $oAuthUser->getId(),
+                        'oauth_provider' => $provider, 
+                        'name' => $oAuthUser->getName(),
+                        'email' => (null !== $email && !empty(trim($email))) ? $email : null,
+                        'password' => Hash::make(Str::random(50)),
+                        'avatar_url' => $oAuthUser->getAvatar(),
+                        'oauth_token' => $oAuthUser->token,
+                        'oauth_refresh_token' => $oAuthUser->refreshToken,
+                    ]);
+                } else {
+                    $user->oauth_id = $oAuthUser->getId(); 
+                    $user->oauth_provider = $provider;
+                    $user->avatar_url = $oAuthUser->getAvatar();
+                    $user->oauth_token = $oAuthUser->token;
+                    $user->oauth_refresh_token = $oAuthUser->refreshToken;
+                    $user->save();
+                }
+            }
+
+            if (!$user->email && $email) {
+                $user->email = trim($email);
+                $user->save();
+            }
+        return $user;
     }
 }

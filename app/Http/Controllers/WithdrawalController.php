@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\WithdrawalCancelled;
+use App\Events\WithdrawalApproved;
 use App\Events\WithdrawalPlaced;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
@@ -19,7 +19,8 @@ class WithdrawalController extends Controller
      */
     public function index(Request $request)
     {
-        return view('withdrawal.index');
+        $user = $request->user();
+        return view('withdrawal.index', ['user' => $user]);
     }
     public function instruction(Request $request)
     {
@@ -102,16 +103,18 @@ class WithdrawalController extends Controller
         $withdrawal = Withdrawal::find($request->get('id'));
         $withdrawal->status = 'approved';
         $withdrawal->save();
-
+        $comment = $request->get('comment');
         $user = $withdrawal->getUser();
         $user->robux = $user->robux - $withdrawal->amount;
         $user->save();
+        event(new WithdrawalApproved($withdrawal));
         echo json_encode([
             "result" => true,
             "msg" => "order_approved"
         ]);
         return;
     }
+
     public function cancel(Request $request) {
         $withdrawal = Withdrawal::find($request->get('id'));
         $withdrawal->status = 'cancelled';

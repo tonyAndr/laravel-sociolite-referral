@@ -47,75 +47,98 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     let btn_withdraw = document.querySelector("#btn_withdraw");
+    let withdraw_spinner = document.querySelector("#progress_spinner");
     if (btn_withdraw) {
         btn_withdraw.addEventListener('click', function (e) {
             e.preventDefault()
-            let robux = document.querySelector("#robux").value
-            let robux_final = document.querySelector("#gamepass_price").innerHTML
-            let gamepass = document.querySelector("#gamepass").value
-            if (!robux) {
-                Toast.fire({
-                    icon: 'warning',
-                    title: 'Укажи количество робуксов',
-                })
-                return;
-            }
-            if (!gamepass.trim()) {
-                Toast.fire({
-                    icon: 'warning',
-                    title: 'Укажи ссылку на GamePass',
-                })
-                return;
-            }
-            btn_withdraw.disabled = true
-            axios.post('/withdrawal/create', {
-                amount: document.querySelector("#robux").value,
-                amount_final: robux_final,
-                gamepass: gamepass
-            })
-            .then(function (response) {
-                // handle success
-                console.log(response);
-
-                if (!response.data.result) {
-                    let msg = 'Недостаточно средств на балансе!';
-                    if (response.data.msg === 'insufficient_balance') {
-                        msg = 'Недостаточно средств на балансе!';
-                    }
-                    if (response.data.msg === 'minimum_20') {
-                        msg = 'Минимальная сумма для вывода - 20 робуксов';
-                    }
-                    if (response.data.msg === 'gamepass_error') {
-                        msg = 'Ссылка не указана или неверная';
-                    }
-                    Toast.fire({
-                        icon: 'warning',
-                        title: msg,
-                    })
-                    btn_withdraw.disabled = false
-                } else {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Заявка отправлена',
-                    })
-                    setTimeout(function() {
-                        window.location = "/withdrawal";
-                    }, 1000)
-                }
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-                Toast.fire({
-                    icon: 'warning',
-                    title: 'Ошибка при создании заявки!',
-                })
-            })
-            .finally(function () {
-                btn_withdraw.disabled = false
-            })
-
+            handleWithdrawPlacement();
         });
+    }
+
+    let handleWithdrawPlacement = async () => {
+        let robux = document.querySelector("#robux").value
+        let robux_final = document.querySelector("#gamepass_price").innerHTML
+        let gamepass = document.querySelector("#gamepass").value
+        let user_email = document.querySelector("#user_email").value
+        
+        if (!user_email) {
+            let email_added = await Swal.fire({
+                title: "Укажи свой email в профиле чтобы знать, когда мы отправим робуксы",
+
+                showCancelButton: true,
+                cancelButtonText: "Отмена",
+                confirmButtonText: "В профиль",
+                showLoaderOnConfirm: true,
+                icon: "warning",
+                preConfirm: () => {
+                  window.location = "/profile"
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+              })
+              return
+        }
+
+        if (!robux) {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Укажи количество робуксов',
+            })
+            return;
+        }
+        if (!gamepass.trim()) {
+            Toast.fire({
+                icon: 'warning',
+                title: 'Укажи ссылку на GamePass',
+            })
+            return;
+        }
+        btn_withdraw.disabled = true
+        withdraw_spinner.hidden = false
+        axios.post('/withdrawal/create', {
+            amount: document.querySelector("#robux").value,
+            amount_final: robux_final,
+            gamepass: gamepass
+        })
+        .then(function (response) {
+            // handle success
+            console.log(response);
+
+            if (!response.data.result) {
+                let msg = 'Недостаточно средств на балансе!';
+                if (response.data.msg === 'insufficient_balance') {
+                    msg = 'Недостаточно средств на балансе!';
+                }
+                if (response.data.msg === 'minimum_20') {
+                    msg = 'Минимальная сумма для вывода - 20 робуксов';
+                }
+                if (response.data.msg === 'gamepass_error') {
+                    msg = 'Ссылка не указана или неверная';
+                }
+                Toast.fire({
+                    icon: 'warning',
+                    title: msg,
+                })
+                btn_withdraw.disabled = false
+            } else {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Заявка отправлена',
+                })
+            }
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+            Toast.fire({
+                icon: 'warning',
+                title: 'Ошибка при создании заявки!',
+            })
+        })
+        .finally(function () {
+            setTimeout(function() {
+                window.location = "/withdrawal";
+            }, 1000)
+        })
     }
     let approve_withdrawal_btn = document.querySelectorAll("#approve_withdrawal_btn");
     let cancel_withdrawal_btn = document.querySelectorAll("#cancel_withdrawal_btn");

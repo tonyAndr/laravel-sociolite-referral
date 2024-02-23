@@ -43,10 +43,12 @@
                         <td class="text-center border-b group-last:border-none">{{ $wd->comment }}</td>
                         <td class="text-center border-b group-last:border-none">{{ getStatus($wd->status) }}</td>
                         <td class="text-center border-b group-last:border-none">
-                            <a data-withdrawal-id="{{ $wd->id }}" id="approve_withdrawal_btn" href="#"><i
+                            @if($wd->status === 'pending')
+                                <a data-withdrawal-id="{{ $wd->id }}" id="approve_withdrawal_btn" href="#"><i
                                     class="fa-solid fa-circle-check px-4  text-xl text-green-600"></i></a>
-                            <a data-withdrawal-id="{{ $wd->id }}" id="cancel_withdrawal_btn" href="#"><i
+                                <a data-withdrawal-id="{{ $wd->id }}" id="cancel_withdrawal_btn" href="#"><i
                                     class="fa-solid fa-circle-minus text-xl text-red-600"></i></a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
