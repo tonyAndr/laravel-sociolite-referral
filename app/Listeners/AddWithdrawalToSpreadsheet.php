@@ -29,7 +29,9 @@ class AddWithdrawalToSpreadsheet
     {
         //
         $withdrawal_data = $event->data;
-        $this->addRow($withdrawal_data);
+        if (env('APP_ENV') === 'production') {
+            $this->addRow($withdrawal_data);
+        }
     }
 
     private function addRow($data)

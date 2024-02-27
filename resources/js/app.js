@@ -216,6 +216,12 @@ document.addEventListener("DOMContentLoaded", () => {
         yandex_reward_start_btn.addEventListener('click', function (e) {
             e.preventDefault()
 
+            Toast.fire({
+                icon: 'info',
+                title: 'Задание временно не доступно. Попробуй офферволы',
+            })
+            return;
+
             let rewardUser = (isRewarded) => {
                 if (isRewarded) {
                     Toast.fire({
