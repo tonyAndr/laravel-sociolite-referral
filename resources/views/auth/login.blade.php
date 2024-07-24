@@ -5,7 +5,7 @@
     <x-social-login />
 
     <!-- Using email -->
-    <div class="flex flex-col justify-center">
+    {{-- <div class="flex flex-col justify-center">
         <p class="text-xl pb-2 text-center">Или вход через почту</p>
     </div>
     <form method="POST" action="{{ route('login') }}">
@@ -51,5 +51,5 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
-    </form>
+    </form> --}}
 </x-guest-layout>

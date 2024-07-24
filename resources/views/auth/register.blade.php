@@ -2,7 +2,7 @@
 
     <x-social-login />
 
-    <div class="flex flex-col justify-center">
+    {{-- <div class="flex flex-col justify-center">
         <p class="text-xl pb-2 text-center">Или регистрация через почту</p>
     </div>
 
@@ -64,5 +64,5 @@
                 {{ __('Register') }}
             </x-primary-button>
         </div>
-    </form>
+    </form> --}}
 </x-guest-layout>
