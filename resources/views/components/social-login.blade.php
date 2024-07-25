@@ -16,5 +16,4 @@
             <i class="fa-brands fa-tiktok text-3xl"></i>
         </a>
     </div> --}}
-    <hr class="mb-6">
 </div>

@@ -42,6 +42,11 @@
                     <div
                         class="flex flex-col py-10 px-8 text-center bg-black text-lg backdrop-blur-sm backdrop-invert bg-black/90 text-white">
                         <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
+                        <div class="flex flex-col items-center">
+                            <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
+                                class="block home-main-action-btn text-center max-w-96 my-4">НАЧАТЬ
+                                СЕЙЧАС</a>
+                        </div>
                         <p>У вас уже есть Roblox на телефоне? Хотели бы получить много робуксов побыстрее и без обмана?
                         </p>
                         <p>Предлагаем

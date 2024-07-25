@@ -226,6 +226,29 @@ nav i {
     }
 }
 
+.quiz-action-btn {
+    background-color: #4CAF50;
+    /* Задаем начальный цвет фона */
+    color: white;
+    /* Задаем цвет текста */
+    padding: 10px 20px;
+    /* Задаем отступы внутри кнопки */
+    font-size: 18px;
+    border: none;
+    /* Убираем границу кнопки */
+    border-radius: 5px;
+    /* Задаем скругление углов кнопки */
+    cursor: pointer;
+    /* Задаем вид курсора при наведении на кнопку */
+    text-decoration: none;
+    animation: pulse 2s alternate infinite;
+}
+
+.quiz-action-btn:hover {
+    background-color: #118619;
+    /* Задаем цвет фона при наведении на кнопку */
+}
+
 .start-task-btn {
     background-color: #4CAF50;
     /* Задаем начальный цвет фона */
@@ -248,4 +271,10 @@ nav i {
 .start-task-btn:hover {
     background-color: rgb(17, 134, 25);
     /* Задаем цвет фона при наведении на кнопку */
+}
+
+.animated-pulsating-text {
+    animation: pulse 3s infinite;
+    text-align: center;
+    padding: 15px 15px;
 }

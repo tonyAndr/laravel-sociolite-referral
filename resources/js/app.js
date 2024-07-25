@@ -1,5 +1,6 @@
 import axios from 'axios';
 import './bootstrap';
+import './countdown';
 
 let Toast;
 try {
