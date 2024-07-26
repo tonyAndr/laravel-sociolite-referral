@@ -10,8 +10,6 @@
                 <x-text-input id="nickname" class="block mt-1 w-full" type="text" />
                 <x-input-label for="platform"  value="Платформа" />
                 <select id="platform"><option>Android</option><option>Windows</option><option>Xbox One</option><option>IOS</option><option>MacOS</option></select> --}}
-                <x-input-label for="amount"  value="Сколько бы Robux вы хотели получить?" />
-                <select id="amount"><option>500</option><option>1000</option><option>5000</option><option>10000</option></select>
             </div>
             
             <div class="flex flex-col items-center">

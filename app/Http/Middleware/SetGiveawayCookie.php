@@ -18,7 +18,12 @@ class SetGiveawayCookie
     {
         if (!empty($request->participant)) {
             cookie()->queue(cookie()->forever('participant', $request->participant));
+            
+            if ($request->has('participant')) {
+                return redirect()->to($request->fullUrlWithoutQuery('participant'));
+            }
         }
+
         return $next($request);
     }
 }

@@ -275,6 +275,34 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
+    // Notify giveaway ended'
+    const giveaway_winner = document.querySelector('#last_giveaway_won') 
+    if (giveaway_winner) {
+        let title = '';
+        let text = '';
+        let icon = '';
+        if (giveaway_winner.value === 'false') {
+            title = 'Началась новая раздача!'
+            text = 'Прошлую раздачу выиграл кто-то другой... Учавствуй снова, на этот раз точно повезет!'
+            icon = 'warning'
+        } else {
+            title = 'ТЫ ВЫИГРАЛ РАЗДАЧУ!'
+            text = 'Робуксы уже спешат к тебе! Проверь сообщение от нашего бота в телеграме, мы уже выслали тебе твою награду!'
+            icon = 'success'
+        }
+        let current_cookies = document.cookie;
+        if (current_cookies.indexOf('cookie_giveaway_alert') === -1) {
+            Swal.fire({
+                title: title,
+                text: text,
+                icon: icon,
+                showConfirmButton: false
+            })
+            let cd_time = document.querySelector('#countdown_time').value;
+            document.cookie = "cookie_giveaway_alert=1; max-age="+cd_time+"; path=/giveaway";
+        }
+    }
 });
 
 function referralButtonClickHandler(e) {

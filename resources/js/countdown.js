@@ -14,6 +14,11 @@ if (document.querySelector(".countdown-digital") !== null) {
             clearInterval(x); // Stop the countdown 
             document.querySelector('.quiz-action-btn').style.display = 'block';
             document.querySelector('.timer').style.display = 'none';
+
+            // giveaway alert + reload
+            if (document.querySelector('#counwdown_page_reload')) {
+                window.location.reload();
+            }
             return; // Exit the function
         }
         

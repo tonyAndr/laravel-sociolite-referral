@@ -59,11 +59,19 @@ class GiveawayController extends Controller
             } else {
                 $chance_to_win = 0;
             }
+
+            // if user won the previos giveaway
+            $prev_won = false;
+            $lates_finished_ga = Giveaway::where('status', 'finished')->orderBy('id', 'desc')->first();
+            if (!is_null($lates_finished_ga)) {
+                if (!is_null($user) && $user->id === $lates_finished_ga->winner_id) {
+                    $prev_won = true;
+                }
+            }
     
-    
-            return view('giveaway.giveaway', ['countdown_time' => $seconds, 'participants' => $participants, 'reward'=> $lates_ga->reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating]);
+            return view('giveaway.giveaway', ['countdown_time' => $seconds, 'participants' => $participants, 'reward'=> $lates_ga->reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won]);
         }
-        return view('giveaway.giveaway', ['countdown_time' => 0, 'participants' => [], 'reward'=> 0, 'chance' => 0, 'user_is_participating' => false]);
+        return view('giveaway.giveaway', ['countdown_time' => 0, 'participants' => [], 'reward'=> 0, 'chance' => 0, 'user_is_participating' => false, 'you_won' => false]);
 
     }
 
