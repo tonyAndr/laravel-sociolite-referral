@@ -11,8 +11,7 @@
             <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
             <div class="flex flex-col items-center">
                 <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
-                    class="block home-main-action-btn text-center max-w-96 my-4">НАЧАТЬ
-                    СЕЙЧАС</a>
+                    class="block home-main-action-btn text-center max-w-96 my-4">учавствовать в раздаче</a>
             </div>
             <p>У вас уже есть Roblox на телефоне? Хотели бы получить много робуксов побыстрее и без обмана?
             </p>

@@ -9,6 +9,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\ReferralCompleted;
 use App\Listeners\ForgetReferralCookie;
+use App\Listeners\ForgetGiveawayCookie;
+use App\Events\ParticipantRegistered;
 use App\Events\ReferralDetected;
 use App\Events\WithdrawalPlaced;
 use App\Events\WithdrawalCancelled;
@@ -53,6 +55,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         WithdrawalApproved::class => [
             NotifyUserWithdrawalApproved::class,
+        ],
+        ParticipantRegistered::class => [
+            ForgetGiveawayCookie::class,
         ]
     ];
 

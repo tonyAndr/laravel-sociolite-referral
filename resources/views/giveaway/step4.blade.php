@@ -9,8 +9,13 @@
                 class="">Добавить вам еще Робукс?</a>
             <p>Пока ждешь поделись с друзьями:</p>
             <div class="flex flex-col items-center">
-                <a href="{{ route('giveaway.quiz', ['step' => intval($step)+1]) }}"
-                    class="block quiz-action-btn text-center max-w-96 my-4" style="display:none">Далее</a>
+                @auth
+                <a href="{{ route('giveaway', ['participant' => 1]) }}"
+                    class="block quiz-action-btn text-center max-w-96 my-4" style="display:none">Участвовать в раздаче</a>
+                @else
+                    <a href="{{ route('login', ['participant' => 1]) }}"
+                        class="block quiz-action-btn text-center max-w-96 my-4" style="display:none">Участвовать в раздаче</a>
+                @endauth
             </div>
             <p>Внимание! Бесплатные предметы и вещи в Roblox переходи <a href="{{ route('giveaway.quiz', ['step' => 5]) }}"
                 class="">по ссылке</a>!</p>

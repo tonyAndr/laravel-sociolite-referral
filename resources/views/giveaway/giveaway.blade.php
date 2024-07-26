@@ -36,17 +36,38 @@
         class="relative min-h-screen bg-dots-darker bg-center bg-gray-100 bark:bg-dots-lighter bark:bg-gray-900 selection:bg-red-500 selection:text-white">
         @include('layouts.navigation')
         <div class="main-content">
-
+            <section class="section-countdown">
+                <div class="bg-gray-300 py-10 px-10">
+                    <div class="flex flex-row justify-between pb-4 text-lg font-bold">
+                        <div class="giveaway-reward flex flex-col items-center">
+                            <div>Награда</div>
+                            <div>R$ {{ $reward }}</div>
+                        </div>
+                        <div class="giveaway-participants flex flex-col items-center">
+                            <div>Участники</div>
+                            <div>🧍 {{ count($participants) }}</div>
+                        </div>
+                    </div>
+                    <input id='countdown_time' hidden type='number' value='{{ $countdown_time }}' />
+                    <div class="flex flex-col items-center">
+                        <p class="font-bold">Осталось времени</p>
+                        <x-countdown />
+                        <p class="font-bold">Ваш шанс выиграть: {{ $chance }}%</p>
+                    </div>
+                </div>
+            </section>
             <section class="section-1">
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
                     <div
                         class="flex flex-col py-10 px-8 text-center bg-black text-lg backdrop-blur-sm backdrop-invert bg-black/90 text-white">
                         <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
-                        <div class="flex flex-col items-center">
-                            <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
-                                class="block home-main-action-btn text-center max-w-96 my-4">НАЧАТЬ
-                                СЕЙЧАС</a>
-                        </div>
+                        @if (!$user_is_participating)
+                            <div class="flex flex-col items-center">
+                                <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
+                                    class="block home-main-action-btn text-center max-w-96 my-4">УЧАСТВОВАТЬ В
+                                    РАЗДАЧЕ</a>
+                            </div>
+                        @endif
                         <p>У вас уже есть Roblox на телефоне? Хотели бы получить много робуксов побыстрее и без обмана?
                         </p>
                         <p>Предлагаем
@@ -56,6 +77,43 @@
                     </div>
                 </div>
             </section>
+            <div>
+                {{-- block --}}
+                <!-- Yandex.RTB R-A-6005102-3 -->
+                <div id="yandex_rtb_R-A-6005102-3"></div>
+                <script>
+                    window.yaContextCb.push(() => {
+                        Ya.Context.AdvManager.render({
+                            "blockId": "R-A-6005102-3",
+                            "renderTo": "yandex_rtb_R-A-6005102-3"
+                        })
+                    })
+                </script>
+
+                {{-- fullscreen --}}
+                <!-- Yandex.RTB R-A-6005102-4 -->
+                <script>
+                    window.yaContextCb.push(() => {
+                        Ya.Context.AdvManager.render({
+                            "blockId": "R-A-6005102-4",
+                            "type": "fullscreen",
+                            "platform": "touch"
+                        })
+                    })
+                </script>
+
+                {{-- footer --}}
+                <!-- Yandex.RTB R-A-6005102-5 -->
+                <script>
+                    window.yaContextCb.push(() => {
+                        Ya.Context.AdvManager.render({
+                            "blockId": "R-A-6005102-5",
+                            "type": "floorAd",
+                            "platform": "touch"
+                        })
+                    })
+                </script>
+            </div>
             <section class="simple-info">
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
                     <div

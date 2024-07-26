@@ -17,6 +17,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Laravel\Socialite\Two\InvalidStateException;
 use Illuminate\Support\Facades\Log;
+use App\Events\ParticipantRegistered;
 
 class OAuthController extends Controller
 {
@@ -41,6 +42,15 @@ class OAuthController extends Controller
             if ($req_cookie) {
                 event(new ReferralDetected($req_cookie, $user));
             }
+
+            $giveaway_cookie = request()->cookie('participant');
+            if ($giveaway_cookie) {
+                $user->giveaway = 1;
+                $user->save();
+                event(new ParticipantRegistered());
+                return redirect()->route('giveaway');
+            }
+
         } catch (InvalidStateException $e) {
             Log::error("LOGIN ERROR: " . $e->getMessage());
             Log::error("REQUEST DATA: " . var_export($everything, true));

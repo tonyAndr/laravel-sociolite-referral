@@ -57,7 +57,7 @@ if (document.querySelector(".countdown-digital") !== null) {
                 countdownElements[i].innerHTML = minutes;
                 break;
             case "seconds":
-                countdownElements[i].parentElement.style.display = parseInt(seconds) > 0 ? 'block' : 'none';
+                countdownElements[i].parentElement.style.display = 'block';
                 countdownElements[i].innerHTML = seconds;
                 break;
             default:
