@@ -12,8 +12,13 @@ if (document.querySelector(".countdown-digital") !== null) {
         // Check if the countdown has reached zero or negative
         if (diff <= 0) {
             clearInterval(x); // Stop the countdown 
-            document.querySelector('.quiz-action-btn').style.display = 'block';
-            document.querySelector('.timer').style.display = 'none';
+            if (document.querySelector('.quiz-action-btn')) {
+                document.querySelector('.quiz-action-btn').style.display = 'block';
+            }
+
+            if (document.querySelector('.timer')) {
+                document.querySelector('.timer').style.display = 'none';
+            }
 
             // giveaway alert + reload
             if (document.querySelector('#countdown_page_reload')) {
