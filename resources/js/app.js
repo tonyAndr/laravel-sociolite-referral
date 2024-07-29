@@ -58,26 +58,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let handleWithdrawPlacement = async () => {
         let robux = document.querySelector("#robux").value
-        let robux_final = document.querySelector("#gamepass_price").innerHTML
-        let gamepass = document.querySelector("#gamepass").value
-        let user_email = document.querySelector("#user_email").value
+        // let robux_final = document.querySelector("#gamepass_price").innerHTML
+        // let gamepass = document.querySelector("#gamepass").value
+        // let user_email = document.querySelector("#user_email").value
         
-        if (!user_email) {
-            let email_added = await Swal.fire({
-                title: "Укажи свой email в профиле чтобы знать, когда мы отправим робуксы",
+        // if (!user_email) {
+        //     let email_added = await Swal.fire({
+        //         title: "Укажи свой email в профиле чтобы знать, когда мы отправим робуксы",
 
-                showCancelButton: true,
-                cancelButtonText: "Отмена",
-                confirmButtonText: "В профиль",
-                showLoaderOnConfirm: true,
-                icon: "warning",
-                preConfirm: () => {
-                  window.location = "/profile"
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-              })
-              return
-        }
+        //         showCancelButton: true,
+        //         cancelButtonText: "Отмена",
+        //         confirmButtonText: "В профиль",
+        //         showLoaderOnConfirm: true,
+        //         icon: "warning",
+        //         preConfirm: () => {
+        //           window.location = "/profile"
+        //         },
+        //         allowOutsideClick: () => !Swal.isLoading()
+        //       })
+        //       return
+        // }
 
         if (!robux) {
             Toast.fire({
@@ -86,19 +86,17 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             return;
         }
-        if (!gamepass.trim()) {
-            Toast.fire({
-                icon: 'warning',
-                title: 'Укажи ссылку на GamePass',
-            })
-            return;
-        }
+        // if (!gamepass.trim()) {
+        //     Toast.fire({
+        //         icon: 'warning',
+        //         title: 'Укажи ссылку на GamePass',
+        //     })
+        //     return;
+        // }
         btn_withdraw.disabled = true
         withdraw_spinner.hidden = false
         axios.post('/withdrawal/create', {
             amount: document.querySelector("#robux").value,
-            amount_final: robux_final,
-            gamepass: gamepass
         })
         .then(function (response) {
             // handle success
@@ -109,12 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.data.msg === 'insufficient_balance') {
                     msg = 'Недостаточно средств на балансе!';
                 }
-                if (response.data.msg === 'minimum_20') {
-                    msg = 'Минимальная сумма для вывода - 20 робуксов';
+                if (response.data.msg === 'minimum_sum') {
+                    msg = 'Минимальная сумма для вывода - 100 робуксов';
                 }
-                if (response.data.msg === 'gamepass_error') {
-                    msg = 'Ссылка не указана или неверная';
-                }
+
                 Toast.fire({
                     icon: 'warning',
                     title: msg,
@@ -151,29 +147,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 element.disabled = true
                 let withdrawal_id = element.getAttribute('data-withdrawal-id');
                 let reason = prompt('Причина отмены')
-                axios.post('/withdrawal/cancel', {
-                    id: withdrawal_id,
-                    reason: reason
-                })
-                .then(function (response) {
-                    // handle success
-                    console.log(response);
-    
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-    
-                })
-                .finally(function () {
-                    Toast.fire({
-                        icon: 'info',
-                        title: 'Выплата отменена',
+                if (!reason) {
+                    alert('Укажи причину отмены')
+                } else {
+
+                    axios.post('/withdrawal/cancel', {
+                        id: withdrawal_id,
+                        reason: reason
                     })
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000)
-                })
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+        
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+        
+                    })
+                    .finally(function () {
+                        Toast.fire({
+                            icon: 'info',
+                            title: 'Выплата отменена',
+                        })
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000)
+                    })
+                }
             });
         });
     }
@@ -184,28 +185,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault()
                 element.disabled = true
                 let withdrawal_id = element.getAttribute('data-withdrawal-id');
-                axios.post('/withdrawal/approve', {
-                    id: withdrawal_id
-                })
-                .then(function (response) {
-                    // handle success
-                    console.log(response);
-    
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-    
-                })
-                .finally(function () {
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Выплата подтверждена',
+                let redeem_code = prompt('Код карты')
+                if (!redeem_code) {
+                    alert('Укажи код карты')
+                } else {
+
+                    axios.post('/withdrawal/approve', {
+                        id: withdrawal_id,
+                        redeem_code: redeem_code
                     })
-                    setTimeout(function() {
-                        window.location.reload();
-                    }, 1000)
-                })
+                    .then(function (response) {
+                        // handle success
+                        console.log(response);
+        
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+        
+                    })
+                    .finally(function () {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Выплата подтверждена',
+                        })
+                        setTimeout(function() {
+                            window.location.reload();
+                        }, 1000)
+                    })
+                }
     
             });
         });
@@ -282,9 +290,9 @@ document.addEventListener("DOMContentLoaded", () => {
         let title = '';
         let text = '';
         let icon = '';
-        if (giveaway_winner.value === 'false') {
+        if (giveaway_winner.value === '0') {
             title = 'Началась новая раздача!'
-            text = 'Прошлую раздачу выиграл кто-то другой... Учавствуй снова, на этот раз точно повезет!'
+            text = 'Прошлую раздачу выиграл кто-то другой... Участвуй снова, на этот раз точно повезет!'
             icon = 'warning'
         } else {
             title = 'ТЫ ВЫИГРАЛ РАЗДАЧУ!'

@@ -41,6 +41,11 @@
 .main-content ul a {
     text-decoration: underline;
 }
+main p a,
+main ol a,
+main ul a {
+    text-decoration: underline;
+}
 
 /* ... */
 

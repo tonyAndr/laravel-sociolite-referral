@@ -19,6 +19,7 @@
                     <th class="border-b ">Почта</th>
                     <th class="border-b ">Telegram ID</th>
                     <th class="border-b ">R$</th>
+                    <th class="border-b ">RedeemCode</th>
                     <th class="border-b ">Создана</th>
                     <th class="border-b ">Коммент</th>
                     <th class="border-b ">Статус</th>
@@ -37,8 +38,9 @@
                             @if (!empty($wd->getUser()->oauth_provider->value) && $wd->getUser()->oauth_provider->value === 'telegram')
                                 {{ $wd->getUser()->oauth_id }}
                             @endif
-                        </td>
+                        </td>   
                         <td class="text-center border-b group-last:border-none">{{ $wd->amount }}</td>
+                        <td class="text-center border-b group-last:border-none">{{ $wd->redeem_code }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->created_at }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->comment }}</td>
                         <td class="text-center border-b group-last:border-none">{{ getStatus($wd->status) }}</td>

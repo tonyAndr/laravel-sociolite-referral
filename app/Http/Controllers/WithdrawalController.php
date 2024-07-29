@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Events\WithdrawalApproved;
+use App\Events\WithdrawalCancelled;
 use App\Events\WithdrawalPlaced;
 use App\Models\Withdrawal;
+use App\Notifications\SendRobuxToUser;
+use App\Notifications\WithdrawalRequested;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 
@@ -20,7 +23,20 @@ class WithdrawalController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        return view('withdrawal.index', ['user' => $user]);
+        $robux = $user->robux;
+
+        $select_options = [];
+        $option = 100;
+        while ($robux >= 100) {
+            $select_options[] = $option;
+            $robux -= 100;
+            
+            if ($option >= 500) {
+                break;
+            }
+            $option += 100;
+        }
+        return view('withdrawal.index', ['user' => $user, 'select_options' => $select_options]);
     }
     public function instruction(Request $request)
     {
@@ -41,12 +57,11 @@ class WithdrawalController extends Controller
         $user = $request->user();
         $balance = $user->robux;
         $to_withdraw = intval($request->get('amount'));
-        $gamepass = $request->get('gamepass');
 
-        if ($to_withdraw < 20) {
+        if ($to_withdraw < 100) {
             echo json_encode([
                 "result" => false,
-                "msg" => "minimum_20"
+                "msg" => "minimum_sum"
             ]);
             return;
         }
@@ -58,13 +73,13 @@ class WithdrawalController extends Controller
             ]);
             return;
         }
-        if (empty($gamepass) || !str_contains($gamepass, 'http') || !str_contains($gamepass, 'roblox.com/game-pass')) {
-            echo json_encode([
-                "result" => false,
-                "msg" => "gamepass_error"
-            ]);
-            return;
-        }
+        // if (empty($gamepass) || !str_contains($gamepass, 'http') || !str_contains($gamepass, 'roblox.com/game-pass')) {
+        //     echo json_encode([
+        //         "result" => false,
+        //         "msg" => "gamepass_error"
+        //     ]);
+        //     return;
+        // }
 
         $withdrawals_history = Withdrawal::where('user_id', $user->id)->where('status', 'pending')->get();
         $ordered_sum = 0;
@@ -85,12 +100,11 @@ class WithdrawalController extends Controller
         $withdrawal = new Withdrawal();
         $withdrawal->user_id = $user->id;
         $withdrawal->amount = $to_withdraw;
-        $withdrawal->amount_final = intval($request->get('amount_final'));
-        $withdrawal->gamepass_url = $gamepass;
         $withdrawal->status = 'pending';
         $withdrawal->save();
 
         event(new WithdrawalPlaced($withdrawal));
+        $user->notify(new WithdrawalRequested($withdrawal));
     
         echo json_encode([
             "result" => true,
@@ -101,13 +115,15 @@ class WithdrawalController extends Controller
 
     public function approve(Request $request) {
         $withdrawal = Withdrawal::find($request->get('id'));
+        $withdrawal->redeem_code = $request->get('redeem_code');
         $withdrawal->status = 'approved';
         $withdrawal->save();
         $comment = $request->get('comment');
         $user = $withdrawal->getUser();
         $user->robux = $user->robux - $withdrawal->amount;
         $user->save();
-        event(new WithdrawalApproved($withdrawal));
+        // event(new WithdrawalApproved($withdrawal));
+        $user->notify(new SendRobuxToUser($withdrawal));
         echo json_encode([
             "result" => true,
             "msg" => "order_approved"

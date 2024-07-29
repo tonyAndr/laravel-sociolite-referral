@@ -12,6 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Models\Referral;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Notifications\WithdrawalRequestedToAdmin;
 
 class WithdrawalPlacedNotifyAdmin
 {
@@ -34,9 +35,10 @@ class WithdrawalPlacedNotifyAdmin
 
         $admins = User::where('is_admin', 1)->get();
         foreach ($admins as $key => $admin) {
-            if ($admin->email) {
-                Mail::to($admin->email)->send(new WithdrawalPlacedMail($withdrawal_data));
-            }
+            $admin->notify(new WithdrawalRequestedToAdmin($withdrawal_data));
+            // if ($admin->email) {
+            //     Mail::to($admin->email)->send(new WithdrawalPlacedMail($withdrawal_data));
+            // }
         }
     }
 

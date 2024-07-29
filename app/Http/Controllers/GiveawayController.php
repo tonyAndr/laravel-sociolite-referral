@@ -51,7 +51,7 @@ class GiveawayController extends Controller
             if (!is_null($user) && $user->giveaway > 0) {
                 $part_count = count($participants);
                 if ($part_count > 1) {
-                    $chance_to_win = round(1/(count($participants)-$user->giveaway), 2);
+                    $chance_to_win = round(1/($part_count-1), 2) * 100;
                 } else {
                     $chance_to_win = 100;
                 }

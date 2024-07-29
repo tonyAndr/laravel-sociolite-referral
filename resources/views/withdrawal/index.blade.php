@@ -7,46 +7,55 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-red-300 mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-yellow-300 mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 bark:text-gray-100">
-                    <p>Перед выводом нужно создать GamePass в игре. Робуксы поступят на ваш игровой счет через геймпасс.
-                        Подробная инструкция, как это сделать тут:</p>
-                    <a href="{{ route('withdrawal.instruction') }}"><x-primary-button type="button">Инструкция как
-                            создать GamePass</x-primary-button></a>
+                    <p>После того как ты оставишь заявку, мы вышлем тебе в ТЕЛЕГРАМ код подарочной карты для получения робуксов в игре. </p>
+                    <p>Активировать код нужно на официальном сайте: <a href="https://www.roblox.com/redeem" target="_blank">https://www.roblox.com/redeem</a> </p>
+                    {{-- <a href="{{ route('withdrawal.instruction') }}"><x-primary-button type="button">Инструкция как
+                            создать GamePass</x-primary-button></a> --}}
                 </div>
             </div>
             <div class="relative bg-white bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 bark:text-gray-100">
+                    <p>Доступно для вывода: {{count($select_options) ? $select_options[count($select_options)-1] : 0}}</p>
                     <p>
-                        Переведи заработанные робуксы на свой игровой счет. Введи нужное количество, нажмите "Перевести"
-                        и следуйте инструкции.</p>
-                    <p><strong>Минимальное количество - 20 робуксов</strong>.</p>
-                    <form method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
-                        @csrf
-                        <input hidden id="user_email" name="email" value="{{$user->email}}"/>
-                        <div>
-                            <x-input-label for="robux" :value="__('Robux')" />
-                            <x-text-input id="robux" name="robux" type="number" class="mt-1 block w-full"
-                                value="20" min="20" required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('robux')" />
-                        </div>
+                        Переведи заработанные робуксы на свой игровой счет. Выбери нужное количество и нажми Получить.</p>
+                    <p><strong>Минимальное количество - 100 робуксов</strong>.</p>
+                    @if(count($select_options))
+                        <form method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
+                            @csrf
+                            <input hidden id="user_email" name="email" value="{{$user->email}}"/>
+                            <div>
+                                <x-input-label for="robux" :value="__('Robux')" />
+                                {{-- <x-text-input id="robux"  type="number" class="mt-1 block w-full"
+                                    value="20" min="20" required autofocus /> --}}
+                                <select id="robux" name="robux">
+                                    @foreach ($select_options as $k => $v)
+                                        <option key="{{$k}}" value="{{$v}}">{{$v}}</option>
+                                    @endforeach
+                                </select>
+                                <x-input-error class="mt-2" :messages="$errors->get('robux')" />
+                            </div>
 
-                        <p>Создай геймпас в игре и укажи его цену такую, как в поле ниже.</p>
+                            {{-- <p>Создай геймпас в игре и укажи его цену такую, как в поле ниже.</p> --}}
 
-                        <div class="font-bold text-xl">Цена на GamePass: <span id="gamepass_price"
-                                class="gamepass-price text-3xl">29</span> (укажите ее при создании геймпасса)</div>
+                            {{-- <div class="font-bold text-xl">Цена на GamePass: <span id="gamepass_price"
+                                    class="gamepass-price text-3xl">29</span> (укажите ее при создании геймпасса)</div>
 
-                        <div>
-                            <x-input-label for="gamepass" :value="__('Ссылка на GamePass')" />
-                            <x-text-input id="gamepass" name="gamepass" type="text" class="mt-1 block w-full"
-                                required autofocus />
-                            <x-input-error class="mt-2" :messages="$errors->get('gamepass')" />
-                        </div>
+                            <div>
+                                <x-input-label for="gamepass" :value="__('Ссылка на GamePass')" />
+                                <x-text-input id="gamepass" name="gamepass" type="text" class="mt-1 block w-full"
+                                    required autofocus />
+                                <x-input-error class="mt-2" :messages="$errors->get('gamepass')" />
+                            </div> --}}
 
-                        <div class="flex items-center gap-4">
-                            <x-primary-button id="btn_withdraw">{{ __('Перевести') }}</x-primary-button>
-                        </div>
-                    </form>
+                            <div class="flex items-center gap-4">
+                                <x-primary-button id="btn_withdraw">{{ __('Получить') }}</x-primary-button>
+                            </div>
+                        </form>
+                    @else
+                        <p class="font-bold">Недостаточно робуксов на балансе для вывода. <a href="{{route('giveaway')}}">Получи их бесплатно!</a></p>
+                    @endif
                 </div>
                 <div id="progress_spinner" hidden class="absolute bg-white/75 top-0 bottom-0 right-0 left-0">
                     <div role="status" class="absolute -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">

@@ -3,11 +3,19 @@
         <div
             class="flex flex-col py-10 px-8 text-center text-lg backdrop-blur-md">
             <h1>Раздача Робуксов — шаг 4</h1>
-            <p>Robux поступят на ваш аккаунт через:</p>
+            <p>Добавляем тебя в список участников бесплатной раздачи...</p>
             <x-countdown></x-countdown>
-            <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
-                class="">Добавить вам еще Робукс?</a>
-            <p>Пока ждешь поделись с друзьями:</p>
+            
+            <p>Пока ждешь, расскажи о нас друзьям:</p>
+            {!! ShareButtons::page(route('giveaway'), 'Присоединяйся и получай робуксы!', [
+                'title' => 'Присоединяйся и получай робуксы!',
+                'rel' => 'nofollow noopener noreferrer',
+            ])
+            ->telegram()
+            ->whatsapp()
+            ->vkontakte()
+            ->copylink()
+            ->render(); !!}
             <div class="flex flex-col items-center">
                 @auth
                 <a href="{{ route('giveaway', ['participant' => 1]) }}"

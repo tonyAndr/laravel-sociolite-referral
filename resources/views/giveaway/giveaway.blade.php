@@ -1,3 +1,6 @@
+@php
+    // dd($you_won);
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
@@ -38,7 +41,7 @@
         @include('layouts.navigation')
         <div class="main-content">
             <input hidden id="counwdown_page_reload"/>
-            <input hidden id="last_giveaway_won" value={{$you_won}}/>
+            <input hidden id="last_giveaway_won" value="{{$you_won === true ? 1 : 0}}"/>
             <section class="section-countdown">
                 <div class="bg-gray-300 py-10 px-10 flex flex-col items-center">
                     @if (!$user_is_participating)
