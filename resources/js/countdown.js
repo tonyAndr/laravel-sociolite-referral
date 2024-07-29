@@ -73,7 +73,9 @@ if (document.querySelector(".countdown-digital") !== null) {
 
     setInterval(() => {
         if (document.querySelector('#countdown_page_reload')) {
-            window.location.reload();
+            if (document.cookie.indexOf('cookie_giveaway_alert') === -1) {
+                window.location.reload();
+            }
         }
     }, 55 * 1000); // reload page each 55 sec
 }
