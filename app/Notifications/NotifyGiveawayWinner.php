@@ -29,7 +29,7 @@ class NotifyGiveawayWinner extends Notification
             ->to($notifiable->oauth_id)
             // Markdown supported.
             ->line("Ты выиграл бесплатную раздачу робуксов!")
-            ->line("Запроси вывод робуксов в личном кабинете: " . route('withdrawal'))
+            ->line("Запроси вывод робуксов в личном кабинете: " . route('withdrawal.index'))
             ->line("И учавствуй в новой раздаче: " . route('giveaway'));
 
             // (Optional) Blade template for the content.

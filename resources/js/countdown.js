@@ -16,7 +16,7 @@ if (document.querySelector(".countdown-digital") !== null) {
             document.querySelector('.timer').style.display = 'none';
 
             // giveaway alert + reload
-            if (document.querySelector('#counwdown_page_reload')) {
+            if (document.querySelector('#countdown_page_reload')) {
                 window.location.reload();
             }
             return; // Exit the function
@@ -70,6 +70,10 @@ if (document.querySelector(".countdown-digital") !== null) {
             }
         }
     }, 1000);
+
+    setInterval(() => {
+        window.location.reload()
+    }, 55 * 1000); // reload page each 55 sec
 }
 if (document.querySelector(".countdown-circle") !== null) {
 

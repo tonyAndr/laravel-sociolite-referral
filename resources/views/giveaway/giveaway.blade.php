@@ -40,7 +40,7 @@
         class="relative min-h-screen bg-dots-darker bg-center bg-gray-100 bark:bg-dots-lighter bark:bg-gray-900 selection:bg-red-500 selection:text-white">
         @include('layouts.navigation')
         <div class="main-content">
-            <input hidden id="counwdown_page_reload"/>
+            <input hidden id="countdown_page_reload"/>
             <input hidden id="last_giveaway_won" value="{{$you_won === true ? 1 : 0}}"/>
             <section class="section-countdown">
                 <div class="bg-gray-300 py-10 px-10 flex flex-col items-center">
