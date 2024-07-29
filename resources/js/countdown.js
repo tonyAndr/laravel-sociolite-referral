@@ -72,7 +72,9 @@ if (document.querySelector(".countdown-digital") !== null) {
     }, 1000);
 
     setInterval(() => {
-        window.location.reload()
+        if (document.querySelector('#countdown_page_reload')) {
+            window.location.reload();
+        }
     }, 55 * 1000); // reload page each 55 sec
 }
 if (document.querySelector(".countdown-circle") !== null) {
