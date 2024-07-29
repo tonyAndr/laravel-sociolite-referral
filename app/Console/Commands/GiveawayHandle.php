@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Giveaway;
 use App\Models\User;
+use App\Notifications\NotifyGiveawayWinner;
 use PO;
 
 class GiveawayHandle extends Command
@@ -41,6 +42,9 @@ class GiveawayHandle extends Command
             if (!is_null($winner)) {
                 $this->info('Reward the user #' . $winner->id);
                 $latest_ga->winner_id = $winner->id;
+                $winner->robux = $winner->robux + $latest_ga->reward;
+                $winner->save();
+                $winner->notify(new NotifyGiveawayWinner());
             }  else {
                 $this->info('No winner today');
             }
