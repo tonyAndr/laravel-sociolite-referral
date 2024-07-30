@@ -128,7 +128,7 @@ class GiveawayController extends Controller
         $body = json_decode($response->body());
         if ($body->ok) {
             $status = $body->result->status;
-            if ($status === 'member') {
+            if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
                 return true;
             }
         }
