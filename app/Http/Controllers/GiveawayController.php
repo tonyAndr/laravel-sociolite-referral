@@ -98,7 +98,7 @@ class GiveawayController extends Controller
             //     $countdown_time = 200;
             //     break;
             default:
-                $countdown_time = 6;
+                $countdown_time = 30;
                 break;
         }
         
