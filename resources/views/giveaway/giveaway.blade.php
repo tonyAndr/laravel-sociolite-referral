@@ -44,13 +44,21 @@
             <input hidden id="last_giveaway_won" value="{{$you_won === true ? 1 : 0}}"/>
             <section class="section-countdown">
                 <div class="bg-gray-300 py-10 px-10 flex flex-col items-center">
-                    @if (!$user_is_participating)
+                    @if (!$user_is_participating && !$subscription_needed)
                         <div class="flex flex-col items-center">
                             <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
                                 class="block home-main-action-btn text-center max-w-96 mb-4">УЧАСТВОВАТЬ В
                                 РАЗДАЧЕ</a>
                         </div>
                     @endif
+                    @if ($subscription_needed)
+                        <div class="flex flex-col items-center">
+                            <p>Для участия в раздаче ты должен подписаться на наш канал!</p>
+                            <a href="{{ route('giveaway.quiz', ['step' => 4]) }}"
+                                class="block join-channel-btn text-center max-w-96 mb-4">Подпишись на канал</a>
+                        </div>
+                    @endif
+                        
                     <div class="flex flex-row justify-between pb-4 text-lg w-96">
                         <div class="giveaway-reward flex flex-col items-center ">
                             <div>Награда</div>

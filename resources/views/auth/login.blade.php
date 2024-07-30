@@ -2,6 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <p>Авторизуйся для получения бесплатных робуксов</p>
     <x-social-login />
 
     <!-- Using email -->

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Giveaway;
 use App\Events\ParticipantRegistered;
+use Illuminate\Support\Facades\Http;
 
 class GiveawayController extends Controller
 {
@@ -22,10 +23,17 @@ class GiveawayController extends Controller
         // If logged-in user is gonna participate
         $user = $request->user();
         $giveaway_cookie = request()->cookie('participant');
+        $is_member = false;
+        $subscription_needed = false;
         if (!is_null($user) && ($giveaway_cookie || $request->has('participant'))) {
-            $user->giveaway = 1;
-            $user->save();
-            event(new ParticipantRegistered());
+            $is_member = $this->is_subscribed($request);
+            if ($is_member) {
+                $user->giveaway = 1;
+                $user->save();
+                event(new ParticipantRegistered());
+            } else {
+                $subscription_needed = true;
+            }
         }
 
         // Determine next giveaway time
@@ -69,9 +77,9 @@ class GiveawayController extends Controller
                 }
             }
     
-            return view('giveaway.giveaway', ['countdown_time' => $seconds, 'participants' => $participants, 'reward'=> $lates_ga->reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won]);
+            return view('giveaway.giveaway', ['countdown_time' => $seconds, 'participants' => $participants, 'reward'=> $lates_ga->reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won, 'subscription_needed' => $subscription_needed]);
         }
-        return view('giveaway.giveaway', ['countdown_time' => 0, 'participants' => [], 'reward'=> 0, 'chance' => 0, 'user_is_participating' => false, 'you_won' => false]);
+        return view('giveaway.giveaway', ['countdown_time' => 0, 'participants' => [], 'reward'=> 0, 'chance' => 0, 'user_is_participating' => false, 'you_won' => false, 'subscription_needed' => $subscription_needed]);
 
     }
 
@@ -103,6 +111,28 @@ class GiveawayController extends Controller
             }
         }
         return view('giveaway.giveaway_quiz');
+    }
+
+    // user has to be subbed to the channel
+    public function is_subscribed (Request $request) {
+        $user = $request->user();
+
+        if (is_null($user)) {
+            return false;
+        }
+ 
+        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_TOKEN').'/getChatMember', [
+            'chat_id' => '-1002019578478',
+            'user_id' => $user->oauth_id,
+        ]);
+        $body = json_decode($response->body());
+        if ($body->ok) {
+            $status = $body->result->status;
+            if ($status === 'member') {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

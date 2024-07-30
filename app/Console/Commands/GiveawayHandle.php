@@ -65,7 +65,7 @@ class GiveawayHandle extends Command
         // I need difference in seconds between now and next giveaway
         \date_default_timezone_set('Europe/Moscow'); // Set your timezone
         // Current time
-        $now = new \DateTime();
+        $now = new \DateTime('now');
 
         // Target times today
         $times = [
