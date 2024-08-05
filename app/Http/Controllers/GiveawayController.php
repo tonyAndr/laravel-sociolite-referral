@@ -120,7 +120,7 @@ class GiveawayController extends Controller
             return false;
         }
  
-        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_API_TOKEN').'/getChatMember', [
+        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_LOGIN_API_TOKEN').'/getChatMember', [
             'chat_id' => '-1002019578478',
             // 'user_id' => $user->oauth_id,
             'user_id' => 269324233,
