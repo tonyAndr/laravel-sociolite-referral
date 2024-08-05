@@ -8,9 +8,21 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
 
-class NotifyGiveawayWinner extends Notification
+class ChannelPostWinnerDetails extends Notification
 {
 
+    public $reward;
+    public $name;
+
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct($reward, $name)
+    {
+        //
+        $this->reward = $reward;
+        $this->name = $name;
+    }
     /**
      * Get the notification's delivery channels.
      *
@@ -25,13 +37,11 @@ class NotifyGiveawayWinner extends Notification
     {
 
         return TelegramMessage::create()
-            // Optional recipient user id.
-            ->to($notifiable->oauth_id)
+        //test channel -1002190632363
+        //Notification::route('telegram', '-1002190632363')->notify(new \App\Notifications\ChannelPostWinnerDetails(100, 'his name'));
             // Markdown supported.
-            ->line("Ты выиграл бесплатную раздачу робуксов!")
-            ->button('Вывести робуксы', route('withdrawal.index'))
-            ->button('Участвовать снова', route('giveaway'));
-
+            ->content("🔥🔥🔥 Новый победитель бесплатной раздачи!\n\nНик победителя: *$this->name*\nНаграда: $this->reward РОБУСКОВ\n\n⚡️⚡️⚡️ Отправили робуксы победителю!!! ⚡️⚡️⚡️\n\n")
+            ->line('Хочешь тоже выиграть? Жми сюда: '. route('giveaway'));
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])
 

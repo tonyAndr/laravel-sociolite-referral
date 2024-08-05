@@ -7,7 +7,9 @@ use Illuminate\Console\Command;
 use App\Models\Giveaway;
 use App\Models\User;
 use App\Notifications\NotifyGiveawayWinner;
-use PO;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ChannelPostWinnerDetails;
+use Illuminate\Support\Facades\App;
 
 class GiveawayHandle extends Command
 {
@@ -43,6 +45,9 @@ class GiveawayHandle extends Command
                 $latest_ga->winner_id = $winner->id;
                 $winner->addRobuxNoRef($latest_ga->reward);
                 $winner->notify(new NotifyGiveawayWinner());
+                // send channel update
+                Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_CHANNEL_LIVE_ID'))->notify(new ChannelPostWinnerDetails($latest_ga->reward, $winner->name));
+
                 // referral rewards
                 ReferralController::rewardParents($winner, $latest_ga->reward);
             }  else {

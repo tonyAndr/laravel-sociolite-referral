@@ -26,6 +26,7 @@ class GiveawayController extends Controller
         $giveaway_cookie = request()->cookie('participant');
         $is_member = false;
         $subscription_needed = false;
+        
         if (!is_null($user) && ($giveaway_cookie || $request->has('participant'))) {
             $is_member = $this->is_subscribed($request);
             if ($is_member) {
