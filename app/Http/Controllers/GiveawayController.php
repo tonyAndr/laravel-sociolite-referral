@@ -126,7 +126,6 @@ class GiveawayController extends Controller
             'user_id' => 269324233,
         ]);
         $body = json_decode($response->body());
-        Log::info(var_export($body->result, true));
         if ($body->ok) {
             $status = $body->result->status;
             if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
