@@ -36,10 +36,10 @@ return [
         'redirect' => env('YANDEX_REDIRECT_URI')
     ],
     'telegram' => [
-        'bot' => env('TELEGRAM_BOT_NAME'),  // The bot's username
+        'bot' => env('TELEGRAM_LOGIN_BOT_NAME'),  // The bot's username
         'client_id' => null,
-        'client_secret' => env('TELEGRAM_TOKEN'),
-        'redirect' => env('TELEGRAM_REDIRECT_URI'),
+        'client_secret' => env('TELEGRAM_LOGIN_API_TOKEN'),
+        'redirect' => env('TELEGRAM_LOGIN_REDIRECT_URI'),
     ],
     'vkontakte' => [
         'client_id' => env('VKONTAKTE_CLIENT_ID'),
@@ -56,8 +56,7 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI')
     ], 
-
     'telegram-bot-api' => [
-        'token' => env('TELEGRAM_TOKEN')
+        'token' => env('TELEGRAM_LOGIN_API_TOKEN')
     ],
 ];

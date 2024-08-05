@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Giveaway;
 use App\Events\ParticipantRegistered;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class GiveawayController extends Controller
 {
@@ -58,11 +59,9 @@ class GiveawayController extends Controller
             $user_is_participating = false;
             if (!is_null($user) && $user->giveaway > 0) {
                 $part_count = count($participants);
-                if ($part_count > 1) {
-                    $chance_to_win = round(1/($part_count-1), 2) * 100;
-                } else {
-                    $chance_to_win = 100;
-                }
+                if ($part_count > 0) {
+                    $chance_to_win = round(1/($part_count), 2) * 100;
+                } 
                 $user_is_participating = true;
             } else {
                 $chance_to_win = 0;
@@ -121,17 +120,20 @@ class GiveawayController extends Controller
             return false;
         }
  
-        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_TOKEN').'/getChatMember', [
+        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_API_TOKEN').'/getChatMember', [
             'chat_id' => '-1002019578478',
-            'user_id' => $user->oauth_id,
+            // 'user_id' => $user->oauth_id,
+            'user_id' => 269324233,
         ]);
         $body = json_decode($response->body());
+        Log::info(var_export($body->result, true));
         if ($body->ok) {
             $status = $body->result->status;
             if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
                 return true;
             }
         }
+
         return false;
     }
 

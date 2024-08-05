@@ -16,7 +16,6 @@
                 <tr>
                     <th class="border-b p-2 rounded-tl-lg">USER ID</th>
                     <th class="border-b ">Имя</th>
-                    <th class="border-b ">Почта</th>
                     <th class="border-b ">Telegram ID</th>
                     <th class="border-b ">R$</th>
                     <th class="border-b ">RedeemCode</th>
@@ -33,7 +32,6 @@
                     <tr class="group">
                         <td class="p-1 border-b group-last:border-none">{{ $wd->user_id }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $wd->getUser()->name }}</td>
-                        <td class="text-center border-b group-last:border-none">{{ $wd->getUser()->email }}</td>
                         <td class="text-center border-b group-last:border-none">
                             @if (!empty($wd->getUser()->oauth_provider->value) && $wd->getUser()->oauth_provider->value === 'telegram')
                                 {{ $wd->getUser()->oauth_id }}

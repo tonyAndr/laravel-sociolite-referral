@@ -41,7 +41,7 @@ class AdPartnersController extends Controller
             if (!$user) {
                 throw new Exception("User not found");
             }
-            $user->addRobux($robux);
+            $user->addRobuxNoRef($robux);
             Log::info("Robux rewarded to user " . $user->id);
         } catch (Exception $e) {
             Log::info("User not found ".$e->getMessage());

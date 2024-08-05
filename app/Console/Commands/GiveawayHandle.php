@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ReferralController;
 use Illuminate\Console\Command;
 use App\Models\Giveaway;
 use App\Models\User;
@@ -30,8 +31,6 @@ class GiveawayHandle extends Command
     public function handle()
     {
         //reward
-        
-
         $latest_ga = Giveaway::where('status', 'active')->orderBy('id', 'desc')->first();
 
         if (!is_null($latest_ga)) {
@@ -42,9 +41,10 @@ class GiveawayHandle extends Command
             if (!is_null($winner)) {
                 $this->info('Reward the user #' . $winner->id);
                 $latest_ga->winner_id = $winner->id;
-                $winner->robux = $winner->robux + $latest_ga->reward;
-                $winner->save();
+                $winner->addRobuxNoRef($latest_ga->reward);
                 $winner->notify(new NotifyGiveawayWinner());
+                // referral rewards
+                ReferralController::rewardParents($winner, $latest_ga->reward);
             }  else {
                 $this->info('No winner today');
             }

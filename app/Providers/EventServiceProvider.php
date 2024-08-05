@@ -53,9 +53,9 @@ class EventServiceProvider extends ServiceProvider
         WithdrawalCancelled::class => [
             NotifyUserWithdrawalCancelled::class,
         ],
-        WithdrawalApproved::class => [
-            NotifyUserWithdrawalApproved::class,
-        ],
+        // WithdrawalApproved::class => [
+        //     NotifyUserWithdrawalApproved::class,
+        // ],
         ParticipantRegistered::class => [
             ForgetGiveawayCookie::class,
         ]

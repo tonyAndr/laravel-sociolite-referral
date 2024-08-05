@@ -2,15 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ReferralCompleted;
-use App\Events\ReferralDetected;
-use App\Events\WithdrawalCancelled;
 use App\Events\WithdrawalPlaced;
-use App\Mail\WithdrawalPlacedMail;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use App\Models\Referral;
-use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Notifications\WithdrawalRequestedToAdmin;
 

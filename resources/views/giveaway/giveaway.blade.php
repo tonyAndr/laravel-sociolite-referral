@@ -73,7 +73,7 @@
                     <div class="flex flex-col items-center">
                         <p class="font-bold">Осталось времени</p>
                         <x-countdown />
-                        <p class="font-bold">Ваш шанс выиграть: {{ $chance }}%</p>
+                        <p class="font-bold">{{ $user_is_participating && !$subscription_needed ? "Ты участвуешь в розыгрыше! Шанс выиграть: $chance%" : "Ты еще не участвуешь в розыгрыше"}}</p>
                     </div>
                 </div>
             </section>

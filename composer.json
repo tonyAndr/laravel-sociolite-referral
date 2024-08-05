@@ -16,13 +16,15 @@
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.4",
+        "php-telegram-bot/laravel": "^2.1",
         "rappasoft/laravel-livewire-tables": "^3.2",
         "socialiteproviders/google": "^4.1",
         "socialiteproviders/telegram": "^4.1",
         "socialiteproviders/tiktok": "*",
         "socialiteproviders/vkontakte": "^5.0",
         "socialiteproviders/yandex": "^4.1",
-        "socialiteproviders/zoho": "^4.1"
+        "socialiteproviders/zoho": "^4.1",
+        "wire-elements/modal": "^2.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

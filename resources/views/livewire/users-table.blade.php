@@ -5,7 +5,7 @@
         <thead class="bg-blue-100">
             <tr>
                 <th class="border-b p-2 rounded-tl-lg">Имя</th>
-                <th class="border-b ">Email</th>
+                <th class="border-b ">TG ID</th>
                 <th class="border-b ">Тип Реги</th>
                 <th class="border-b rounded-tr-lg">R$</th>
             </tr>
@@ -15,7 +15,7 @@
             @foreach ($users as $user)
                 <tr class="group">
                     <td class="p-1 border-b group-last:border-none">{{ $user->name }}</td>
-                    <td class="text-center border-b group-last:border-none">{{ $user->email }}</td>
+                    <td class="text-center border-b group-last:border-none">{{ $user->oauth_id }}</td>
                     <td class="text-center border-b group-last:border-none">{{ $user->oauth_provider }}</td>
                     <td class="text-center border-b group-last:border-none">{{ $user->robux }}</td>
                 </tr>

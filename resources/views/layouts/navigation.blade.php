@@ -21,9 +21,9 @@
                     </x-nav-link>
 
                     @auth
-                        {{-- <x-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
+                        <x-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
                             {{ __('Пригласи друга') }}
-                        </x-nav-link> --}}
+                        </x-nav-link>
 
                         <x-nav-link :href="route('withdrawal.index')" :active="request()->routeIs('withdrawal.index')">
                             {{ __('Вывод робуксов') }}
@@ -138,10 +138,10 @@
                 {{ __('Раздача робуксов') }}
             </x-responsive-nav-link>
             @auth
-                {{-- <x-responsive-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
+                <x-responsive-nav-link :href="route('referrals')" :active="request()->routeIs('referrals')">
                     <i class="fa-solid fa-user-plus text-blue-500 pr-2"></i>
                     {{ __('Пригласи друга') }}
-                </x-responsive-nav-link> --}}
+                </x-responsive-nav-link>
 
                 <x-responsive-nav-link :href="route('withdrawal.index')" :active="request()->routeIs('withdrawal.index')">
                     <i class="fa-solid fa-money-bill-transfer text-green-500 pr-2"></i>

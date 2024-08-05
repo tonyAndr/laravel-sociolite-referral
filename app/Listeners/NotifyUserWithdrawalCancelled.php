@@ -2,13 +2,8 @@
 
 namespace App\Listeners;
 
-use App\Events\ReferralCompleted;
-use App\Events\ReferralDetected;
 use App\Events\WithdrawalCancelled;
 use App\Mail\WithdrawalCancelledMail;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-use App\Models\Referral;
 use Illuminate\Support\Facades\Mail;
 
 class NotifyUserWithdrawalCancelled

@@ -76,7 +76,7 @@ class User extends Authenticatable
     /**
      * Get referrals associated with specified user
      */
-    public function addRobux($robux)
+    public function addRobuxNoRef($robux)
     {
         $this->robux = $this->robux + $robux;
         $this->save();
@@ -85,5 +85,16 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->is_admin === 1;
+    }
+
+    public function getParent() {
+        $ref = Referral::where('child_id', $this->id)->first();
+        if ($ref) {
+            $parent = User::find($ref->parent_id);
+            if ($parent) {
+                return $parent;
+            }
+        }
+        return false;
     }
 }
