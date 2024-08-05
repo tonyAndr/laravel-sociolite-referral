@@ -45,7 +45,7 @@
                         <a href="{{ url('/dashboard') }}"
                             class="block home-main-action-btn text-center max-w-96 my-4">НАЧАТЬ
                             СЕЙЧАС</a>
-                        <p class="text-center">МЫ НИКОГДА НЕ ПОПРОСИМ ВАШ ПАРОЛЬ awdwadadwa!</p>
+                        <p class="text-center">МЫ НИКОГДА НЕ ПОПРОСИМ ВАШ ПАРОЛЬ!</p>
                     </div>
                 </div>
             </section>
