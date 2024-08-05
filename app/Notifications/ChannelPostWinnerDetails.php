@@ -40,7 +40,7 @@ class ChannelPostWinnerDetails extends Notification
         //test channel -1002190632363
         //Notification::route('telegram', '-1002190632363')->notify(new \App\Notifications\ChannelPostWinnerDetails(100, 'his name'));
             // Markdown supported.
-            ->content("🔥🔥🔥 Новый победитель бесплатной раздачи!\n\nНик победителя: *$this->name*\nНаграда: $this->reward РОБУСКОВ\n\n⚡️⚡️⚡️ Отправили робуксы победителю!!! ⚡️⚡️⚡️\n\n")
+            ->content("🔥🔥🔥 Новый победитель бесплатной раздачи!\n\nНик победителя: *$this->name*\nНаграда: $this->reward РОБУСКОВ\n\n")
             ->line('Хочешь тоже выиграть? Жми сюда: '. route('giveaway'));
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])
