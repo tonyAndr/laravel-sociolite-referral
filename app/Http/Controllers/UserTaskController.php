@@ -48,7 +48,7 @@ class UserTaskController extends Controller
                 return Redirect::route('dashboard');
             }
 
-            if (array_key_exists('btn-finish', $params)) {
+            if (array_key_exists('action_finish', $params)) {
                 // finish task
                 // !!!TODO validation
                 if ($task->proof_type === 'screenshot') {
@@ -93,7 +93,7 @@ class UserTaskController extends Controller
 
                 CreateTaskCommand::handleTaskProgress($task);
             } 
-            if (array_key_exists('btn-cancel', $params)) {
+            if (array_key_exists('action_cancel', $params)) {
                 // cancel task
                 $user_task->delete();
             } 

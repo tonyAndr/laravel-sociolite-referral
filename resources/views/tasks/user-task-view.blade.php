@@ -50,6 +50,7 @@
                         <form id="finish_task_form" method="post" action="{{ route('tasks.end_task') }}" enctype="multipart/form-data">
                             @csrf
                             <input hidden name="task_id" value="{{ $task->id }}" />
+                            <input hidden name="action_finish"  />
 
                             @if ($task->proof_type === 'screenshot')
                                 <p>Для выполнения задания нужно загрузить скриншот(ы), подтверждающий выполненные
@@ -70,6 +71,7 @@
                         <form id="cancel_task_form" method="post" action="{{ route('tasks.end_task') }}">
                             @csrf
                             <input hidden name="task_id" value="{{ $task->id }}" />
+                            <input hidden name="action_cancel"  />
 
                         </form>
                     </div>
@@ -81,9 +83,10 @@
                 @endif
 
                 @if ($user_status === 'preview')
-                    <form method="post" action="{{ route('tasks.start') }}">
+                    <form id="start_task_form" method="post" action="{{ route('tasks.start') }}">
                         @csrf
                         <input hidden name="task_id" value="{{ $task->id }}" />
+                        <input hidden name="action_start"  />
                         <div class="p-6 text-gray-900 bark:text-gray-100">
                             <button name="btn-start" class="btn btn-outline btn-success">Начать</button>
 

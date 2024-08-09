@@ -311,6 +311,24 @@ document.addEventListener("DOMContentLoaded", () => {
             document.cookie = "cookie_giveaway_alert=1; max-age="+cd_time+"; path=/giveaway";
         }
     }
+
+    const task_forms_buttons = document.querySelectorAll('button[name="btn-start"], button[name="btn-finish"], button[name="btn-cancel"]');
+    const task_forms = document.querySelectorAll('#start_task_form,#finish_task_form,#cancel_task_form');
+    // Iterate through the buttons or work with them as needed
+    task_forms.forEach(form => {
+        form.addEventListener('submit', function (e) {
+            // e.preventDefault()
+            task_forms_buttons.forEach(button => {
+                    // e.preventDefault()
+                    button.disabled = true;
+        
+                    // setTimeout(() => {
+                    //     button.disabled = false;
+                    //   }, 3000);
+            });
+        });
+    });
+
 });
 
 function referralButtonClickHandler(e) {
