@@ -22,6 +22,7 @@ class TaskForm extends Form
     public $ref_url;
     public $proof_type;
     public $user_reward;
+    public $status;
 
  
     public function setTask(MasterTask $task)
@@ -33,6 +34,7 @@ class TaskForm extends Form
         $this->ref_url = $task->ref_url;
         $this->proof_type = $task->proof_type;
         $this->user_reward = $task->user_reward;
+        $this->status = $task->status;
  
     }
  
@@ -47,7 +49,8 @@ class TaskForm extends Form
                 'description',
                 'ref_url',
                 'proof_type',
-                'user_reward'
+                'user_reward',
+                'status'
                 ])
         );
         

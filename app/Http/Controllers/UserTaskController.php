@@ -66,11 +66,11 @@ class UserTaskController extends Controller
 
                         if (is_array($request->file('screenshots'))) {
                             foreach ($request->file('screenshots') as $k => $scr) {
-                                $path = $scr->store("$task_id/$user->id");
+                                $path = $scr->store("$task_id/$user->id", 'public');
                                 $paths[] = $path;
                             }
                         } else {
-                            $path = $request->file('screenshots')->store("$task_id/$user->id");
+                            $path = $request->file('screenshots')->store("$task_id/$user->id", 'public');
                             $paths[] = $path;
                         }
                     }

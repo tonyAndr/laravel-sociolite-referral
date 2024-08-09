@@ -8,6 +8,21 @@
 
     <x-slot name="content">
         <div class="flex flex-col">
+            {{-- Depending on selected action show or hide status field --}}
+            @if ($edit_action === 'edit')
+            <x-input-label for="status" value="Status" />
+                <select id="status" wire:model="form.status" class="select select-bordered w-full max-w-xs mb-6" {{$edit_action === 'review' ? 'hidden' : ''}}>
+                    <option value="cancelled">Cancelled</option>
+                    <option value="active">Active</option>
+                    <option value="pre-review">PreReview</option>
+                    <option value="denied">Denied</option>
+                    <option value="unpaid">Unpaid</option>
+                    <option value="finished">Finished</option>
+                </select>
+            @endif
+            @if($edit_action === 'review')
+            <input id="status" type="text" wire:model="form.status" class="input input-bordered w-full max-w-xs mb-6" >
+            @endif
             <x-input-label for="title" value="Title" />
             <input id="title" type="text" wire:model="form.title" class="input input-bordered w-full max-w-xs mb-6" >
             <x-input-label for="description" value="Дополнительная инфа" />
