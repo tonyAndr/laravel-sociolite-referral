@@ -9,7 +9,7 @@
                 </p>
             @endforeach
         @else
-            <p>Скриншотов нет</p>
+            <p>Скриншотов нет </p>
         @endif
     @endif
 </div>
