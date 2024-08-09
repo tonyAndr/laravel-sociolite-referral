@@ -16,17 +16,22 @@ class ProductSeeder extends Seeder
         $data = [
             [
                 'service' => 'hamster',
-                'description' => 'hamster game',
+                'description' => 'Hamster Kombat',
                 'ppr' => 1
             ], 
             [
-                'service' => 'cryptodog',
-                'description' => 'cryptodog game',
+                'service' => 'dogs',
+                'description' => 'DOGS',
                 'ppr' => 2
             ], 
             [
-                'service' => 'cryptocat',
-                'description' => 'cryptocat game',
+                'service' => 'pixeltap',
+                'description' => 'PixelTap',
+                'ppr' => 3
+            ], 
+            [
+                'service' => 'x_empire',
+                'description' => 'X Empire',
                 'ppr' => 3
             ], 
         ];

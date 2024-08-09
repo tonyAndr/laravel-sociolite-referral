@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('requested')->default(0);
             $table->integer('fullfilled')->default(0);
             $table->float('price')->default(0); // = ppr * requested
-            $table->integer('user_reward')->default(0);
+            $table->integer('user_reward')->default(5);
         });
     }
 

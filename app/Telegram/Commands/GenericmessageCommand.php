@@ -18,6 +18,7 @@
 
  namespace App\Telegram\Commands;
 
+use App\Models\MasterTask;
 use Longman\TelegramBot\Commands\SystemCommand;
 use App\Telegram\Commands\InvoiceCommand;
 use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
@@ -57,15 +58,14 @@ class GenericmessageCommand extends SystemCommand
         if ($payment = $message->getSuccessfulPayment()) {
                 // return InvoiceCommand::handleSuccessfulPayment($payment, $user_id);
             Log::info('Payment Success');
-            Log::info(var_export($payment, true));
-
-
+            // Log::info(var_export($payment, true));
+            $task = MasterTask::find(intval($payment->invoice_payload));
             // set task status to pre-review
             // notify admins new task was created and paid
             // notify buyer that task is under review
             Request::deleteMessage([
                 'chat_id'    => $chat_id,
-                'message_id' => $message->getMessageId(),
+                'message_id' => $task->invoice_msg_id,
             ]);
             return CreateTaskCommand::handleSuccessfulPayment($payment, $user_id);
         }

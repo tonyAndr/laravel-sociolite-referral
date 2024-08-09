@@ -16,11 +16,33 @@
                 {{-- @if (Auth::user()->is_admin) --}}
                 <h3 class="m-6">Задания</h3>
                 <div class="flex flex-col sm:flex-row gap-4">
+                    @foreach ($user_tasks as $ut)
+                        <a href="{{ route('tasks.user_task', ['id' => $ut->id]) }}" id="user_task_btn">
+                            <div
+                                class="grow sm:grow-0 sm:w-60 min-h-32 bg-white bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex flex-col relative text-black">
+                                <p class="uppercase rounded bg-white px-2 font-bold text-cyan-600 text-sm ">
+                                        @if ($ut->user_task_status)
+                                            @if ($ut->user_task_status === 'active')
+                                            Ждет выполнения
+                                            @else
+                                            Выполнена
+                                            @endif
+                                        @else
+                                            🔥🔥🔥
+                                        @endif
+                                    </p>  
+                                <p class="uppercase font-bold p-2 text-center">{{$ut->title}}</p>
+                                <p class="text-end rounded bg-white px-2 font-bold text-success">+ {{$ut->user_reward}} Робукс</p>
+                                
+                            </div>
+                        </a>
+                    @endforeach
+
                     <a href="{{ route('tasks.yandex_reward') }}" id="yandex_task_btn">
                         <div
-                            class="grow sm:grow-0 sm:w-60 h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex items-center justify-center relative text-black">
-                            <p class="uppercase font-bold"><span class="text-red-500">П</span>росмотр <span class="text-red-500">р</span>екламы<p>
-                            <p class="absolute bottom-2 end-4 uppercase rounded bg-white px-2 font-bold text-cyan-600">+ 0.05 Robux</p>
+                            class="grow sm:grow-0 sm:w-60 min-h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex  items-center justify-center relative text-black">
+                            <p class="uppercase font-bold text-center"><span class="text-red-500">П</span>росмотр <span class="text-red-500">р</span>екламы<p>
+                            <p class="absolute end-2 bottom-0 font-bold text-success drop-shadow-md">+ 0.05 Робукс</p>
                         </div>
                     </a>
     

@@ -50,5 +50,6 @@ class TaskForm extends Form
                 'user_reward'
                 ])
         );
+        
     }
 }

@@ -13,7 +13,7 @@ class TaskHistoryAdminTable extends Component
     use WithPagination;
 
     public $listeners = [
-        'taskModified' => 'render',
+        'taskModified' => '$refresh',
     ];
 
     public function render()

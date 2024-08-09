@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use App\Models\MasterTask;
+use App\Models\UserTask;
 
 class DashboardController extends Controller
 {
@@ -20,18 +22,23 @@ class DashboardController extends Controller
     public function index(Request $request): View
     {
 
-        // $offerwall = '';
-        // try {
+        $user = $request->user();
+        $master_tasks = MasterTask::where('status', 'active')->get();
+        $user_tasks = [];
+        foreach ($master_tasks as $k => $mt) {
+            $active_user_tasks = UserTask::where('master_task_id', $mt->id)->where('status', 'active')->whereNot('user_id', $user->id)->get();
+            $in_work_count = count($active_user_tasks);
+            $progress = $mt->fullfilled + $in_work_count;
+            if ($progress < $mt->requested) {
+                // aligible to show to users
+                $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
+                if ($user_already_has) {
+                    $mt->user_task_status = $user_already_has->status;
+                }
+                $user_tasks[] = $mt;
+            }
+        }
 
-        //     $response = Http::get("https://www.ayetstudios.com/offers/web_offerwall/15899?external_identifier=4082789");
-        //     $offerwall = $response->body();
-
-        // } catch (Exception $e) {
-        //     Log::error("Shit happened");
-        // }
-
-        $offerwall_url = "https://www.ayetstudios.com/offers/web_offerwall/15899?external_identifier=4082789";
-        
-        return view('dashboard', ['offerwall_url' => $offerwall_url]);
+        return view('dashboard', ['user_tasks' => $user_tasks]);
     }
 }

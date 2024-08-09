@@ -173,8 +173,18 @@ class CreateTaskCommand extends UserCommand
                 $master_task->status = 'unpaid';
                 $master_task->ref_url = $notes['ref_url'];
                 $master_task->product_id = $product->id;
+                $master_task->title = "Стань рефералом в $product->description"; 
                 $master_task->save();
                 $master_task->refresh();
+
+                if ($this->telegram->isAdmin()) {
+                    $master_task->status = 'pre-review';
+                    $master_task->telegram_payment_charge_id = 'admin';
+                    $master_task->save();
+                    $this->conversation->stop();
+                    $data['text'] = "Задача создана админом.";
+                    $result = Request::sendMessage($data);
+                    break;                }
 
                 $data['text'] =  '';
                 
@@ -199,6 +209,9 @@ class CreateTaskCommand extends UserCommand
                 $data['reply_markup'] = $keyboard;
                 Log::info(var_export($data, true));
                 $result = Request::sendInvoice($data);
+                // save to remove the message later from chat
+                $master_task->invoice_msg_id = $result->getResult()->getMessageId();
+                $master_task->save();
                 $this->conversation->stop();
                 break;
 
@@ -229,9 +242,12 @@ class CreateTaskCommand extends UserCommand
     }
     public static function handleSuccessfulPayment($payment, $user_id) {
         $task_id = $payment->invoice_payload;
+
+        $invoice_id = $payment->telegram_payment_charge_id;
         $task = MasterTask::find(intval($task_id));
         if (!is_null($task)) {
             $task->status = 'pre-review';
+            $task->telegram_payment_charge_id = $invoice_id;
             $task->save();
         }
 
@@ -239,10 +255,9 @@ class CreateTaskCommand extends UserCommand
         $admins = User::where('is_admin', 1)->get();
         foreach ($admins as $key => $admin) {
             # code...
-            // $admin->notify(new NotifyNewMasterTaskCreated());
-            if ($admin->oauth_id === 269324233) {
-                continue;
-            }
+            // if ($admin->oauth_id === 269324233) {
+            //     continue;
+            // }
 
             $data['chat_id'] = $admin->oauth_id;
             $data['text'] = 'Оплачена новая задача, см. в админке';
@@ -263,42 +278,62 @@ class CreateTaskCommand extends UserCommand
         $data['text'] = 'Ваша заявка отправлена на модерацию, ожидайте ответ от бота в ближайшее время.';
         return Request::sendMessage($data);
     }
-    
-    public static function handleRefund($task, $reason) {
-        $task_id = $payment->invoice_payload;
-        $task = MasterTask::find(intval($task_id));
-        if (!is_null($task)) {
-            $task->status = 'pre-review';
-            $task->save();
-        }
 
-        // notify admins
-        $admins = User::where('is_admin', 1)->get();
-        foreach ($admins as $key => $admin) {
-            # code...
-            // $admin->notify(new NotifyNewMasterTaskCreated());
-            if ($admin->oauth_id === 269324233) {
-                continue;
-            }
-
-            $data['chat_id'] = $admin->oauth_id;
-            $data['text'] = 'Оплачена новая задача, см. в админке';
-            $keyboard = new InlineKeyboard(
-                new InlineKeyboardButton(['text'=> 'Посмотреть в админке', 'url' => route('admin.index')]),
-                [
-            ]);
-            $keyboard->setResizeKeyboard(true)
-                ->setOneTimeKeyboard(true)
-                ->setSelective(false);
-            $data['reply_markup'] = $keyboard;
-            Request::sendMessage($data);
-        }
-
+    public static function handleApprove($task) {
         // notify the buyer
         $data = [];
-        $data['chat_id'] = $user_id;
-        $data['text'] = 'Ваша заявка отправлена на модерацию, ожидайте ответ от бота в ближайшее время.';
+        $data['chat_id'] = $task->buyer_id;
+        $data['text'] = "Задача #$task->id принята в работу, мы сообщим когда она будет выполнена.";
+
         return Request::sendMessage($data);
+    }
+    
+    public static function handleRefund($task) {
+        // notify the buyer
+        $data = [];
+        $data['chat_id'] = $task->buyer_id;
+        $data['telegram_payment_charge_id'] = $task->telegram_payment_charge_id;
+        Request::refundStarPayment($data);
+
+        $data = [];
+        $data['chat_id'] = $task->buyer_id;
+        $data['text'] = "Был оформлен возврат, причина: \n" . $task->reason;
+
+        return Request::sendMessage($data);
+    }
+
+    public static function handleTaskProgress($task) {
+
+        if ($task->fullfilled >= $task->requested) {
+            $task->status = 'finished';
+            $task->save();
+            // notify the buyer
+            $data = [];
+            $data['chat_id'] = $task->buyer_id;
+            $data['text'] = "Задача #$task->id выполнена.";
+            Request::sendMessage($data);
+    
+            $admins = User::where('is_admin', 1)->get();
+            foreach ($admins as $key => $admin) {
+                # code...
+                // if ($admin->oauth_id === 269324233) {
+                //     continue;
+                // }
+                $data = [];
+                $data['chat_id'] = $admin->oauth_id;
+                $data['text'] = "Задача #$task->id завершена.";
+                $keyboard = new InlineKeyboard(
+                    new InlineKeyboardButton(['text'=> 'Посмотреть в админке', 'url' => route('admin.index')]),
+                    [
+                ]);
+                $keyboard->setResizeKeyboard(true)
+                    ->setOneTimeKeyboard(true)
+                    ->setSelective(false);
+                $data['reply_markup'] = $keyboard;
+                Request::sendMessage($data);
+            }
+        }
+
     }
 
 }

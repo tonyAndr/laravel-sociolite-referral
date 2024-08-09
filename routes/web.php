@@ -8,6 +8,7 @@ use App\Http\Controllers\OAuthController;
 use App\Http\Controllers\OffersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReferralController;
+use App\Http\Controllers\UserTaskController;
 use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,4 +77,10 @@ Route::middleware('auth')->controller(OffersController::class)->group(function (
     Route::get('/offerwall/mylead', 'mylead')->name('offerwall.mylead');
     Route::get('/offerwall/ayetstudios', 'ayetstudios')->name('offerwall.ayetstudios');
     Route::get('/tasks/yandex', 'yandex_reward')->name('tasks.yandex_reward');
+});
+Route::middleware('auth')->controller(UserTaskController::class)->group(function () {
+    Route::get('/tasks/info', 'index')->name('tasks.user_task');
+    Route::get('/tasks', 'dashboard');
+    Route::post('/tasks/end-task', 'endTask')->name('tasks.end_task');
+    Route::post('/tasks/start-task', 'start')->name('tasks.start');
 });

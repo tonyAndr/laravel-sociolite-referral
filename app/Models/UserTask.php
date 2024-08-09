@@ -10,6 +10,11 @@ class UserTask extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'master_task_id',
+        'user_id',
+        'expires_at',
+    ];
 
     public function masterTask(): BelongsTo
     {
