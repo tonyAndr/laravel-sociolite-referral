@@ -10,6 +10,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\File;
 
 class UserTaskController extends Controller
 {
@@ -50,14 +53,26 @@ class UserTaskController extends Controller
                 // !!!TODO validation
                 if ($task->proof_type === 'screenshot') {
                     $paths = [];
-                    if (is_array($params['screenshots'])) {
-                        foreach ($params['screenshots'] as $k => $scr) {
-                            Storage::put("$task_id/$user->id/$scr", $scr);
-                            $paths[] = "$task_id/$user->id/$scr";
+                    if ($request->hasFile('screenshots') ) {
+
+                        $request->validate([
+                            'screenshots' => [
+                                'required',
+                                File::image()
+                                ->min('1kb')
+                                ->max('3mb')
+                            ]
+                        ]);
+
+                        if (is_array($request->file('screenshots'))) {
+                            foreach ($request->file('screenshots') as $k => $scr) {
+                                $path = $scr->store("$task_id/$user->id");
+                                $paths[] = $path;
+                            }
+                        } else {
+                            $path = $request->file('screenshots')->store("$task_id/$user->id");
+                            $paths[] = $path;
                         }
-                    } else {
-                        $paths[] = Storage::put("$task_id/$user->id/".$params['screenshots'], $params['screenshots']); 
-                        $paths[] = "$task_id/$user->id/".$params['screenshots'];
                     }
                     $user_task->proof = implode(',', $paths);
                 }

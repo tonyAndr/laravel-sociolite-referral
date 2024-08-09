@@ -47,7 +47,7 @@
             <div class="relative bg-white bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if ($user_status === 'active')
                     <div class="p-6 text-gray-900 bark:text-gray-100">
-                        <form id="finish_task_form" method="post" action="{{ route('tasks.end_task') }}">
+                        <form id="finish_task_form" method="post" action="{{ route('tasks.end_task') }}" enctype="multipart/form-data">
                             @csrf
                             <input hidden name="task_id" value="{{ $task->id }}" />
 
@@ -57,6 +57,7 @@
                                 <x-input-label for="screenshot_upload" value="Загрузить скриншот"></x-input-label>
                                 <input id="screenshot_upload" name="screenshots" type="file"
                                     class="file-input file-input-bordered w-full max-w-xs" required multiple />
+                                    <x-input-error class="mt-2" :messages="$errors->get('screenshots')" />
                                 <p>Если по заданию нужно выполнить несколько действий, то загрузите скриншоты с
                                     результатом выполнения каждого из них.</p>
                             @endif
