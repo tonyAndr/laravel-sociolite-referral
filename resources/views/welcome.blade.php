@@ -40,6 +40,7 @@
                 <div class="bg-clip-border bg-center bg-no-repeat bg-cover text-white bg-black"
                     style="background-image: url(/images/roblox_bg_1.png)">
                     <div class="flex flex-col py-10 px-2 items-center bg-black/80">
+                        
                         <h1 class="text-center">Заработать Робуксы БЕСПЛАТНО без обмана за задания</h1>
 
                         <a href="{{ url('/dashboard') }}"

@@ -73,9 +73,17 @@
                     <div class="flex flex-col items-center">
                         <p class="font-bold">Осталось времени</p>
                         <x-countdown />
-                        <p class="font-bold">{{ $user_is_participating && !$subscription_needed ? "Ты участвуешь в розыгрыше! Шанс выиграть: $chance%" : "Ты еще не участвуешь в розыгрыше"}}</p>
+                        <p class="font-bold">
+                            {{ $user_is_participating && !$subscription_needed ? "Ты участвуешь в розыгрыше! Шанс выиграть: $chance%" : "Ты еще не участвуешь в розыгрыше"}}
+                        </p>
+                        @auth
+                            <livewire:task-available-reminder is_participating="{{intval($user_is_participating)}}" user_id="{{Auth::user()->id}}"/>
+                        @endauth
                     </div>
                 </div>
+            </section>
+            <section class="section-winners">
+                <livewire:last-giveaway-winners />
             </section>
             <section class="section-1">
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">

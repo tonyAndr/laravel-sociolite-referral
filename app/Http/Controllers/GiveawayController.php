@@ -25,7 +25,14 @@ class GiveawayController extends Controller
         $user = $request->user();
         $giveaway_cookie = request()->cookie('participant');
         $is_member = false;
+
         $subscription_needed = false;
+        $ga_reward = 0;
+        $diff_seconds = 0;
+        $participants = [];
+        $chance_to_win = 0;
+        $user_is_participating = false;
+        $prev_won = false;
         
         if (!is_null($user) && ($giveaway_cookie || $request->has('participant'))) {
             $is_member = $this->is_subscribed($request);
@@ -53,11 +60,10 @@ class GiveawayController extends Controller
     
             // Calculate the difference
             $diff = $now->diff($ga_time);
-            $seconds = ($diff->days * 24 * 60 * 60) + ($diff->h * 60 * 60) + ($diff->i * 60) + $diff->s;
+            $diff_seconds = ($diff->days * 24 * 60 * 60) + ($diff->h * 60 * 60) + ($diff->i * 60) + $diff->s;
     
             // Participants
             $participants = User::where('giveaway', 1)->get();
-            $user_is_participating = false;
             if (!is_null($user) && $user->giveaway > 0) {
                 $part_count = count($participants);
                 if ($part_count > 0) {
@@ -69,18 +75,15 @@ class GiveawayController extends Controller
             }
 
             // if user won the previos giveaway
-            $prev_won = false;
             $lates_finished_ga = Giveaway::where('status', 'finished')->orderBy('id', 'desc')->first();
             if (!is_null($lates_finished_ga)) {
                 if (!is_null($user) && $user->id === $lates_finished_ga->winner_id) {
                     $prev_won = true;
                 }
             }
-    
-            return view('giveaway.giveaway', ['countdown_time' => $seconds, 'participants' => $participants, 'reward'=> $lates_ga->reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won, 'subscription_needed' => $subscription_needed]);
+            $ga_reward = $lates_ga->reward;
         }
-        return view('giveaway.giveaway', ['countdown_time' => 0, 'participants' => [], 'reward'=> 0, 'chance' => 0, 'user_is_participating' => false, 'you_won' => false, 'subscription_needed' => $subscription_needed]);
-
+        return view('giveaway.giveaway', ['countdown_time' => $diff_seconds, 'participants' => $participants, 'reward'=> $ga_reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won, 'subscription_needed' => $subscription_needed]);
     }
 
     public function quiz(Request $request)
