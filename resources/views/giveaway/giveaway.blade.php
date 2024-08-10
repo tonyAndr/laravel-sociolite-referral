@@ -2,7 +2,7 @@
     // dd($you_won);
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
     <title>Раздача Робуксов — получить Robux бесплатно в Roblox 2024</title>
@@ -59,7 +59,7 @@
                         </div>
                     @endif
                         
-                    <div class="flex flex-row justify-between pb-4 text-lg w-96">
+                    <div class="flex flex-row justify-between pb-4 text-lg min-w-48 max-w-96">
                         <div class="giveaway-reward flex flex-col items-center ">
                             <div>Награда</div>
                             <div class="text-xl font-bold text-lime-600">R$ {{ $reward }}</div>

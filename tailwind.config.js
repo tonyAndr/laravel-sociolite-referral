@@ -2,7 +2,9 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
-export default {    
+export default {   
+    darkMode: false,  
+    
     content: [
         './vendor/wire-elements/modal/resources/views/*.blade.php',
         './storage/framework/views/*.php',
