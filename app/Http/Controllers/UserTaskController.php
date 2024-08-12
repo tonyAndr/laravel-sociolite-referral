@@ -51,7 +51,7 @@ class UserTaskController extends Controller
             if (array_key_exists('action_finish', $params)) {
                 // finish task
                 // !!!TODO validation
-                if ($task->proof_type === 'screenshot') {
+                if ($task->proof_type === 'screenshot' || $task->proof_type === 'screenshot_nickname') {
                     $paths = [];
                     if ($request->hasFile('screenshots') ) {
 
@@ -61,6 +61,9 @@ class UserTaskController extends Controller
                                 File::image()
                                 ->min('1kb')
                                 ->max('3mb')
+                            ],
+                            'nickname' => [
+                                'required',
                             ]
                         ]);
 
@@ -76,6 +79,11 @@ class UserTaskController extends Controller
                     }
                     $user_task->proof = implode(',', $paths);
                 }
+                if ($task->proof_type === 'screenshot_nickname') {
+                    $user_task->service_nickname = $params['nickname'];
+                }
+
+
                 if ($task->proof_type === 'text') {
                     $user_task->proof = $params['text_proof'];
                 }

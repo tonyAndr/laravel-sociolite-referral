@@ -7,10 +7,8 @@
         <div class="flex flex-col">
             @foreach ($usertasks as $ut)
                 <div wire:key="{{$ut->id}}">
-                    User ID: {{$ut->id}} 
-                        <div wire:key="{{$ut->proof}}">
-                            <livewire:user-task-show-screenshots user_task_id="{{$ut->id}}"/>
-                        </div>
+                    User ID: {{$ut->user_id}} | Выполнено: {{$ut->updated_at}}
+                    <livewire:user-task-show-screenshots user_task_id="{{$ut->id}}"/>
                 </div>
             @endforeach
         </div>

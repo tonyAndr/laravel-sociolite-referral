@@ -4,8 +4,11 @@
         @if (count($screenshots)) 
             @foreach ($screenshots as $k => $scr)
                 <p wire:key="{{$k}}">
-                    {{$scr}} <br>
-                    <img src="{{Storage::url($scr)}}" />
+                    @if($service_nickname)
+                        Никнейм: <strong>{{$service_nickname}}</strong>
+                    @endif
+                    <br>
+                    <img class="max-w-84 max-h-120" src="{{Storage::url($scr)}}" />
                 </p>
             @endforeach
         @else

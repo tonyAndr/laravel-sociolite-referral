@@ -47,20 +47,31 @@
             <div class="relative bg-white bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 @if ($user_status === 'active')
                     <div class="p-6 text-gray-900 bark:text-gray-100">
-                        <form id="finish_task_form" method="post" action="{{ route('tasks.end_task') }}" enctype="multipart/form-data">
+                        <h3>Подтверждение выполнения</h3>
+                        <form id="finish_task_form" method="post" action="{{ route('tasks.end_task') }}"
+                            enctype="multipart/form-data">
                             @csrf
                             <input hidden name="task_id" value="{{ $task->id }}" />
-                            <input hidden name="action_finish"  />
+                            <input hidden name="action_finish" />
 
-                            @if ($task->proof_type === 'screenshot')
+                            @if ($task->proof_type === 'screenshot' || $task->proof_type === 'screenshot_nickname')
+                                @if ($task->proof_type === 'screenshot_nickname')
+                                <p>Укажи свой ник в игре <strong>{{ $task->product->description }}</strong></p>
+                                    <x-input-label for="nickname" value="Никнейм"></x-input-label>
+                                    <input id="nickname" name="nickname" type="text"
+                                        class="input input-bordered w-full max-w-xs" required />
+                                    <x-input-error class="m-2" :messages="$errors->get('nickname')" />
+                                    
+                                @endif
                                 <p>Для выполнения задания нужно загрузить скриншот(ы), подтверждающий выполненные
-                                    действия.</p>
+                                    действия из игры <strong>{{ $task->product->description }}</strong>.</p>
                                 <x-input-label for="screenshot_upload" value="Загрузить скриншот"></x-input-label>
                                 <input id="screenshot_upload" name="screenshots" type="file"
                                     class="file-input file-input-bordered w-full max-w-xs" required multiple />
-                                    <x-input-error class="mt-2" :messages="$errors->get('screenshots')" />
-                                <p>Если по заданию нужно выполнить несколько действий, то загрузите скриншоты с
+                                <x-input-error class="mt-2" :messages="$errors->get('screenshots')" />
+                                <p>Если по заданию нужно выполнить несколько действий, то загрузи скриншоты с
                                     результатом выполнения каждого из них.</p>
+
                             @endif
                             @if ($task->proof_type === 'text')
                                 <x-input-label for="text_proof" value="Комментарий"></x-input-label>
@@ -71,7 +82,7 @@
                         <form id="cancel_task_form" method="post" action="{{ route('tasks.end_task') }}">
                             @csrf
                             <input hidden name="task_id" value="{{ $task->id }}" />
-                            <input hidden name="action_cancel"  />
+                            <input hidden name="action_cancel" />
 
                         </form>
                     </div>
@@ -86,7 +97,7 @@
                     <form id="start_task_form" method="post" action="{{ route('tasks.start') }}">
                         @csrf
                         <input hidden name="task_id" value="{{ $task->id }}" />
-                        <input hidden name="action_start"  />
+                        <input hidden name="action_start" />
                         <div class="p-6 text-gray-900 bark:text-gray-100">
                             <button name="btn-start" class="btn btn-outline btn-success">Начать</button>
 
@@ -95,7 +106,8 @@
                 @endif
 
                 @if ($user_status === 'finished')
-                    <div class="p-6 text-gray-900 bark:text-gray-100 flex flex-row justify-between font-bold text-green-500">
+                    <div
+                        class="p-6 text-gray-900 bark:text-gray-100 flex flex-row justify-between font-bold text-green-500">
                         <p>Задание выполнено. Робуксы уже зачислены на баланс.</p>
                     </div>
                 @endif

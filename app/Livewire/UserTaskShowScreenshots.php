@@ -23,17 +23,21 @@ class UserTaskShowScreenshots extends Component
         $screenshot_urls = [];
 
         if ($this->show_screens) {
-            if ($user_task->proof && $user_task->mastertask->proof_type === 'screenshot') {
-                if (strpos($user_task->proof, ',') !== false ) {
-                    $screenshot_urls = explode(',', $user_task->proof);
-                } else {
-                    $screenshot_urls[] = $user_task->proof;
+            if ($user_task->proof) {
+                if (in_array($user_task->mastertask->proof_type, ['screenshot', 'screenshot_nickname'])) {
+
+                    if (strpos($user_task->proof, ',') !== false ) {
+                        $screenshot_urls = explode(',', $user_task->proof);
+                    } else {
+                        $screenshot_urls[] = $user_task->proof;
+                    }
                 }
             }
         }
 
         return view('livewire.user-task-show-screenshots')->with([
             'screenshots' => $screenshot_urls,
+            'service_nickname' => $user_task->service_nickname
         ]);;
     }
 }

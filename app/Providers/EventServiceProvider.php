@@ -15,11 +15,12 @@ use App\Events\ReferralDetected;
 use App\Events\WithdrawalPlaced;
 use App\Events\WithdrawalCancelled;
 use App\Events\WithdrawalApproved;
+use App\Events\WithdrawalAutomaticallyPaid;
 use App\Listeners\RegisterNewReferralConnection;
 use App\Listeners\AddWithdrawalToSpreadsheet;
 use App\Listeners\NotifyUserWithdrawalCancelled;
 use App\Listeners\NotifyUserWithdrawalApproved;
-
+use App\Listeners\WithdrawalPaidNotifyAdmin;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -49,6 +50,9 @@ class EventServiceProvider extends ServiceProvider
         WithdrawalPlaced::class => [
             AddWithdrawalToSpreadsheet::class,
             WithdrawalPlacedNotifyAdmin::class,
+        ],
+        WithdrawalAutomaticallyPaid::class => [
+            WithdrawalPaidNotifyAdmin::class,
         ],
         WithdrawalCancelled::class => [
             NotifyUserWithdrawalCancelled::class,

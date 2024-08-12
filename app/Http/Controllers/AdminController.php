@@ -16,13 +16,17 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $page = 'index')
     {
-
-        // $users = User::paginate(20, pageName: 'users');
-        // $withdrawals = Withdrawal::paginate(20, pageName: 'withdrawals');
-
-        return view('admin.index');
+        return view('admin.index', ['page' => $page]);
+    }
+    public function users(Request $request)
+    {
+        return $this->index($request, 'users');
+    }
+    public function withdrawals(Request $request)
+    {
+        return $this->index($request, 'withdrawals');
     }
 
     public function delete_user(Request $request) {

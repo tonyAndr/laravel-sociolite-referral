@@ -61,6 +61,9 @@ Route::middleware('auth')->group(function () {
 });
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin/tasks', [AdminController::class, 'tasks'])->name('admin.tasks');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/withdrawals', [AdminController::class, 'withdrawals'])->name('admin.withdrawals');
     Route::delete('/admin/delete-user', [AdminController::class, 'delete_user'])->name('admin.delete-user');
     Route::post('/withdrawal/approve', [WithdrawalController::class, 'approve'])->name('withdrawal.approve');
     Route::post('/withdrawal/cancel', [WithdrawalController::class, 'cancel'])->name('withdrawal.cancel');

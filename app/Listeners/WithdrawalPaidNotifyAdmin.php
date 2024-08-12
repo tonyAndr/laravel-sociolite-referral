@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\WithdrawalPlaced;
+use App\Events\WithdrawalAutomaticallyPaid;
 use App\Models\User;
-use App\Notifications\WithdrawalRequestedToAdmin;
+use App\Notifications\WithdrawalAutoPaidToAdmin;
 
-class WithdrawalPlacedNotifyAdmin
+class WithdrawalPaidNotifyAdmin
 {
     /**
      * Create the event listener.
@@ -19,15 +19,16 @@ class WithdrawalPlacedNotifyAdmin
     /**
      * Handle the event.
      */
-    public function handle(WithdrawalPlaced $event): void
+    public function handle(WithdrawalAutomaticallyPaid $event): void
     {
         //
         $withdrawal_data = $event->data;
 
         $admins = User::where('is_admin', 1)->get();
         foreach ($admins as $key => $admin) {
-            $admin->notify(new WithdrawalRequestedToAdmin($withdrawal_data));
+            $admin->notify(new WithdrawalAutoPaidToAdmin($withdrawal_data));
         }
+
         
     }
 

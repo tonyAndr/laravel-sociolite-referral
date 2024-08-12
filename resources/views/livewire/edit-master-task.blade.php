@@ -21,7 +21,7 @@
                 </select>
             @endif
             @if($edit_action === 'review')
-            <input id="status" type="text" wire:model="form.status" class="input input-bordered w-full max-w-xs mb-6" >
+            <input id="status" type="text" wire:model="form.status" class="input input-bordered w-full max-w-xs mb-6" hidden>
             @endif
             <x-input-label for="title" value="Title" />
             <input id="title" type="text" wire:model="form.title" class="input input-bordered w-full max-w-xs mb-6" >
@@ -33,6 +33,7 @@
             <input id="requested" type="number" wire:model="form.requested" class="input input-bordered w-full max-w-xs mb-6">
             <x-input-label for="proof_type" value="Пруф" />
             <select id="proof_type" wire:model="form.proof_type" class="select select-bordered w-full max-w-xs mb-6">
+                <option value="screenshot_nickname">Screenshot + Nickname</option>
                 <option value="screenshot">Screenshot</option>
                 <option value="text">Text</option>
                 <option value="none">none</option>

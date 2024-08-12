@@ -6,7 +6,6 @@ namespace App\Telegram\Commands;
 
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
-use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Entities\InlineKeyboard;
 use Longman\TelegramBot\Request;
 use App\Models\Product;
@@ -55,9 +54,13 @@ class BuyMenuCommand extends UserCommand
             $product_id = explode('_', $callback_data)[2];
             $options = [];
             $options[] = [['text' => 1 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_1']];
-            for ($i=1; $i <= 10; $i++) { 
-                $options[] = [['text' => $i*50 . ' рефералов' , 'callback_data' => 'referral_amount_'.$product_id . '_'.$i*50]];
-            }
+            $options[] = [['text' => 3 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_3']];
+            $options[] = [['text' => 5 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_5']];
+            $options[] = [['text' => 10 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_10']];
+            $options[] = [['text' => 20 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_20']];
+            $options[] = [['text' => 30 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_30']];
+            $options[] = [['text' => 50 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_50']];
+
             $keyboard = new InlineKeyboard(...$options);
     
             $keyboard->setResizeKeyboard(true)

@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Events\WithdrawalApproved;
 use App\Events\WithdrawalCancelled;
 use App\Events\WithdrawalPlaced;
+use App\Events\WithdrawalAutomaticallyPaid;
 use App\Models\Withdrawal;
 use App\Notifications\SendRobuxToUser;
 use App\Notifications\WithdrawalRequested;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
 
 class WithdrawalController extends Controller
 {
@@ -27,15 +29,16 @@ class WithdrawalController extends Controller
 
         $select_options = [];
         $option = 100;
-        while ($robux >= 100) {
-            $select_options[] = $option;
-            $robux -= 100;
+        $select_options[] = $option;
+        // while ($robux >= 100) {
+        //     $select_options[] = $option;
+        //     $robux -= 100;
             
-            if ($option >= 500) {
-                break;
-            }
-            $option += 100;
-        }
+        //     if ($option >= 500) {
+        //         break;
+        //     }
+        //     $option += 100;
+        // }
         return view('withdrawal.index', ['user' => $user, 'select_options' => $select_options]);
     }
     public function instruction(Request $request)
@@ -102,14 +105,26 @@ class WithdrawalController extends Controller
         $withdrawal->amount = $to_withdraw;
         $withdrawal->status = 'pending';
         $withdrawal->save();
+        $withdrawal->refresh();
 
-        event(new WithdrawalPlaced($withdrawal));
-        $user->notify(new WithdrawalRequested($withdrawal));
+        $auto_result = $this->automaticWithdrawal($withdrawal);
+        if ($auto_result) {
+            $user->notify(new SendRobuxToUser($withdrawal));
+            event(new WithdrawalAutomaticallyPaid($withdrawal));
+            echo json_encode([
+                "result" => true,
+                "msg" => "order_paid"
+            ]);
+        } else {
+            event(new WithdrawalPlaced($withdrawal));
+            $user->notify(new WithdrawalRequested($withdrawal));
+            echo json_encode([
+                "result" => true,
+                "msg" => "order_placed"
+            ]);
+        }
     
-        echo json_encode([
-            "result" => true,
-            "msg" => "order_placed"
-        ]);
+
         return;
     }
 
@@ -150,5 +165,31 @@ class WithdrawalController extends Controller
             "msg" => "order_cancelled"
         ]);
         return;
+    }
+
+    public function automaticWithdrawal($withdrawal) {
+        $codes = false;
+        if (Storage::exists('codes.txt')) {
+            $codes = Storage::get('codes.txt');
+
+            if (trim($codes)) {
+                $codes_arr = explode(PHP_EOL, $codes);
+
+                $withdrawal->redeem_code = $codes_arr[0];
+                $withdrawal->status = 'approved';
+                $withdrawal->save();
+
+                unset($codes_arr[0]);
+
+                Storage::put('codes.txt', implode(PHP_EOL, $codes_arr));
+
+                return true;
+            }
+        }
+
+
+
+        return false;
+
     }
 }
