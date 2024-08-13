@@ -52,14 +52,13 @@ class BuyMenuCommand extends UserCommand
 
         if( strpos($callback_data, 'referral_service_') !== false) {
             $product_id = explode('_', $callback_data)[2];
+            $product = Product::find(intval($product_id));
+
             $options = [];
-            $options[] = [['text' => 1 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_1']];
-            $options[] = [['text' => 3 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_3']];
-            $options[] = [['text' => 5 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_5']];
-            $options[] = [['text' => 10 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_10']];
-            $options[] = [['text' => 20 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_20']];
-            $options[] = [['text' => 30 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_30']];
-            $options[] = [['text' => 50 . ' реферал' , 'callback_data' => 'referral_amount_'.$product_id . '_50']];
+            $variants = [1,3,5,10,20,30,50];
+            foreach ($variants as $k => $v) {
+                $options[] = [['text' => $v . ' реферал = ⭐️' . $v*$product->ppr, 'callback_data' => 'referral_amount_'.$product_id . '_' . $v]];
+            }
 
             $keyboard = new InlineKeyboard(...$options);
     
