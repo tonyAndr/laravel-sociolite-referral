@@ -57,7 +57,7 @@ class BuyMenuCommand extends UserCommand
             $options = [];
             $variants = [1,3,5,10,20,30,50];
             foreach ($variants as $k => $v) {
-                $options[] = [['text' => $v . ' реферал = ⭐️' . $v*$product->ppr, 'callback_data' => 'referral_amount_'.$product_id . '_' . $v]];
+                $options[] = [['text' => $v . ' рефералов = ⭐️' . $v*$product->ppr, 'callback_data' => 'referral_amount_'.$product_id . '_' . $v]];
             }
 
             $keyboard = new InlineKeyboard(...$options);

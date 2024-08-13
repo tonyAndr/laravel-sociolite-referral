@@ -133,7 +133,6 @@ class WithdrawalController extends Controller
         $withdrawal->redeem_code = $request->get('redeem_code');
         $withdrawal->status = 'approved';
         $withdrawal->save();
-        $comment = $request->get('comment');
         $user = $withdrawal->getUser();
         $user->robux = $user->robux - $withdrawal->amount;
         $user->save();
@@ -178,6 +177,10 @@ class WithdrawalController extends Controller
                 $withdrawal->redeem_code = $codes_arr[0];
                 $withdrawal->status = 'approved';
                 $withdrawal->save();
+
+                $user = $withdrawal->getUser();
+                $user->robux = $user->robux - $withdrawal->amount;
+                $user->save();
 
                 unset($codes_arr[0]);
 
