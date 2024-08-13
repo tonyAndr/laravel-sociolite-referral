@@ -302,10 +302,12 @@ class CreateTaskCommand extends UserCommand
     
     public static function handleRefund($task) {
         // notify the buyer
-        $data = [];
-        $data['chat_id'] = $task->buyer_id;
-        $data['telegram_payment_charge_id'] = $task->telegram_payment_charge_id;
-        Request::refundStarPayment($data);
+        if ($task->telegram_payment_charge_id) {
+            $data = [];
+            $data['chat_id'] = $task->buyer_id;
+            $data['telegram_payment_charge_id'] = $task->telegram_payment_charge_id;
+            Request::refundStarPayment($data);
+        }
 
         $data = [];
         $data['chat_id'] = $task->buyer_id;

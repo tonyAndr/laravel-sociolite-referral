@@ -22,7 +22,8 @@ class StartCommand extends UserCommand
 
     public function execute(): ServerResponse
     {
-        return $this->replyToChat('Hello world! 👋');
+        $this->replyToChat('Тебя приветствует бот для покупки ЖИВЫХ рефералов!');
+        return $this->telegram->executeCommand('menu');
     }
 
 }
