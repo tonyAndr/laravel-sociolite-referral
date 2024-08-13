@@ -7,7 +7,7 @@ use App\Models\MasterTask;
 use App\Models\UserTask;
 use LivewireUI\Modal\ModalComponent;
 use Illuminate\Support\Facades\Gate;
-use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use App\Telegram\Commands\CreateTaskCommand;
 use Livewire\Attributes\On;
 
 class ViewProgressMasterTask extends ModalComponent

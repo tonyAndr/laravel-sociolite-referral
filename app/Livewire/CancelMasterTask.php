@@ -6,7 +6,7 @@ use App\Models\MasterTask;
 use LivewireUI\Modal\ModalComponent;
 use Illuminate\Support\Facades\Gate;
 use App\Livewire\Forms\TaskForm;
-use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use App\Telegram\Commands\CreateTaskCommand;
 
 class CancelMasterTask extends ModalComponent
 {

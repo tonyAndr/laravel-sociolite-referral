@@ -8,7 +8,7 @@ use Longman\TelegramBot\Commands\SystemCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
 use Illuminate\Support\Facades\Log;
-use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use App\Telegram\Commands\CreateTaskCommand;
 use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Entities\InlineKeyboard;
 

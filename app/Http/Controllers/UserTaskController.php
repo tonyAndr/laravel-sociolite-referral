@@ -9,7 +9,7 @@ use App\Models\UserTask;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use App\Telegram\Commands\CreateTaskCommand;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
