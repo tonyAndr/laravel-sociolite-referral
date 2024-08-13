@@ -9,7 +9,7 @@
                 @foreach ($usertasks as $ut)
                     <div wire:key="{{$ut->id}}">
                         User ID: {{$ut->user_id}} | Выполнено: {{$ut->updated_at}}
-                        <livewire:user-task-show-screenshots user_task_id="{{$ut->id}}"/>
+                        <livewire:user-task-show-screenshots wire:key="{{$ut->id}}" user_task_id="{{$ut->id}}"/>
                     </div>
                 @endforeach
             </div>

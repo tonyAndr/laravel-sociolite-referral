@@ -7,7 +7,6 @@ use Livewire\Component;
 class UserTaskShowScreenshots extends Component
 {
     public $user_task_id;
-    public $show_screens = false;
 
     public function showProof()
     {
