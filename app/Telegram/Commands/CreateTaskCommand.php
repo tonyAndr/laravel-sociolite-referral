@@ -33,6 +33,7 @@ use App\Models\Product;
 use App\Models\MasterTask;
 use App\Models\User;
 use App\Notifications\NotifyNewMasterTaskCreated;
+use Illuminate\Support\Facades\Http;
 
 
 class CreateTaskCommand extends UserCommand
@@ -196,7 +197,8 @@ class CreateTaskCommand extends UserCommand
                     $this->conversation->stop();
                     $data['text'] = "Задача создана админом.";
                     $result = Request::sendMessage($data);
-                    break;                }
+                    break;                
+                }
 
                 $data['text'] =  '';
                 
@@ -302,18 +304,26 @@ class CreateTaskCommand extends UserCommand
     
     public static function handleRefund($task) {
         // notify the buyer
-        if ($task->telegram_payment_charge_id) {
-            $data = [];
-            $data['chat_id'] = $task->buyer_id;
-            $data['telegram_payment_charge_id'] = $task->telegram_payment_charge_id;
-            Request::refundStarPayment($data);
+        if ($task->telegram_payment_charge_id && $task->telegram_payment_charge_id !== 'admin') {
+            // $data = [];
+            // $data['chat_id'] = $task->buyer_id;
+            // $data['telegram_payment_charge_id'] = $task->telegram_payment_charge_id;
+            // Request::refundStarPayment($data);
+            $telegram_payment_charge_id = trim($task->telegram_payment_charge_id);
+
+            $response = Http::get("https://api.telegram.org/bot" . env('TELEGRAM_API_TOKEN') . "/refundStarPayment?user_id=$task->buyer_id&telegram_payment_charge_id=$telegram_payment_charge_id");
+            $response_data = $response->json();
+
+            if ($response_data["ok"]) {
+                $data = [];
+                $data['chat_id'] = $task->buyer_id;
+                $data['text'] = "Был оформлен возврат, причина: \n" . $task->reason;
+        
+                return Request::sendMessage($data);
+            }
         }
 
-        $data = [];
-        $data['chat_id'] = $task->buyer_id;
-        $data['text'] = "Был оформлен возврат, причина: \n" . $task->reason;
-
-        return Request::sendMessage($data);
+        return Request::emptyResponse();
     }
 
     public static function handleTaskProgress($task) {
