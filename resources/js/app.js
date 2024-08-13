@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     }
 
-    let btn_withdraw = document.querySelector("#btn_withdraw");
+    let btn_withdraw = document.querySelector("#btn_withdraw_user");
     let withdraw_spinner = document.querySelector("#progress_spinner");
     if (btn_withdraw) {
         btn_withdraw.addEventListener('click', function (e) {
@@ -58,26 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let handleWithdrawPlacement = async () => {
         let robux = document.querySelector("#robux").value
-        // let robux_final = document.querySelector("#gamepass_price").innerHTML
-        // let gamepass = document.querySelector("#gamepass").value
-        // let user_email = document.querySelector("#user_email").value
-        
-        // if (!user_email) {
-        //     let email_added = await Swal.fire({
-        //         title: "Укажи свой email в профиле чтобы знать, когда мы отправим робуксы",
-
-        //         showCancelButton: true,
-        //         cancelButtonText: "Отмена",
-        //         confirmButtonText: "В профиль",
-        //         showLoaderOnConfirm: true,
-        //         icon: "warning",
-        //         preConfirm: () => {
-        //           window.location = "/profile"
-        //         },
-        //         allowOutsideClick: () => !Swal.isLoading()
-        //       })
-        //       return
-        // }
 
         if (!robux) {
             Toast.fire({
@@ -86,13 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             return;
         }
-        // if (!gamepass.trim()) {
-        //     Toast.fire({
-        //         icon: 'warning',
-        //         title: 'Укажи ссылку на GamePass',
-        //     })
-        //     return;
-        // }
+
         btn_withdraw.disabled = true
         withdraw_spinner.hidden = false
         axios.post('/withdrawal/create', {

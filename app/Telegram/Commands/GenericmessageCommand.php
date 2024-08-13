@@ -21,10 +21,11 @@
 use App\Models\MasterTask;
 use Longman\TelegramBot\Commands\SystemCommand;
 use App\Telegram\Commands\InvoiceCommand;
-use Longman\TelegramBot\Commands\UserCommands\CreateTaskCommand;
+use App\Telegram\Commands\CreateTaskCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Request;
 use Illuminate\Support\Facades\Log;
+use Longman\TelegramBot\Conversation;
 
 class GenericmessageCommand extends SystemCommand
 {
@@ -53,6 +54,23 @@ class GenericmessageCommand extends SystemCommand
         $message = $this->getMessage();
         $user_id = $message->getFrom()->getId();
         $chat_id = $message->getChat()->getId();
+
+
+        // If a conversation is busy, execute the conversation command after handling the message.
+        $conversation = new Conversation (
+            $message->getFrom()->getId(),
+            $message->getChat()->getId()
+        );
+        
+        $text = trim($message->getText(true));
+        
+        // Fetch conversation command if it exists and execute it.
+        if ($conversation->exists() && $command = $conversation->getCommand()) {
+            if ($text && in_array($text, ['отмена','Отмена','Отменить','отменить','cancel','Cancel', 'menu', 'Menu', 'Меню' ,'меню','В меню','в меню', 'Back to Menu'])) {
+                return $this->telegram->executeCommand('cancel');
+            }
+            return $this->telegram->executeCommand($command);
+        }
 
         // Handle successful payment
         if ($payment = $message->getSuccessfulPayment()) {

@@ -16,7 +16,7 @@
  * Example of the Conversation functionality in form of a simple survey.
  */
 
-namespace Longman\TelegramBot\Commands\UserCommands;
+namespace App\Telegram\Commands;
 
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Conversation;
@@ -127,6 +127,11 @@ class CreateTaskCommand extends UserCommand
         // Conversation start
         $this->conversation = new Conversation($user_id, $chat_id, $this->getName());
 
+        // check if cancellation called TODO: Genericcommand
+        if ($text && in_array($text, ['отмена','Отмена','Отменить','отменить','cancel','Cancel', 'menu', 'Menu', 'Меню' ,'меню','В меню','в меню', 'Back to Menu'])) {
+            return $this->telegram->executeCommand('cancel');
+        }
+
         // Load any existing notes from this conversation
         $notes = &$this->conversation->notes;
         !is_array($notes) && $notes = [];
@@ -149,8 +154,15 @@ class CreateTaskCommand extends UserCommand
                     $notes['state'] = 0;
 
                     $this->conversation->update();
+                    $keyboard = new Keyboard([['text' => 'Отмена']]);
 
-                    $data['text'] = 'Добавь реферальную ссылку';
+                    // Config
+                    $keyboard->setResizeKeyboard(true)
+                        ->setOneTimeKeyboard(true)
+                        ->setSelective(true);
+
+                    $data['reply_markup'] = $keyboard;
+                    $data['text'] = 'Напиши в чат одну реферальную ссылку:';
 
                     $result = Request::sendMessage($data);
                     break;

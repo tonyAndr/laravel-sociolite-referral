@@ -22,7 +22,7 @@
                         Переведи заработанные робуксы на свой игровой счет. Выбери нужное количество и нажми Получить.</p>
                     <p><strong>Минимальное количество - 100 робуксов</strong>.</p>
                     @if(count($select_options))
-                        <form method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
+                        <form id="user_withdrawal_form" method="get" action="{{ route('withdrawal.index') }}" class="mt-6 space-y-6">
                             @csrf
                             <input hidden id="user_email" name="email" value="{{$user->email}}"/>
                             <div>
@@ -37,20 +37,8 @@
                                 <x-input-error class="mt-2" :messages="$errors->get('robux')" />
                             </div>
 
-                            {{-- <p>Создай геймпас в игре и укажи его цену такую, как в поле ниже.</p> --}}
-
-                            {{-- <div class="font-bold text-xl">Цена на GamePass: <span id="gamepass_price"
-                                    class="gamepass-price text-3xl">29</span> (укажите ее при создании геймпасса)</div>
-
-                            <div>
-                                <x-input-label for="gamepass" :value="__('Ссылка на GamePass')" />
-                                <x-text-input id="gamepass" name="gamepass" type="text" class="mt-1 block w-full"
-                                    required autofocus />
-                                <x-input-error class="mt-2" :messages="$errors->get('gamepass')" />
-                            </div> --}}
-
                             <div class="flex items-center gap-4">
-                                <x-primary-button id="btn_withdraw">{{ __('Получить') }}</x-primary-button>
+                                <x-primary-button id="btn_withdraw_user">{{ __('Получить') }}</x-primary-button>
                             </div>
                         </form>
                     @else
