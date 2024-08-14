@@ -29,14 +29,14 @@ class DashboardController extends Controller
             $active_user_tasks = UserTask::where('master_task_id', $mt->id)->where('status', 'active')->whereNot('user_id', $user->id)->get();
             $in_work_count = count($active_user_tasks);
             $progress = $mt->fullfilled + $in_work_count;
-            if ($progress < $mt->requested) {
+            $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
+            if ($progress < $mt->requested || $user_already_has->status === 'active') {
                 // aligible to show to users
-                $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
                 if ($user_already_has) {
                     $mt->user_task_status = $user_already_has->status;
                 }
                 $user_tasks[] = $mt;
-            }
+            } 
         }
 
         return view('dashboard', ['user_tasks' => $user_tasks]);

@@ -16,6 +16,7 @@
                 {{-- @if (Auth::user()->is_admin) --}}
                 <h3 class="m-6">Задания</h3>
                 <div class="flex flex-col sm:flex-row gap-4">
+                    @if (count($user_tasks))
                     @foreach ($user_tasks as $ut)
                         <a href="{{ route('tasks.user_task', ['id' => $ut->id]) }}" id="user_task_btn">
                             <div
@@ -37,14 +38,17 @@
                             </div>
                         </a>
                     @endforeach
+                    @else
+                    <p>Новых заданий пока нет, но они скоро появятся!</p>
+                    @endif
 
-                    <a href="{{ route('tasks.yandex_reward') }}" id="yandex_task_btn">
+                    {{-- <a href="{{ route('tasks.yandex_reward') }}" id="yandex_task_btn">
                         <div
                             class="grow sm:grow-0 sm:w-60 min-h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex  items-center justify-center relative text-black">
                             <p class="uppercase font-bold text-center"><span class="text-red-500">П</span>росмотр <span class="text-red-500">р</span>екламы<p>
                             <p class="absolute end-2 bottom-0 font-bold text-success drop-shadow-md">+ 0.05 Робукс</p>
                         </div>
-                    </a>
+                    </a> --}}
     
                 </div>
             {{-- @endif --}}

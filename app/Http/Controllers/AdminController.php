@@ -28,6 +28,10 @@ class AdminController extends Controller
     {
         return $this->index($request, 'withdrawals');
     }
+    public function giveaways(Request $request)
+    {
+        return $this->index($request, 'giveaways');
+    }
 
     public function delete_user(Request $request) {
         

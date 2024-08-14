@@ -2,14 +2,14 @@
 
 namespace App\Notifications;
 
+use App\Models\MasterTask;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
-use App\Models\MasterTask;
 
-class UserTaskExpired extends Notification
+class UserTaskRemind extends Notification
 {
 
     public MasterTask $task;
@@ -35,9 +35,8 @@ class UserTaskExpired extends Notification
             // Optional recipient user id.
             ->to($notifiable->oauth_id)
             // Markdown supported.
-            ->line("Время выполнения задачи ".$this->task->title." истекло и она была отменена автоматически. ")
-            ->button('Список заданий', route('dashboard'))
-            ->button('Бесплатная раздача', route('giveaway'));
+            ->line("Незабудь закончить задание ".$this->task->title." на сайте, иначе не получишь награду. Срок скоро истечет!")
+            ->button('Список заданий', route('dashboard'));
 
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])

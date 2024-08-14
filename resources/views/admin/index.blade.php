@@ -9,10 +9,11 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Панель администратора') }}
         </h2>
-        <div class="flex flex-row gap-6 text-xl pt-4 underline text-green-600">
+        <div class="flex flex-row gap-6 text-xl pt-4 text-green-600">
             <a href="{{route('admin.index')}}" class="{{$page === 'index' ? 'font-bold' : ''}}"># Задачи</a>
-            <a href="{{route('admin.withdrawals')}}" class="{{$page === 'withdrawals' ? 'font-bold' : ''}}"># Заявки на вывод</a>
-            <a href="{{route('admin.users')}}" class="{{$page === 'users' ? 'font-bold' : ''}}"># Юзеры</a>
+            <a href="{{route('admin.withdrawals')}}" class="{{$page === 'withdrawals' ? 'font-bold  underline' : ''}}"># Заявки на вывод</a>
+            <a href="{{route('admin.users')}}" class="{{$page === 'users' ? 'font-bold underline' : ''}}"># Юзеры</a>
+            <a href="{{route('admin.giveaways')}}" class="{{$page === 'giveaways' ? 'font-bold underline' : ''}}"># Розыгрыши</a>
         </div>
     </x-slot>
 
@@ -69,6 +70,17 @@
                             <div class="p-6 bg-white border-b border-gray-200">
                                 <livewire:textarea-withdrawal-codes />
                             </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            @if ($page === 'giveaways')
+                <div class="max-w-full mx-auto pt-6 sm:px-6 lg:px-8">
+                    <h3 class="py-2">История розыгрышей</h3>
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 bg-white border-b border-gray-200">
+                            <livewire:giveaways-history-table />
                         </div>
                     </div>
                 </div>
