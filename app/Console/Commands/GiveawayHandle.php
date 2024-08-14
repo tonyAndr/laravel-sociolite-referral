@@ -44,7 +44,13 @@ class GiveawayHandle extends Command
                 $this->info('Reward the user #' . $winner->id);
                 $latest_ga->winner_id = $winner->id;
                 $winner->addRobuxNoRef($latest_ga->reward);
-                $winner->notify(new NotifyGiveawayWinner());
+                try {
+                    $winner->notify(new NotifyGiveawayWinner());
+                    $this->info('user #'.$winner->id.' was notified');
+                } catch (\NotificationChannels\Telegram\Exceptions\CouldNotSendNotification $exception) {
+                    $this->info('user #'.$winner->id.' blocked the bot');
+                }
+                
                 // send channel update
                 Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_CHANNEL_LIVE_ID'))->notify(new ChannelPostWinnerDetails($latest_ga->reward, $winner->name));
 

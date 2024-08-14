@@ -48,7 +48,12 @@ class ExpireTasks extends Command
 
             $user = User::find($expired_task->user_id);
             if ($user) {
-                $user->notify(new UserTaskExpired($mastertask));
+                try {
+                    $user->notify(new UserTaskExpired($mastertask));
+                    $this->info('user #'.$user->id.' was notified');
+                } catch (\NotificationChannels\Telegram\Exceptions\CouldNotSendNotification $exception) {
+                    $this->info('user #'.$user->id.' blocked the bot');
+                }
             }
         }
 

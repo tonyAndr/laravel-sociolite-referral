@@ -45,7 +45,12 @@ class UserTaskReminder extends Command
 
             $user = User::find($task->user_id);
             if ($user) {
-                $user->notify(new UserTaskRemind($mastertask));
+                try {
+                    $user->notify(new UserTaskRemind($mastertask));
+                    $this->info('user #'.$task->user_id.' was notified');
+                } catch (\NotificationChannels\Telegram\Exceptions\CouldNotSendNotification $exception) {
+                    $this->info('user #'.$task->user_id.' blocked the bot');
+                }
             }
         }
 
