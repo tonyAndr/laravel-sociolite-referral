@@ -30,7 +30,7 @@ class DashboardController extends Controller
             $in_work_count = count($active_user_tasks);
             $progress = $mt->fullfilled + $in_work_count;
             $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
-            if ($progress < $mt->requested || $user_already_has->status === 'active') {
+            if ($progress < $mt->requested || ($user_already_has && $user_already_has->status === 'active')) {
                 // aligible to show to users
                 if ($user_already_has) {
                     $mt->user_task_status = $user_already_has->status;
