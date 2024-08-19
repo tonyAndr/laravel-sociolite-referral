@@ -176,6 +176,11 @@ class CreateTaskCommand extends UserCommand
 
                 // charge the buyer
                 $product = Product::find(intval($notes['product_id']));
+                if (is_null($product)) {
+                    // why this happens?
+                    return $this->telegram->executeCommand('cancel');
+                }
+
                 $ppr = $product->ppr; 
                 $sum = intval($notes['requested']) * $ppr;
 

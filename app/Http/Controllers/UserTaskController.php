@@ -61,9 +61,6 @@ class UserTaskController extends Controller
                                 File::image()
                                 ->min('1kb')
                                 ->max('3mb')
-                            ],
-                            'nickname' => [
-                                'required',
                             ]
                         ]);
 
