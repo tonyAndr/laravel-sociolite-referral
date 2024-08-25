@@ -1,6 +1,6 @@
 <section class="section-1">
     <div class="bg-white my-4" >
-        <
+        <div
             class="flex flex-col py-10 px-8 text-center text-lg">
             <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
             <p class="animated-pulsating-text">Готовим тебя к раздаче Робуксов...</p>
