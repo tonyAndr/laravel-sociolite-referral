@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-class ForgetGiveawayCookie
+class ForgetGiveawayLoginCookie
 {
     /**
      * Handle the event.
@@ -12,6 +12,6 @@ class ForgetGiveawayCookie
      */
     public function handle($event)
     {
-        cookie()->queue(cookie()->forget('participant'));
+        cookie()->queue(cookie()->forget('giveaway_login'));
     }
 }

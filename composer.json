@@ -16,6 +16,7 @@
         "laravel/socialite": "^5.11",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.4",
+        "masterminds/html5": "^2.9",
         "php-telegram-bot/laravel": "^2.1",
         "rappasoft/laravel-livewire-tables": "^3.2",
         "socialiteproviders/google": "^4.1",

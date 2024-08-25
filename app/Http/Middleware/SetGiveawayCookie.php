@@ -23,6 +23,13 @@ class SetGiveawayCookie
                 return redirect()->to($request->fullUrlWithoutQuery('participant'));
             }
         }
+        if (!empty($request->giveaway_login)) {
+            cookie()->queue(cookie()->forever('giveaway_login', $request->giveaway_login));
+            
+            if ($request->has('giveaway_login')) {
+                return redirect()->to($request->fullUrlWithoutQuery('giveaway_login'));
+            }
+        }
 
         return $next($request);
     }

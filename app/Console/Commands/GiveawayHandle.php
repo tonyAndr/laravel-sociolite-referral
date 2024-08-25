@@ -46,17 +46,17 @@ class GiveawayHandle extends Command
                 $winner->addRobuxNoRef($latest_ga->reward);
                 try {
                     $winner->notify(new NotifyGiveawayWinner());
-                    $this->info('user #'.$winner->id.' was notified');
+                    $this->info('user #' . $winner->id . ' was notified');
                 } catch (\NotificationChannels\Telegram\Exceptions\CouldNotSendNotification $exception) {
-                    $this->info('user #'.$winner->id.' blocked the bot');
+                    $this->info('user #' . $winner->id . ' blocked the bot');
                 }
-                
+
                 // send channel update
-                Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_CHANNEL_LIVE_ID'))->notify(new ChannelPostWinnerDetails($latest_ga->reward, $winner->name));
+                Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_LUCHBUX_CHANNEL_LIVE_ID'))->notify(new ChannelPostWinnerDetails($latest_ga->reward, $winner->name));
 
                 // referral rewards
                 ReferralController::rewardParents($winner, $latest_ga->reward);
-            }  else {
+            } else {
                 $this->info('No winner today');
             }
             $latest_ga->status = 'finished';

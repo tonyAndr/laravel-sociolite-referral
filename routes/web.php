@@ -52,6 +52,8 @@ Route::controller(GiveawayController::class)->group(function () {
     Route::get('/giveaway', 'index')->name('giveaway');
     Route::get('/giveaway/quiz', 'quiz')->name('giveaway.quiz');
     Route::get('/giveaway/countdown', 'countdown')->middleware(['auth'])->name('giveaway.countdown');
+    Route::post('/giveaway/is_subscribed', 'is_subscribed')->name('giveaway.is_subscribed');
+
 });
 
 Route::middleware('auth')->group(function () {

@@ -14,7 +14,6 @@ class MasterTaskController extends Controller
     public static function handleTaskApproved($task)
     {
         // send post to the channel
-        Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_CHANNEL_LIVE_ID'))->notify(new ChannelPostNewTask());
-
+        Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_LUCHBUX_CHANNEL_LIVE_ID'))->notify(new ChannelPostNewTask());
     }
 }

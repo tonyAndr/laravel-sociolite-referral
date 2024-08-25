@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'Раздача')
-@section('description', 'Page desc')
+@section('title', 'Бесплатная раздача робуксов')
+@section('description', 'Получи робуксы в несколько кликов совершенно бесплатно для игры Роблокс')
 
 @section('content')
     <input id='countdown_time' hidden type='number' value='{{ $countdown_time }}' />

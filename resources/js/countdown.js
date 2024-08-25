@@ -1,3 +1,43 @@
+function check_tg_subscription () {
+
+    const tg_element = document.querySelector('#tg_channel_id');
+
+    if (tg_element) {
+        let checker = setInterval(function () {
+
+            const channel_id = tg_element.value;
+            const btn = document.querySelector('.quiz-action-btn');
+            const text = document.querySelector('.quiz-sub-check-text');
+
+            btn.style.display = 'none';
+    
+            axios.post('/giveaway/is_subscribed', {
+                channel_id
+            }).then(response => {
+                console.log(response);
+
+                if (response.data.result) {
+                    clearInterval(checker);
+                    console.log('Subbed')
+                    btn.style.display = 'block';
+                    text.style.display = 'none';
+                } else {
+                    if (response.data.reason === 'user_not_found') {
+                        window.location = "/giveaway/quiz?step=2";
+                    } else {
+                        console.log('Not subbed')
+                    }
+                }
+
+            }).catch(error => {
+                console.log(error);
+            })
+
+        }, 4000)
+    }
+
+}
+
 if (document.querySelector(".countdown-digital") !== null) {
 
     // count-down timer
@@ -12,12 +52,16 @@ if (document.querySelector(".countdown-digital") !== null) {
         // Check if the countdown has reached zero or negative
         if (diff <= 0) {
             clearInterval(x); // Stop the countdown 
-            if (document.querySelector('.quiz-action-btn')) {
-                document.querySelector('.quiz-action-btn').style.display = 'block';
+            if (document.querySelector('.quiz-action-block')) {
+                document.querySelector('.quiz-action-block').style.display = 'block';
             }
 
             if (document.querySelector('.timer')) {
                 document.querySelector('.timer').style.display = 'none';
+            }
+
+            if (document.querySelector('#tg_channel_id')) {
+                check_tg_subscription();
             }
 
             // giveaway alert + reload
@@ -98,7 +142,7 @@ if (document.querySelector(".countdown-circle") !== null) {
         // Check if the countdown has reached zero or negative
         if (leftover < 0) {
             clearInterval(x); // Stop the countdown 
-            document.querySelector('.quiz-action-btn').style.display = 'block';
+            document.querySelector('.quiz-action-block').style.display = 'block';
             document.querySelector('.countdown-circle').style.display = 'none';
             return; // Exit the function
         }

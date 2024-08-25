@@ -35,14 +35,9 @@ class GiveawayController extends Controller
         $prev_won = false;
         
         if (!is_null($user) && ($giveaway_cookie || $request->has('participant'))) {
-            $is_member = $this->is_subscribed($request);
-            if ($is_member) {
-                $user->giveaway = 1;
-                $user->save();
-                event(new ParticipantRegistered());
-            } else {
-                $subscription_needed = true;
-            }
+            $user->giveaway = 1;
+            $user->save();
+            event(new ParticipantRegistered());
         }
 
         // Determine next giveaway time
@@ -94,9 +89,10 @@ class GiveawayController extends Controller
             // case 2:
             //     $countdown_time = 7;
             //     break;
-            // case 3:
-            //     $countdown_time = 100;
-            //     break;
+            case 3:
+            case 5:
+                $countdown_time = 5;
+                break;
             // case 4:
             //     $countdown_time = 200;
             //     break;
@@ -113,30 +109,48 @@ class GiveawayController extends Controller
 
             }
         }
-        return view('giveaway.giveaway_quiz');
+        return view('giveaway.giveaway');
     }
 
     // user has to be subbed to the channel
     public function is_subscribed (Request $request) {
         $user = $request->user();
+        $channel_id = $request->get('channel_id');
 
         if (is_null($user)) {
-            return false;
+            echo json_encode([
+                "result" => false,
+                "reason" => 'user_not_found'
+            ]);
+            return;
         }
  
         $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_LOGIN_API_TOKEN').'/getChatMember', [
-            'chat_id' => '-1002019578478',
+            'chat_id' => $channel_id, 
             'user_id' => $user->oauth_id,
         ]);
         $body = json_decode($response->body());
         if ($body->ok) {
             $status = $body->result->status;
             if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
-                return true;
+                echo json_encode([
+                    "result" => true,
+                ]);
+                return;
+            } else {
+                echo json_encode([
+                    "result" => false,
+                    "reason" => 'not_subbed'
+                ]);
+                return;
             }
         }
 
-        return false;
+        echo json_encode([
+            "result" => false,
+            "reason" => 'unknown'
+        ]);
+        return;
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\OAuthProvider;
+use App\Events\ParticipantLoggedIn;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -49,6 +50,12 @@ class OAuthController extends Controller
                 $user->save();
                 event(new ParticipantRegistered());
                 return redirect()->route('giveaway');
+            }
+
+            $from_giveaway = request()->cookie('giveaway_login');
+            if ($from_giveaway) {
+                event(new ParticipantLoggedIn());
+                return redirect()->route('giveaway.quiz', ['step' => 3]);
             }
 
         } catch (InvalidStateException $e) {

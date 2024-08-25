@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Events\ParticipantLoggedIn;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use App\Listeners\WithdrawalPlacedNotifyAdmin;
@@ -9,7 +10,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Illuminate\Support\Facades\Event;
 use App\Events\ReferralCompleted;
 use App\Listeners\ForgetReferralCookie;
-use App\Listeners\ForgetGiveawayCookie;
+use App\Listeners\ForgetParticipantCookie;
+use App\Listeners\ForgetGiveawayLoginCookie;
 use App\Events\ParticipantRegistered;
 use App\Events\ReferralDetected;
 use App\Events\WithdrawalPlaced;
@@ -61,7 +63,10 @@ class EventServiceProvider extends ServiceProvider
         //     NotifyUserWithdrawalApproved::class,
         // ],
         ParticipantRegistered::class => [
-            ForgetGiveawayCookie::class,
+            ForgetParticipantCookie::class,
+        ],
+        ParticipantLoggedIn::class => [
+            ForgetGiveawayLoginCookie::class,
         ]
     ];
 
