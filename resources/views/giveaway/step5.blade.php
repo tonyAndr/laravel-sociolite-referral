@@ -16,7 +16,7 @@
 
             <div class="quiz-action-block" style="display:none">
                 <div class="flex flex-col items-center ">
-                    <p class="animated-pulsating-text quiz-sub-check-text">Проверяем подписку на канал...</p>
+                    <p class="animated-pulsating-text quiz-sub-check-text">Подпишись на канал чтобы стать участником! Подписка не обнаружена...</p>
                     @auth
                         <a href="{{ route('giveaway', ['participant' => 1]) }}"
                             class="block quiz-action-btn text-center max-w-96 my-4" style="display:none">Участвовать в раздаче</a>
