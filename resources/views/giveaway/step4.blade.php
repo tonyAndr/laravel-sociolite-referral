@@ -1,20 +1,28 @@
 <section class="section-1">
     <div class="bg-white my-4">
-        <div class="flex flex-col py-10 px-8 text-center text-lg">
-            <h1>Раздача Робуксов — Шаг 4</h1>
-            <p>Расскажи друзьям в ВК или Telegram или WhatsApp чтобы получить Robux бесплатно. :)</p>
+        <div class="flex flex-col py-10 px-8 text-center text-lg backdrop-blur-md">
+            <h1>Раздача Робуксов — ПОСЛЕДНИЙ ШАГ</h1>
+            <div class="flex flex-col items-center mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
 
-            {!! ShareButtons::page(route('giveaway'), 'Присоединяйся и получай робуксы!', [
-                'title' => 'Присоединяйся и получай робуксы!',
-                'rel' => 'nofollow noopener noreferrer',
-            ])->telegram()->whatsapp()->vkontakte()->copylink()->render() !!}
-            <div class="flex flex-col items-center ">
-                <x-countdown-circle />
+                <p>Последнее обязательное условие участия в раздаче - подпишись на канал, где мы публикуем промокоды,
+                    фишки и секреты для Роблокса:</p>
+
+                <a href="https://t.me/fishki_roblox" target="_blank"
+                    class="block join-channel-btn text-center max-w-96 mb-4"><i
+                        class="fa-brands fa-telegram fa-telegram-white pr-4"></i>Канал Фишки Роблокса</a>
             </div>
+            <x-countdown></x-countdown>
+            <input hidden id="tg_channel_id" value="{{ env('TELEGRAM_FISHKI_CHANNEL_LIVE_ID') }}" />
+
             <div class="quiz-action-block" style="display:none">
                 <div class="flex flex-col items-center ">
-                    <a href="{{ route('giveaway.quiz', ['step' => intval($step) + 1]) }}"
-                        class="block quiz-action-btn text-center max-w-96 my-4">Далее</a>
+                    @auth
+                        <a href="{{ route('giveaway', ['participant' => 1]) }}"
+                            class="block quiz-action-btn text-center max-w-96 my-4">Участвовать в раздаче</a>
+                    @else
+                        <a href="{{ route('login', ['participant' => 1]) }}"
+                            class="block quiz-action-btn text-center max-w-96 my-4">Участвовать в раздаче</a>
+                    @endauth
                 </div>
             </div>
 

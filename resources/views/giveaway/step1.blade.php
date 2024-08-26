@@ -12,8 +12,6 @@
                     class="block quiz-action-btn text-center max-w-96 my-4">Получить Robux бесплатно</a>
             </div>
             </div>
-            
-
 
         </div>
     </div>

@@ -44,20 +44,7 @@
             <input hidden id="last_giveaway_won" value="{{$you_won === true ? 1 : 0}}"/>
             <section class="section-countdown">
                 <div class="bg-gray-300 py-10 px-10 flex flex-col items-center">
-                    @if (!$user_is_participating && !$subscription_needed)
-                        <div class="flex flex-col items-center">
-                            <a href="{{ route('giveaway.quiz', ['step' => 1]) }}"
-                                class="block home-main-action-btn text-center max-w-96 mb-4">УЧАСТВОВАТЬ В
-                                РАЗДАЧЕ</a>
-                        </div>
-                    @endif
-                    @if ($subscription_needed)
-                        <div class="flex flex-col items-center">
-                            <p>Победить могут только подписчики канала!</p>
-                            <a href="{{ route('giveaway.quiz', ['step' => 3]) }}"
-                                class="block join-channel-btn text-center max-w-96 mb-4">Подпишись на Luchbux.Fun</a>
-                        </div>
-                    @endif
+                    <livewire:giveaway-call-to-action />
                         
                     <div class="flex flex-row justify-between pb-4 text-lg min-w-48 max-w-96">
                         <div class="giveaway-reward flex flex-col items-center ">
@@ -74,7 +61,7 @@
                         <p class="font-bold">Осталось времени</p>
                         <x-countdown />
                         <p class="font-bold">
-                            {{ $user_is_participating && !$subscription_needed ? "Ты участвуешь в розыгрыше! Шанс выиграть: $chance%" : "Ты еще не участвуешь в розыгрыше"}}
+                            {{ $user_is_participating ? "Ты участвуешь в розыгрыше! Шанс выиграть: $chance%" : "Ты еще не участвуешь в розыгрыше"}}
                         </p>
                         @auth
                             <livewire:task-available-reminder is_participating="{{intval($user_is_participating)}}" user_id="{{Auth::user()->id}}"/>
