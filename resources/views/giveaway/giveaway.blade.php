@@ -53,9 +53,9 @@
                     @endif
                     @if ($subscription_needed)
                         <div class="flex flex-col items-center">
-                            <p>Для участия в раздаче ты должен подписаться на наш канал!</p>
-                            <a href="{{ route('giveaway.quiz', ['step' => 4]) }}"
-                                class="block join-channel-btn text-center max-w-96 mb-4">Подпишись на канал</a>
+                            <p>Победить могут только подписчики канала!</p>
+                            <a href="{{ route('giveaway.quiz', ['step' => 3]) }}"
+                                class="block join-channel-btn text-center max-w-96 mb-4">Подпишись на Luchbux.Fun</a>
                         </div>
                     @endif
                         

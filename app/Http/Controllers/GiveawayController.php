@@ -78,6 +78,11 @@ class GiveawayController extends Controller
             }
             $ga_reward = $lates_ga->reward;
         }
+
+        // check subscription
+        $is_subbed = $this->check_subscription($user->oauth_id, env('TELEGRAM_LUCHBUX_CHANNEL_LIVE_ID'));
+        $subscription_needed = !$is_subbed['result'];
+
         return view('giveaway.giveaway', ['countdown_time' => $diff_seconds, 'participants' => $participants, 'reward'=> $ga_reward, 'chance' => $chance_to_win, 'user_is_participating' => $user_is_participating, 'you_won' => $prev_won, 'subscription_needed' => $subscription_needed]);
     }
 
@@ -91,7 +96,7 @@ class GiveawayController extends Controller
             //     break;
             case 3:
             case 5:
-                $countdown_time = 5;
+                $countdown_time = 15;
                 break;
             // case 4:
             //     $countdown_time = 200;
@@ -112,7 +117,7 @@ class GiveawayController extends Controller
         return view('giveaway.giveaway');
     }
 
-    // user has to be subbed to the channel
+    // http request / user has to be subbed to the channel
     public function is_subscribed (Request $request) {
         $user = $request->user();
         $channel_id = $request->get('channel_id');
@@ -124,33 +129,40 @@ class GiveawayController extends Controller
             ]);
             return;
         }
- 
-        $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_LOGIN_API_TOKEN').'/getChatMember', [
-            'chat_id' => $channel_id, 
-            'user_id' => $user->oauth_id,
-        ]);
-        $body = json_decode($response->body());
-        if ($body->ok) {
-            $status = $body->result->status;
-            if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
-                echo json_encode([
-                    "result" => true,
-                ]);
-                return;
-            } else {
-                echo json_encode([
-                    "result" => false,
-                    "reason" => 'not_subbed'
-                ]);
-                return;
-            }
-        }
 
-        echo json_encode([
-            "result" => false,
-            "reason" => 'unknown'
-        ]);
+        $response = $this->check_subscription($user->oauth_id, $channel_id);
+
+        echo json_encode($response);
         return;
     }
+
+        // local use
+        public function check_subscription ($user_tg_id, $channel_id) {
+            $response = Http::post('https://api.telegram.org/bot'.env('TELEGRAM_LOGIN_API_TOKEN').'/getChatMember', [
+                'chat_id' => $channel_id, 
+                'user_id' => $user_tg_id,
+            ]);
+            $body = json_decode($response->body());
+            if ($body->ok) {
+                $status = $body->result->status;
+                if ($status === 'member' || $status === 'administrator' || $status === 'creator') {
+                    return [
+                        "result" => true,
+                        "reason" => ''
+                    ];
+                } else {
+                    return [
+                        "result" => false,
+                        "reason" => 'not_subbed'
+                    ];
+                }
+            }
+
+            return [
+                "result" => false,
+                "reason" => 'unknown'
+            ];
+    
+        }
 
 }

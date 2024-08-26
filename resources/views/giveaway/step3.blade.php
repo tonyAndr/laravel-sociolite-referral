@@ -8,7 +8,7 @@
                     получить робуксы:</p>
 
                 <a href="https://t.me/LuchBux" target="_blank" class="block join-channel-btn text-center max-w-96 mb-4"><i
-                        class="fa-brands fa-telegram fa-telegram-white pr-4"></i>LuchBux.Fun</a>
+                        class="fa-brands fa-telegram fa-telegram-white pr-4"></i>Подписаться на LuchBux.Fun</a>
             </div>
 
             <x-countdown></x-countdown>
