@@ -306,8 +306,8 @@ class CreateTaskCommand extends UserCommand
             ->setOneTimeKeyboard(true)
             ->setSelective(false);
         $data['reply_markup'] = $keyboard;
-        // Log::info(var_export($data, true));
         $result = Request::sendInvoice($data);
+        Log::info(var_export($result, true));
         // save to remove the message later from chat
         $master_task->invoice_msg_id = $result->getResult()->getMessageId();
         $master_task->save();
