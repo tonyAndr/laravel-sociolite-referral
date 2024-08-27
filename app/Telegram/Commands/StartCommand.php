@@ -35,7 +35,7 @@ class StartCommand extends UserCommand
               ->update(['ref_id' => intval($ref_id)]);
         }
 
-        $this->replyToChat('Тебя приветствует бот для покупки ЖИВЫХ рефералов!');
+        $response = $this->replyToChat('Тебя приветствует бот для покупки ЖИВЫХ рефералов!');
         return $this->telegram->executeCommand('menu');
     }
 

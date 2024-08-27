@@ -11,7 +11,7 @@ use Longman\TelegramBot\Exception\TelegramException;
 use Longman\TelegramBot\Request;
 use Longman\TelegramBot\Entities\Keyboard;
 
-class StartCommand extends UserCommand
+class HelpCommand extends UserCommand
 {
 
     /** @var string Command name */
@@ -27,8 +27,17 @@ class StartCommand extends UserCommand
     {
 
         // Get ref id
-        $user_id = $this->getMessage()->getFrom()->getId();
-        $chat_id = $this->getMessage()->getChat()->getId();
+        $chat_id = false;
+        $user_id = false;
+        if (!$this->getMessage()) {
+            $callback_query = $this->getCallbackQuery();
+            $callback_data  = $callback_query->getData();
+            $chat_id = $callback_query->getMessage()->getChat()->getId();
+            $user_id = $callback_query->getMessage()->getChat()->getId();
+        } else {
+            $user_id = $this->getMessage()->getFrom()->getId();
+            $chat_id = $this->getMessage()->getChat()->getId();
+        }
 
         $data['chat_id'] = $chat_id;
         $data['reply_markup'] = Keyboard::remove(['selective' => true]);
@@ -36,13 +45,17 @@ class StartCommand extends UserCommand
         $buyer = DB::table('bot_user')
         ->where('id', '=', $user_id)
         ->first();
-
+        $invited_count = DB::table('bot_user')
+        ->where('ref_id', '=', $user_id)
+        ->count();
 
         $data['text'] = "⚙️ Твой ID в телеграме: " . $user_id 
         . PHP_EOL 
         . "💰 Реферальный баланс: " . $buyer->balance
+        . PHP_EOL 
+        . "👥 Количество приглашенных: " . $invited_count
         . PHP_EOL . PHP_EOL
-        . "В нашем боте ты можешь купить рефералов для любой крипто-игры или твоей произвольной ссылки."
+        . "В нашем боте ты можешь купить живых рефералов для любой крипто-игры или твоей произвольной ссылки."
         . PHP_EOL . PHP_EOL
         . "Приглашай людей и получай 25% от их покупок на свой баланс. "
         . PHP_EOL

@@ -69,7 +69,6 @@ class GenericmessageCommand extends SystemCommand
             if ($text && in_array($text, ['отмена','Отмена','Отменить','отменить','cancel','Cancel', 'menu', 'Menu', 'Меню' ,'меню','В меню','в меню', 'Back to Menu'])) {
                 return $this->telegram->executeCommand('cancel');
             }
-            return $this->telegram->executeCommand($command);
         }
 
         // Handle successful payment
@@ -88,9 +87,10 @@ class GenericmessageCommand extends SystemCommand
 
             $invoice_id = $payment->telegram_payment_charge_id;
 
-            return CreateTaskCommand::handleSuccessfulPayment($task->id, $user_id, $invoice_id);
+            CreateTaskCommand::handleSuccessfulPayment($task->id, $user_id, $invoice_id);
+            return Request::emptyResponse();
         }
 
-        return Request::emptyResponse();
+        return $this->telegram->executeCommand($command);
     }
 }
