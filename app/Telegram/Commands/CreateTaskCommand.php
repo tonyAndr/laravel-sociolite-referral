@@ -34,6 +34,7 @@ use App\Models\MasterTask;
 use App\Models\User;
 use App\Notifications\NotifyNewMasterTaskCreated;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 
 class CreateTaskCommand extends UserCommand
@@ -183,11 +184,28 @@ class CreateTaskCommand extends UserCommand
 
                 $ppr = $product->ppr; 
                 $sum = intval($notes['requested']) * $ppr;
+                
+                // check buyers ref balance
+                $balance_deduction = 0;
+                $buyer_details = DB::table('bot_user')
+                    ->where('id', '=', $user_id)
+                    ->first();
+
+                if ($buyer_details->balance > 0) {
+                    if ($buyer_details->balance >= $sum) {
+                        $balance_deduction = $sum;
+                        $sum = 0;
+                    } else {
+                        $balance_deduction = $buyer_details->balance;
+                        $sum = $sum - $buyer_details->balance;
+                    }
+                } 
 
                 $master_task = new MasterTask();
-                $master_task->buyer_id = $chat_id;
+                $master_task->buyer_id = $user_id;
                 $master_task->requested = intval($notes['requested']);
                 $master_task->price = $sum;
+                $master_task->balance_deduction = $balance_deduction;
                 $master_task->status = 'unpaid';
                 $master_task->ref_url = $notes['ref_url'];
                 $master_task->product_id = $product->id;
@@ -195,42 +213,16 @@ class CreateTaskCommand extends UserCommand
                 $master_task->save();
                 $master_task->refresh();
 
-                if ($this->telegram->isAdmin()) {
-                    $master_task->status = 'pre-review';
-                    $master_task->telegram_payment_charge_id = 'admin';
-                    $master_task->save();
-                    $this->conversation->stop();
-                    $data['text'] = "Задача создана админом.";
-                    $result = Request::sendMessage($data);
-                    break;                
-                }
+                // if ($this->telegram->isAdmin()) {
+                //     $result = $this->createTaskAsAdmin($master_task);
+                //     break;                
+                // }
 
-                $data['text'] =  '';
-                
-                $labeled_price = new LabeledPrice(['label'=> $sum . ' звезд', 'amount'=> $sum]);
-                $data['description'] = $notes['requested'] . ' рефералов будут стоить ' . $sum . ' телеграм-звёзд. '.PHP_EOL.'Реф. ссылка: ' . $notes['ref_url'];
-                $data['title'] = $product->description;
-                $data['payload'] = $master_task->id;
-                $data['start_parameter'] = '';
-                $data['currency'] = 'XTR';
-                $data['provider_token'] = '';
-                $data['prices'] = [
-                    $labeled_price
-                ];
-                $keyboard = new InlineKeyboard(
-                    new InlineKeyboardButton(['text'=> 'Заплатить', 'pay' => true]),
-                    [
-                    ['text' => 'Отмена', 'callback_data' => 'cancel_task_'.$master_task->id]
-                ]);
-                $keyboard->setResizeKeyboard(true)
-                    ->setOneTimeKeyboard(true)
-                    ->setSelective(false);
-                $data['reply_markup'] = $keyboard;
-                Log::info(var_export($data, true));
-                $result = Request::sendInvoice($data);
-                // save to remove the message later from chat
-                $master_task->invoice_msg_id = $result->getResult()->getMessageId();
-                $master_task->save();
+                if ($sum === 0) {
+                    $result = $this->createTaskWithoutInvoce($data, $notes, $balance_deduction, $product, $master_task);
+                } else {
+                    $result = $this->createTaskInvoice($data, $notes, $sum, $balance_deduction, $product, $master_task);
+                }
                 $this->conversation->stop();
                 break;
 
@@ -259,27 +251,98 @@ class CreateTaskCommand extends UserCommand
             $task->save();
         }
     }
-    public static function handleSuccessfulPayment($payment, $user_id) {
-        $task_id = $payment->invoice_payload;
 
-        $invoice_id = $payment->telegram_payment_charge_id;
+    // don't charge me
+    public function createTaskAsAdmin($master_task) {
+        $master_task->status = 'active';
+        $master_task->telegram_payment_charge_id = 'admin';
+        $master_task->save();
+        $this->conversation->stop();
+        $data['text'] = "Задача создана админом.";
+        return Request::sendMessage($data);
+    }
+
+    // using only referral balance and avoid invoices
+    public function createTaskWithoutInvoce($data, $notes, $balance_deduction, $product, $master_task) {
+        $balance_deduction_msg = PHP_EOL."Учтен реф. баланс: *$balance_deduction телеграм-звёзд*";
+
+        $data['text'] =  "*Покупка рефералов в $product->description*". PHP_EOL ."Реф. ссылка: " . $notes['ref_url'] . PHP_EOL  . $balance_deduction_msg . PHP_EOL . $notes['requested'] . " рефералов будут стоить *0 телеграм-звёзд*. ";
+
+        $keyboard = new InlineKeyboard([
+            ['text' => 'Подтвердить', 'callback_data' => 'approve_task_no_invoice_'.$master_task->id],
+            ['text' => 'Отмена', 'callback_data' => 'cancel_task_'.$master_task->id]
+        ]);
+        $data['parse_mode'] = 'markdown';
+        $keyboard->setResizeKeyboard(true)
+            ->setOneTimeKeyboard(true)
+            ->setSelective(false);
+        $data['reply_markup'] = $keyboard;
+        return Request::sendMessage($data);
+    }
+
+    public function createTaskInvoice($data, $notes, $sum, $balance_deduction, $product, $master_task) {
+        $data['text'] =  '';
+        $balance_deduction_msg = '';
+        if ($balance_deduction > 0) {
+            $balance_deduction_msg = " (учтен реф. баланс: $balance_deduction)";
+        }
+        
+        $labeled_price = new LabeledPrice(['label'=> $sum . ' звезд', 'amount'=> $sum]);
+        $data['description'] = 'Необходимо оплатить ' . $sum . ' телеграм-звёзд. '.$balance_deduction_msg;
+        $data['title'] = "Покупка " . $notes['requested'] ." рефералов в  $product->description";
+        $data['payload'] = $master_task->id;
+        $data['start_parameter'] = '';
+        $data['currency'] = 'XTR';
+        $data['provider_token'] = '';
+        $data['prices'] = [
+            $labeled_price
+        ];
+        $keyboard = new InlineKeyboard(
+            new InlineKeyboardButton(['text'=> 'Заплатить', 'pay' => true]),
+            [
+            ['text' => 'Отмена', 'callback_data' => 'cancel_task_'.$master_task->id]
+        ]);
+        $keyboard->setResizeKeyboard(true)
+            ->setOneTimeKeyboard(true)
+            ->setSelective(false);
+        $data['reply_markup'] = $keyboard;
+        // Log::info(var_export($data, true));
+        $result = Request::sendInvoice($data);
+        // save to remove the message later from chat
+        $master_task->invoice_msg_id = $result->getResult()->getMessageId();
+        $master_task->save();
+        
+        return $result;
+    }
+
+    public static function handleSuccessfulPayment($task_id, $user_id, $telegram_payment_charge_id = null) {
+        $task_id = intval($task_id);
+
         $task = MasterTask::find(intval($task_id));
         if (!is_null($task)) {
-            $task->status = 'pre-review';
-            $task->telegram_payment_charge_id = $invoice_id;
+            $task->status = 'active'; // leave "pre-review" to enable moderation
+            if ($telegram_payment_charge_id) {
+                $task->telegram_payment_charge_id = $telegram_payment_charge_id;
+            }
             $task->save();
+        }
+
+        // deduct referral balance
+        if ($task->balance_deduction > 0) {
+            $buyer = DB::table('bot_user')
+            ->where('id', '=', $user_id)
+            ->first();
+            $new_balance = $buyer->balance - $task->balance_deduction;
+            $affected = DB::table('bot_user')
+                ->where('id', $user_id)
+                ->update(['balance' => $new_balance]);
         }
 
         // notify admins
         $admins = User::where('is_admin', 1)->get();
         foreach ($admins as $key => $admin) {
-            # code...
-            // if ($admin->oauth_id === 269324233) {
-            //     continue;
-            // }
-
             $data['chat_id'] = $admin->oauth_id;
-            $data['text'] = 'Оплачена новая задача, см. в админке';
+            $data['text'] = "Оплачена новая задача\n\nНазвание: ".$task->title."\nURL: ".$task->ref_url . "\nЦена: " . $task->price . "\nИспольз. реф. баланса: " .$task->balance_deduction;
             $keyboard = new InlineKeyboard(
                 new InlineKeyboardButton(['text'=> 'Посмотреть в админке', 'url' => route('admin.index')]),
                 [
@@ -292,10 +355,22 @@ class CreateTaskCommand extends UserCommand
         }
 
         // notify the buyer
-        $data = [];
-        $data['chat_id'] = $user_id;
-        $data['text'] = 'Ваша заявка отправлена на модерацию, ожидайте ответ от бота в ближайшее время.';
-        return Request::sendMessage($data);
+        if ($task->status === 'pre-review') {
+            // notify the buyer of moderation
+            $data = [];
+            $data['chat_id'] = $user_id;
+            $data['text'] = 'Ваша заявка отправлена на модерацию, ожидайте ответ от бота в ближайшее время.';
+            return Request::sendMessage($data);
+        }
+
+        if ($task->status === 'active') {
+            // notify approved directly
+            self::handleApprove($task);
+        }
+
+        // update referral balances
+        self::handleReferralReward($user_id, $task->price);
+
     }
 
     public static function handleApprove($task) {
@@ -363,6 +438,46 @@ class CreateTaskCommand extends UserCommand
             }
         }
 
+    }
+
+    // on payment update balances of the people who invited the user
+    public static function handleReferralReward($buyer_id, $price) {
+        $lvl1_reward = intval(round($price/10));
+        $lvl2_reward = intval(round($price/100));
+
+        $buyer = DB::table('bot_user')
+                ->where('id', '=', $buyer_id)
+                ->first();
+
+        if ($buyer) {
+            // get lvl 1 ref
+            $lvl1_id = $buyer->ref_id;
+            if ($lvl1_id) {
+                $lvl1_user = DB::table('bot_user')
+                ->where('id', '=', $lvl1_id)
+                ->first();
+
+                if ($lvl1_user) {
+                    $affected = DB::table('bot_user')
+                        ->where('id', $lvl1_id)
+                        ->update(['balance' => ($lvl1_user->balance+$lvl1_reward)]);
+
+                    // repeat for lvl2
+                    $lvl2_id = $lvl1_user->ref_id;
+                    if ($lvl2_id) {
+                        $lvl2_user = DB::table('bot_user')
+                        ->where('id', '=', $lvl2_id)
+                        ->first();
+        
+                        if ($lvl2_user) {
+                            $affected = DB::table('bot_user')
+                                ->where('id', $lvl2_id)
+                                ->update(['balance' => ($lvl2_user->balance+$lvl2_reward)]);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }

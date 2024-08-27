@@ -4,6 +4,7 @@
 namespace App\Telegram\Commands;
 
 
+use Illuminate\Support\Facades\DB;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Entities\ServerResponse;
 use Longman\TelegramBot\Exception\TelegramException;
@@ -22,6 +23,18 @@ class StartCommand extends UserCommand
 
     public function execute(): ServerResponse
     {
+
+        // Get ref id
+        $ref_id = trim($this->getMessage()->getText(true));
+        $user_id = $this->getMessage()->getFrom()->getId();
+        $chat_id = $this->getMessage()->getChat()->getId();
+
+        if ($ref_id && is_numeric($ref_id) && intval($ref_id) !== $user_id) {
+            $affected = DB::table('bot_user')
+              ->where('id', $user_id)
+              ->update(['ref_id' => intval($ref_id)]);
+        }
+
         $this->replyToChat('Тебя приветствует бот для покупки ЖИВЫХ рефералов!');
         return $this->telegram->executeCommand('menu');
     }

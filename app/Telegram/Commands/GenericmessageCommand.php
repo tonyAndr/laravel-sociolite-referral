@@ -85,7 +85,10 @@ class GenericmessageCommand extends SystemCommand
                 'chat_id'    => $chat_id,
                 'message_id' => $task->invoice_msg_id,
             ]);
-            return CreateTaskCommand::handleSuccessfulPayment($payment, $user_id);
+
+            $invoice_id = $payment->telegram_payment_charge_id;
+
+            return CreateTaskCommand::handleSuccessfulPayment($task->id, $user_id, $invoice_id);
         }
 
         return Request::emptyResponse();

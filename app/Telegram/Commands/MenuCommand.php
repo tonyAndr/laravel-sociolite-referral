@@ -28,6 +28,9 @@ class MenuCommand extends UserCommand
             [
                 ['text' => 'Купить рефералов', 'callback_data' => 'command_buy'],
             ],
+            [
+                ['text' => 'Помощь', 'callback_data' => 'command_help'],
+            ],
             // [
             //     ['text' => $sl->get('buttons', 'menu_referral')],
             //     ['text' => $sl->get('buttons', 'menu_help')]
