@@ -442,8 +442,7 @@ class CreateTaskCommand extends UserCommand
 
     // on payment update balances of the people who invited the user
     public static function handleReferralReward($buyer_id, $price) {
-        $lvl1_reward = intval(round($price/10));
-        $lvl2_reward = intval(round($price/100));
+        $lvl1_reward = intval(round($price*0.25));
 
         $buyer = DB::table('bot_user')
                 ->where('id', '=', $buyer_id)
@@ -463,18 +462,18 @@ class CreateTaskCommand extends UserCommand
                         ->update(['balance' => ($lvl1_user->balance+$lvl1_reward)]);
 
                     // repeat for lvl2
-                    $lvl2_id = $lvl1_user->ref_id;
-                    if ($lvl2_id) {
-                        $lvl2_user = DB::table('bot_user')
-                        ->where('id', '=', $lvl2_id)
-                        ->first();
+                    // $lvl2_id = $lvl1_user->ref_id;
+                    // if ($lvl2_id) {
+                    //     $lvl2_user = DB::table('bot_user')
+                    //     ->where('id', '=', $lvl2_id)
+                    //     ->first();
         
-                        if ($lvl2_user) {
-                            $affected = DB::table('bot_user')
-                                ->where('id', $lvl2_id)
-                                ->update(['balance' => ($lvl2_user->balance+$lvl2_reward)]);
-                        }
-                    }
+                    //     if ($lvl2_user) {
+                    //         $affected = DB::table('bot_user')
+                    //             ->where('id', $lvl2_id)
+                    //             ->update(['balance' => ($lvl2_user->balance+$lvl2_reward)]);
+                    //     }
+                    // }
                 }
             }
         }

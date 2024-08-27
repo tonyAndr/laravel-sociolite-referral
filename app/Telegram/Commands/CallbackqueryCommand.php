@@ -51,6 +51,10 @@ class CallbackqueryCommand extends SystemCommand
             CreateTaskCommand::handleSuccessfulPayment($task_id, $chat_id);
         }
 
+        if (strpos($callback_data, 'command_help') !== false) {
+            $this->telegram->executeCommand('help');
+        }
+
         return Request::deleteMessage([
             'chat_id' => $callback_query->getMessage()->getChat()->getId(),
             'message_id' => $callback_query->getMessage()->getMessageId(),
