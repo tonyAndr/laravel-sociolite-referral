@@ -264,15 +264,15 @@ class CreateTaskCommand extends UserCommand
 
     // using only referral balance and avoid invoices
     public function createTaskWithoutInvoce($data, $notes, $balance_deduction, $product, $master_task) {
-        $balance_deduction_msg = PHP_EOL."Учтен реф. баланс: *$balance_deduction телеграм-звёзд*";
+        $balance_deduction_msg = PHP_EOL."Учтен реф. баланс: $balance_deduction телеграм-звёзд";
 
-        $data['text'] =  "*Покупка рефералов в $product->description*". PHP_EOL ."Реф. ссылка: " . $notes['ref_url'] . PHP_EOL  . $balance_deduction_msg . PHP_EOL . $notes['requested'] . " рефералов будут стоить *0 телеграм-звёзд*. ";
+        $data['text'] =  "💰 Покупка рефералов в $product->description". PHP_EOL ."🔗 Реф. ссылка: " . $notes['ref_url'] . PHP_EOL  . $balance_deduction_msg . PHP_EOL . $notes['requested'] . " рефералов будут стоить 0 телеграм-звёзд. ";
 
         $keyboard = new InlineKeyboard([
             ['text' => 'Подтвердить', 'callback_data' => 'approve_task_no_invoice_'.$master_task->id],
             ['text' => 'Отмена', 'callback_data' => 'cancel_task_'.$master_task->id]
         ]);
-        $data['parse_mode'] = 'markdown';
+        $data['parse_mode'] = 'html';
         $keyboard->setResizeKeyboard(true)
             ->setOneTimeKeyboard(true)
             ->setSelective(false);
@@ -477,6 +477,13 @@ class CreateTaskCommand extends UserCommand
                 }
             }
         }
+    }
+
+    public function markdown_escape($text) {
+        return str_replace([
+          '\\', '-', '#', '*', '+', '`', '.', '[', ']', '(', ')', '!', '&', '<', '>', '_', '{', '}', '|'], [
+          '\\\\', '\-', '\#', '\*', '\+', '\`', '\.', '\[', '\]', '\(', '\)', '\!', '\&', '\<', '\>', '\_', '\{', '\}', '\|',
+        ], $text);
     }
 
 }
