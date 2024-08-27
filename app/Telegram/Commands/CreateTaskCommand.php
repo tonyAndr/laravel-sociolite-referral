@@ -213,10 +213,10 @@ class CreateTaskCommand extends UserCommand
                 $master_task->save();
                 $master_task->refresh();
 
-                // if ($this->telegram->isAdmin()) {
-                //     $result = $this->createTaskAsAdmin($master_task);
-                //     break;                
-                // }
+                if ($this->telegram->isAdmin()) {
+                    $result = $this->createTaskAsAdmin($master_task);
+                    break;                
+                }
 
                 if ($sum === 0) {
                     $result = $this->createTaskWithoutInvoce($data, $notes, $balance_deduction, $product, $master_task);
