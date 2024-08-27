@@ -33,8 +33,14 @@ class StartCommand extends UserCommand
         $data['chat_id'] = $chat_id;
         $data['reply_markup'] = Keyboard::remove(['selective' => true]);
 
+        $buyer = DB::table('bot_user')
+        ->where('id', '=', $user_id)
+        ->first();
 
-        $data['text'] = "Твой ID в телеграме: " . $user_id 
+
+        $data['text'] = "⚙️ Твой ID в телеграме: " . $user_id 
+        . PHP_EOL 
+        . "💰 Реферальный баланс: " . $buyer->balance
         . PHP_EOL . PHP_EOL
         . "В нашем боте ты можешь купить рефералов для любой крипто-игры или твоей произвольной ссылки."
         . PHP_EOL . PHP_EOL
