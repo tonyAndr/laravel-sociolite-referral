@@ -25,13 +25,21 @@ class UserTaskController extends Controller
         $user = $request->user();
         $user_task = UserTask::where('user_id', $user->id)->where('master_task_id', $task_id)->first();
         $status = 'preview';
+        $expires_min = false;
         if ($user_task) {
             $status = $user_task->status;
             // if active show all info, proof upload, finish/cancel buttons, etc
             // if finished, hide buttons
+
+            // timeleft
+            \date_default_timezone_set('Europe/Moscow');
+            $now = now('Europe/Moscow');
+            $exp = new \DateTime($user_task->expires_at);
+            $diff = $now->diff($exp);
+            $expires_min = $diff->i;
         }
         // if user_task not found then its just a preview page, limited info
-        return view('tasks.user-task-view', ['task' => $master_task, 'user_status' => $status]);
+        return view('tasks.user-task-view', ['task' => $master_task, 'user_status' => $status, 'expires_min' => $expires_min]);
     }
 
     public function endTask(Request $request): RedirectResponse {
@@ -117,11 +125,11 @@ class UserTaskController extends Controller
         $in_work_count = count($active_user_tasks);
         $progress = $master_task->fullfilled + $in_work_count;
         if ($progress < $master_task->requested) {
-            $tomorrow = now('Europe/Moscow')->addDay();
+            $expires_at = now('Europe/Moscow')->addHour();
             $user_task = new UserTask([
                 'master_task_id' => intval($task_id),
                 'user_id' => $user->id,
-                'expires_at' => $tomorrow->toDateTimeString()
+                'expires_at' => $expires_at->toDateTimeString()
             ]);
             $user_task->save();
 

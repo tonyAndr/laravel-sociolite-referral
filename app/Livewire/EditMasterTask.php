@@ -55,7 +55,7 @@ class EditMasterTask extends ModalComponent
         // notify buyer
         CreateTaskCommand::handleApprove($this->form->task);
         // notify users
-        MasterTaskController::handleTaskApproved($this->form->task);
+        MasterTaskController::notifyChannelNewTask($this->form->task);
     }
 
     public function render()

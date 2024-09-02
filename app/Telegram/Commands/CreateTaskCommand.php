@@ -18,6 +18,7 @@
 
 namespace App\Telegram\Commands;
 
+use App\Http\Controllers\MasterTaskController;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Conversation;
 use Longman\TelegramBot\Entities\Keyboard;
@@ -210,6 +211,7 @@ class CreateTaskCommand extends UserCommand
                 $master_task->ref_url = $notes['ref_url'];
                 $master_task->product_id = $product->id;
                 $master_task->title = "Стань рефералом в $product->description"; 
+                $master_task->proof_type = 'screenshot'; 
                 $master_task->save();
                 $master_task->refresh();
 
@@ -256,6 +258,7 @@ class CreateTaskCommand extends UserCommand
     public function createTaskAsAdmin($master_task) {
         $master_task->status = 'active';
         $master_task->telegram_payment_charge_id = 'admin';
+        $master_task->proof_type = 'screenshot';
         $master_task->save();
         $this->conversation->stop();
         $data['text'] = "Задача создана админом.";
@@ -325,6 +328,8 @@ class CreateTaskCommand extends UserCommand
                 $task->telegram_payment_charge_id = $telegram_payment_charge_id;
             }
             $task->save();
+            // notify the channel
+            MasterTaskController::notifyChannelNewTask($task);
         }
 
         // deduct referral balance
@@ -370,7 +375,6 @@ class CreateTaskCommand extends UserCommand
 
         // update referral balances
         self::handleReferralReward($user_id, $task->price);
-
     }
 
     public static function handleApprove($task) {

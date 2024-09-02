@@ -32,6 +32,10 @@ class AdminController extends Controller
     {
         return $this->index($request, 'giveaways');
     }
+    public function stats(Request $request)
+    {
+        return $this->index($request, 'stats');
+    }
 
     public function delete_user(Request $request) {
         

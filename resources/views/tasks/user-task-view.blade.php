@@ -18,15 +18,25 @@
                     </div>
                     <p class="text-gray-500 text-center">Выполняя задания ты зарабатываешь робуксы - внутриигровую
                         валюту в Roblox. </p>
-
                 </div>
+                
 
             </div>
+
+            @if ($user_status === 'active')
+            <div class="relative bg-white mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 bg-warning bark:text-gray-100">
+                    <p class="text-gray-500 text-center">Осталось времени на выполнение задания: <strong>{{$expires_min > 0 ? "~" . $expires_min . " мин." : "меньше минуты"}} </strong></p>
+                </div>
+            </div>
+            @endif
+
             <div class="relative bg-white mb-6 bark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 bark:text-gray-100">
                     <h3>Описание задания</h3>
                     <p>Для выполнения задания тебе необходимо перейти по реферальной ссылке (указана ниже) и
-                        зарегистрироваться на сайте. </p>
+                        зарегистрироваться там (или начать разговор с ботом или запустить игру по ссылке). </p>
+                    <p class="font-bold">Время выполнения задания - 1 час. Если через час задание не выполнено - оно будет автоматически отменено.</p>
                     <div class="flex flex-col">
                         <p class="text-gray-500">Реферальная ссылка</p>
                         <a href="{{ $task->ref_url }}" target="_blank" class="btn">Перейти: {{ $task->ref_url }}</a>
@@ -64,14 +74,14 @@
                                     
                                 @endif
                                 <p>Для выполнения задания нужно загрузить скриншот(ы), подтверждающий выполненные
-                                    действия из игры <strong>{{ $task->product->description }}</strong>.</p>
+                                    действия из игры или регистрации на сайте <strong>{{ $task->product->description }}</strong>.</p>
                                 <x-input-label for="screenshot_upload" value="Загрузить скриншот"></x-input-label>
                                 <input id="screenshot_upload" name="screenshots" type="file"
                                     class="file-input file-input-bordered w-full max-w-xs" required multiple />
                                 <x-input-error class="mt-2" :messages="$errors->get('screenshots')" />
                                 <p>Если по заданию нужно выполнить несколько действий, то загрузи скриншоты с
                                     результатом выполнения каждого из них.</p>
-
+                                <p class="font-bold">Если вместо скриншота заружено любое другое изображение не являющееся пруфом, мы оставляем за собой право обнулить твой баланс или забанить твой аккаунт на нашем сайте.</p>
                             @endif
                             @if ($task->proof_type === 'text')
                                 <x-input-label for="text_proof" value="Комментарий"></x-input-label>

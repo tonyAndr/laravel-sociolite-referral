@@ -14,8 +14,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:giveaway-handle')->cron('0 11,15,20 * * *')->timezone('Europe/Moscow');
-        $schedule->command('app:expire-tasks')->cron('*/5 * * * *')->timezone('Europe/Moscow');
-        $schedule->command('app:user-task-reminder')->cron('6 */5 * * *')->timezone('Europe/Moscow');
+        $schedule->command('app:expire-tasks')->cron('*/3 * * * *')->timezone('Europe/Moscow');
+        $schedule->command('app:user-task-reminder')->cron('*/30 * * * *')->timezone('Europe/Moscow');
         $schedule->command('app:tg-parser')->cron('16 */2 * * *')->timezone('Europe/Moscow');
     }
 

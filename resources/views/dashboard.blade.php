@@ -15,7 +15,7 @@
         </div>
                 {{-- @if (Auth::user()->is_admin) --}}
                 <h3 class="m-6">Задания</h3>
-                <div class="flex flex-col sm:flex-row gap-4">
+                <div class="flex flex-col sm:flex-row sm:flex-wrap gap-4">
                     @if (count($user_tasks))
                     @foreach ($user_tasks as $ut)
                         <a href="{{ route('tasks.user_task', ['id' => $ut->id]) }}" id="user_task_btn">
