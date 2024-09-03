@@ -15,7 +15,9 @@
                     <option value="cancelled">Cancelled</option>
                     <option value="active">Active</option>
                     <option value="pre-review">PreReview</option>
-                    <option value="denied">Denied</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="pre-refund">PreRefund</option>
+                    <option value="refunded">Refunded</option>
                     <option value="unpaid">Unpaid</option>
                     <option value="finished">Finished</option>
                 </select>
@@ -31,6 +33,8 @@
             <input id="ref_url" type="text" wire:model="form.ref_url" class="input input-bordered w-full max-w-xs mb-6">
             <x-input-label for="requested" value="Рефералов куплено" />
             <input id="requested" type="number" wire:model="form.requested" class="input input-bordered w-full max-w-xs mb-6">
+            <x-input-label for="fullfilled" value="Рефералов получено" />
+            <input id="fullfilled" type="number" wire:model="form.fullfilled" class="input input-bordered w-full max-w-xs mb-6">
             <x-input-label for="proof_type" value="Пруф" />
             <select id="proof_type" wire:model="form.proof_type" class="select select-bordered w-full max-w-xs mb-6">
                 <option value="screenshot_nickname">Screenshot + Nickname</option>
@@ -40,9 +44,7 @@
             </select>
             <x-input-label for="user_reward" value="Награда юзеру" />
             <input id="user_reward" type="number" wire:model="form.user_reward" class="input input-bordered w-full max-w-xs mb-6">
-
         </div>
-
     </x-slot>
 
     <x-slot name="buttons">

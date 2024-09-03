@@ -26,11 +26,12 @@ class CancelMasterTask extends ModalComponent
     {
         // Gate::authorize('update', $this->user);
         $this->task = $task;
+        $this->reason = $task->reason;
     }
 
     public function cancel()
     {
-        $this->task->status = 'cancelled';
+        $this->task->status = 'refunded';
         $this->task->reason = $this->reason;
         $this->task->save();
         $this->task->refresh();

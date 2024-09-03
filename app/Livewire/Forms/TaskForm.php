@@ -17,6 +17,7 @@ class TaskForm extends Form
     // public $content = '';
 
     public $requested;
+    public $fullfilled;
     public $title;
     public $description;
     public $ref_url;
@@ -29,6 +30,7 @@ class TaskForm extends Form
     {
         $this->task = $task;
         $this->requested = $task->requested;
+        $this->fullfilled = $task->fullfilled;
         $this->title = $task->title;
         $this->description = $task->description;
         $this->ref_url = $task->ref_url;
@@ -45,6 +47,7 @@ class TaskForm extends Form
         $this->task->update(
             $this->only([
                 'requested',
+                'fullfilled',
                 'title', 
                 'description',
                 'ref_url',

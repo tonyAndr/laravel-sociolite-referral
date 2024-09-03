@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use App\Models\MasterTask;
+use App\Models\User;
 use App\Models\UserTask;
+use App\Notifications\UserTaskRejected;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -142,6 +144,28 @@ class UserTaskController extends Controller
     public function dashboard() : RedirectResponse
     {
         return Redirect::route('dashboard');
+    }
+
+    public static function reject($user_task_id) {
+        $user_task = UserTask::find(intval($user_task_id));
+        if ($user_task) {
+            // ut status = rejected
+            $user_task->status = 'rejected';
+            $user_task->save();
+            
+            $master_task = MasterTask::find($user_task->master_task_id);
+
+            // user balance decrease
+            $user_id = $user_task->user_id;
+            $user = User::find($user_id);
+            $user->robux = $user->robux - $master_task->user_reward;
+            $user->save();
+            // send message task failed
+            $user->notify(new UserTaskRejected($master_task));
+
+            // mt fullfilled--
+            $master_task->fullfilled = $master_task->fullfilled - 1;
+        }
     }
 
 }

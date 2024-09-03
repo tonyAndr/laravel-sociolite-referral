@@ -22,7 +22,7 @@
                         <td class="text-center border-b group-last:border-none">{{ $nt->fullfilled }} из {{ $nt->requested }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $nt->price }}</td>
                         <td class="text-center border-b group-last:border-none">{{ $nt->status }}</td>
-                        <td class="text-center border-b group-last:border-none flex flex-row gap-4 justify-center">
+                        <td class="text-center border-b group-last:border-none flex flex-row gap-2 justify-center">
                                 <button wire:click="$dispatch('openModal', { component: 'edit-master-task', arguments: { task: {{ $nt->id }}, edit_action: 'edit' }})"><i
                                     class="fa-solid fa-pen-to-square px-1  text-xl text-yellow-600"></i></button>
                                 <button wire:click="$dispatch('openModal', { component: 'view-progress-master-task', arguments: { task: {{ $nt->id }}, edit_action: 'viewProgress' }})"><i

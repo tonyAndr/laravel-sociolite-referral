@@ -418,8 +418,9 @@ class CreateTaskCommand extends UserCommand
             // notify the buyer
             $data = [];
             $data['chat_id'] = $task->buyer_id;
-            $data['text'] = "Задача #$task->id выполнена.";
-            Request::sendMessage($data);
+            $data['text'] = "<b>Задача #$task->id выполнена.</b>".PHP_EOL."Рефералы: запрошено $task->requested / получено $task->fullfilled.".PHP_EOL."Используйте команду <b>/task $task->id </b> для инфомации и дополнительных действий.";
+            $data['parse_mode'] = 'html';
+            $resp = Request::sendMessage($data);
     
             $admins = User::where('is_admin', 1)->get();
             foreach ($admins as $key => $admin) {

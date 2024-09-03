@@ -31,6 +31,10 @@ class ViewProgressMasterTask extends ModalComponent
         $this->task = $task;
     }
     
+    #[On('refresh-task-progress-component')] 
+    public function updateComponent()
+    {
+    }
 
     #[On('show-proof')] 
     public function showProof($user_task_id) {

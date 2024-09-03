@@ -27,7 +27,7 @@ class TaskReviewAdminTable extends Component
         $user = Auth::getUser();
         $route_uri = Route::current()->uri;
 
-        $new_tasks = MasterTask::where('status', 'pre-review')->orderBy('created_at', 'desc')->paginate(15, pageName: 'taskreview');
+        $new_tasks = MasterTask::whereIn('status', ['pre-review', 'rejected', 'pre-refund'])->orderBy('updated_at', 'desc')->paginate(15, pageName: 'taskreview');
 
         return view('livewire.task-review-admin-table', ['new_tasks' => $new_tasks]);
     }

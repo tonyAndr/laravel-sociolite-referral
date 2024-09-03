@@ -33,6 +33,6 @@
     </x-slot>
 
     <x-slot name="buttons">
-        <button class="btn btn-success" wire:click="$dispatch('closeModal')">Закрыть</button>
+        <button class="btn btn-outline" wire:click="$dispatch('closeModal')">Закрыть</button>
     </x-slot>
 </x-modal>
