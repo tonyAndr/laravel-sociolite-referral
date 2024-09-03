@@ -165,6 +165,7 @@ class UserTaskController extends Controller
 
             // mt fullfilled--
             $master_task->fullfilled = $master_task->fullfilled - 1;
+            $master_task->save();
         }
     }
 
