@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 /public/robots.txt
 composer.lock
+google_api_credentials.json

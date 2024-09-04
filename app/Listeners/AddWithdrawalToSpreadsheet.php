@@ -3,6 +3,8 @@
 namespace App\Listeners;
 
 use App\Events\WithdrawalPlaced;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class AddWithdrawalToSpreadsheet
 {
@@ -22,7 +24,11 @@ class AddWithdrawalToSpreadsheet
         //
         $withdrawal_data = $event->data;
         if (env('APP_ENV') === 'production') {
-            $this->addRow($withdrawal_data);
+            try {
+                $this->addRow($withdrawal_data);
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
         }
     }
 
