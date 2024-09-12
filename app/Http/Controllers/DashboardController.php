@@ -31,7 +31,7 @@ class DashboardController extends Controller
             $in_work_count = count($active_user_tasks);
             $progress = $mt->fullfilled + $in_work_count;
             $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
-            $user_registered_in_product = UserTask::where('user_id', $user->id)->where('product_id', $product_id)->count();
+            $user_registered_in_product = UserTask::where('user_id', $user->id)->where('product_id', '!=' , 17)->where('product_id', $product_id)->count();
 
             
             if (!$user_already_has && $user_registered_in_product) {
