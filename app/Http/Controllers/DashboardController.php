@@ -26,10 +26,18 @@ class DashboardController extends Controller
         $master_tasks = MasterTask::where('status', 'active')->get();
         $user_tasks = [];
         foreach ($master_tasks as $k => $mt) {
+            $product_id = $mt->product_id;
             $active_user_tasks = UserTask::where('master_task_id', $mt->id)->where('status', 'active')->whereNot('user_id', $user->id)->get();
             $in_work_count = count($active_user_tasks);
             $progress = $mt->fullfilled + $in_work_count;
             $user_already_has = UserTask::where('user_id', $user->id)->where('master_task_id', $mt->id)->first();
+            $user_registered_in_product = UserTask::where('user_id', $user->id)->where('product_id', $product_id)->count();
+
+            
+            if (!$user_already_has && $user_registered_in_product) {
+                continue;
+            }
+
             if ($progress < $mt->requested || ($user_already_has && $user_already_has->status === 'active')) {
                 // aligible to show to users
                 if ($user_already_has) {
