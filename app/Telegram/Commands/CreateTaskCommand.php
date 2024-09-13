@@ -173,6 +173,35 @@ class CreateTaskCommand extends UserCommand
 
                 $notes['ref_url'] = $text;
                 $text          = '';
+                $ask_desc = true;
+
+            case 1:
+                if (isset($ask_desc)) {
+                    $notes['state'] = 1;
+
+                    $this->conversation->update();
+                    $keyboard = new Keyboard([
+                        ['text' => 'Продолжить'],
+                        ['text' => 'Отмена']
+                    ]);
+
+                    // Config
+                    $keyboard->setResizeKeyboard(true)
+                        ->setOneTimeKeyboard(true)
+                        ->setSelective(true);
+
+                    $data['reply_markup'] = $keyboard;
+                    $data['text'] = '(Опционально) Добавьте описание к заданию, порядок действий или пояснение для исполнителей';
+
+                    $result = Request::sendMessage($data);
+                    break;
+                }
+                if ($text === 'Продолжить') {
+                    $text = '';
+                }
+                $notes['desc'] = $text;
+                $text          = '';
+            
 
                 $this->conversation->update();
 
@@ -211,6 +240,7 @@ class CreateTaskCommand extends UserCommand
                 $master_task->ref_url = $notes['ref_url'];
                 $master_task->product_id = $product->id;
                 $master_task->title = "Стань рефералом в $product->description"; 
+                $master_task->description = $notes['desc']; 
                 $master_task->proof_type = 'screenshot'; 
                 $master_task->save();
                 $master_task->refresh();
