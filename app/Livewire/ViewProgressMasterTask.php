@@ -9,13 +9,12 @@ use LivewireUI\Modal\ModalComponent;
 use Illuminate\Support\Facades\Gate;
 use App\Telegram\Commands\CreateTaskCommand;
 use Livewire\Attributes\On;
+use App\Http\Controllers\UserTaskController;
 
 class ViewProgressMasterTask extends ModalComponent
 {
 
     public MasterTask $task;
-    public $screenshot_urls = [];
-    public $service_nickname = false;
 
     /**
      * Supported: 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', '7xl'
@@ -36,28 +35,32 @@ class ViewProgressMasterTask extends ModalComponent
     {
     }
 
-    #[On('show-proof')] 
-    public function showProof($user_task_id) {
-        $user_task = UserTask::find(intval($user_task_id));
-        $screenshot_urls = [];
-        $service_nickname = false;
+    // #[On('show-proof')] 
+    // public function showProof($user_task_id) {
+    //     $user_task = UserTask::find(intval($user_task_id));
+    //     $screenshot_urls = [];
+    //     $service_nickname = false;
 
-        if ($user_task->proof) {
-            if (in_array($user_task->mastertask->proof_type, ['screenshot', 'screenshot_nickname'])) {
+    //     if ($user_task->proof) {
+    //         if (in_array($user_task->mastertask->proof_type, ['screenshot', 'screenshot_nickname'])) {
 
-                if (strpos($user_task->proof, ',') !== false ) {
-                    $screenshot_urls = explode(',', $user_task->proof);
-                } else {
-                    $screenshot_urls[] = $user_task->proof;
-                }
+    //             if (strpos($user_task->proof, ',') !== false ) {
+    //                 $screenshot_urls = explode(',', $user_task->proof);
+    //             } else {
+    //                 $screenshot_urls[] = $user_task->proof;
+    //             }
 
-                if ($user_task->service_nickname) {
-                    $service_nickname = $user_task->service_nickname;
-                }
-            }
-        }
-        $this->screenshot_urls = $screenshot_urls;
-        $this->service_nickname = $service_nickname;
+    //             if ($user_task->service_nickname) {
+    //                 $service_nickname = $user_task->service_nickname;
+    //             }
+    //         }
+    //     }
+    // }
+
+    public function reject($ut_id) 
+    {
+        UserTaskController::reject($ut_id);
+        $this->dispatch('refresh-task-progress-component');
     }
 
     public function render()
@@ -65,8 +68,6 @@ class ViewProgressMasterTask extends ModalComponent
 
         return view('livewire.view-progress-master-task')->with([
             'usertasks' => $this->task->usertasks->where('status', 'finished')->all(),
-            'screenshot_urls' => $this->screenshot_urls,
-            'service_nickname' => $this->service_nickname
-        ]);;
+        ]);
     }
 }

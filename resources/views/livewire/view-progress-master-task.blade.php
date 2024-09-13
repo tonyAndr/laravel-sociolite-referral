@@ -5,15 +5,30 @@
 
     <x-slot name="content">
         <div class="flex flex-row gap-4">
-            <div class="flex flex-col p-4">
+            <div class="flex flex-row flex-wrap gap-3 p-4">
                 @foreach ($usertasks as $ut)
-                    <div wire:key="{{$ut->id}}">
-                        User ID: {{$ut->user_id}} | Выполнено: {{$ut->updated_at}}
-                        <livewire:user-task-show-screenshots wire:key="{{$ut->id}}" user_task_id="{{$ut->id}}"/>
+                    <div wire:key="{{$ut->id}}" class="relative">
+                        <div class="card bg-base-200 w-72 shadow-xl">
+                            <div class="card-body">
+                                <div>User ID: {{$ut->user_id}}<br>Выполнено: {{$ut->updated_at}}</div>
+                                @if($ut->service_nickname)
+                                    <div>Ник в сервисе: {{$ut->service_nickname}}</div>
+                                @endif
+                            </div>
+                            <figure>
+                                <a href="{{Storage::url($ut->proof)}}" target="_blank">
+                                    <img
+                                        src="{{Storage::url($ut->proof)}}"
+                                        />
+                                </a>
+                            </figure>
+                        </div>
+                        <button class="absolute top-2 right-2 btn btn-outline btn-error btn-sm" wire:click="reject({{$ut->id}})">Отклонить</button>
+                        {{-- <livewire:user-task-show-screenshots wire:key="{{$ut->id}}" user_task_id="{{$ut->id}}"/> --}}
                     </div>
                 @endforeach
             </div>
-            <div class="border-1 border-green-300 rounded-md p-4">
+            {{-- <div class="border-1 border-green-300 rounded-md p-4">
                 <div wire:loading> 
                     Ищу пруфы...
                 </div>
@@ -27,7 +42,7 @@
                         </p>
                     @endforeach
                 @endif
-            </div>
+            </div> --}}
         </div>
 
     </x-slot>

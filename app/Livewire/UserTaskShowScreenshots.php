@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Http\Controllers\UserTaskController;
 use Livewire\Component;
 
 class UserTaskShowScreenshots extends Component
@@ -16,11 +15,7 @@ class UserTaskShowScreenshots extends Component
 
 
     
-    public function reject() 
-    {
-        UserTaskController::reject($this->user_task_id);
-        $this->dispatch('refresh-task-progress-component');
-    }
+
 
     public function render()
     {
