@@ -11,7 +11,7 @@ class MasterTaskController extends Controller
 {
     //
 
-    public static function notifyChannelNewTask($task)
+    public static function notifyChannelNewTask()
     {
         // send post to the channel
         Notification::route('telegram', App::environment('local') ? env('TELEGRAM_CHANNEL_DEV_ID') : env('TELEGRAM_LUCHBUX_CHANNEL_LIVE_ID'))->notify(new ChannelPostNewTask());

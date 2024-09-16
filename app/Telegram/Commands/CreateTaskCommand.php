@@ -165,7 +165,8 @@ class CreateTaskCommand extends UserCommand
                         ->setSelective(true);
 
                     $data['reply_markup'] = $keyboard;
-                    $data['text'] = 'Напиши в чат одну реферальную ссылку:';
+                    $data['text'] = "<b>Базовая цена реферала включает только переход исполнителя по ссылке.</b> \nНапишите в чат одну реферальную ссылку:";
+                    $data['parse_mode'] = 'html';
 
                     $result = Request::sendMessage($data);
                     break;
@@ -174,33 +175,68 @@ class CreateTaskCommand extends UserCommand
                 $notes['ref_url'] = $text;
                 $text          = '';
                 $ask_desc = true;
+            // case 1:
+            //     if ($text === '' || !in_array($text, array('Создать задание', 'Добавить условие'))) {
+            //         $notes['state'] = 1;
 
-            case 1:
-                if (isset($ask_desc)) {
-                    $notes['state'] = 1;
+            //         $this->conversation->update();
+            //         $keyboard = new Keyboard([
+            //             ['text' => 'Создать задание'],
+            //             ['text' => 'Добавить условие'],
+            //             ['text' => 'Отмена']
+            //         ]);
 
-                    $this->conversation->update();
-                    $keyboard = new Keyboard([
-                        ['text' => 'Продолжить'],
-                        ['text' => 'Отмена']
-                    ]);
+            //         // Config
+            //         $keyboard->setResizeKeyboard(true)
+            //             ->setOneTimeKeyboard(true)
+            //             ->setSelective(true);
 
-                    // Config
-                    $keyboard->setResizeKeyboard(true)
-                        ->setOneTimeKeyboard(true)
-                        ->setSelective(true);
+            //         $data['reply_markup'] = $keyboard;
+            //         $data['text'] = "<b>Базовая цена реферала включает только переход по ссылке.</b> \nХотите добавить дополнительное условие к заданию?";
+            //         $data['parse_mode'] = 'html';
 
-                    $data['reply_markup'] = $keyboard;
-                    $data['text'] = '(Опционально) Добавьте описание к заданию, порядок действий или пояснение для исполнителей';
+            //         $result = Request::sendMessage($data);
+            //         break;
+            //     }
 
-                    $result = Request::sendMessage($data);
-                    break;
-                }
-                if ($text === 'Продолжить') {
-                    $text = '';
-                }
-                $notes['desc'] = $text;
-                $text          = '';
+            //     if ($text === 'Создать задание') {
+            //         $ask_desc = false;
+            //     }
+            //     if ($text === 'Добавить условие') {
+            //         $ask_desc = true;
+            //     }
+
+            //     // $notes['ref_url'] = $text;
+            //     $text          = '';
+                
+
+            // case 1:
+            //     if (isset($ask_desc) && $ask_desc) {
+            //         $notes['state'] = 1;
+
+            //         $this->conversation->update();
+            //         $keyboard = new Keyboard([
+            //             ['text' => 'Продолжить'],
+            //             ['text' => 'Отмена']
+            //         ]);
+
+            //         // Config
+            //         $keyboard->setResizeKeyboard(true)
+            //             ->setOneTimeKeyboard(true)
+            //             ->setSelective(true);
+
+            //         $data['reply_markup'] = $keyboard;
+            //         $data['parse_mode'] = 'html';
+            //         $data['text'] = 'Добавьте условие к заданию, порядок действий или пояснение для исполнителей';
+
+            //         $result = Request::sendMessage($data);
+            //         break;
+            //     }
+            //     if ($text === 'Продолжить') {
+            //         $text = '';
+            //     }
+            //     $notes['desc'] = $text;
+            //     $text          = '';
             
 
                 $this->conversation->update();
@@ -240,7 +276,9 @@ class CreateTaskCommand extends UserCommand
                 $master_task->ref_url = $notes['ref_url'];
                 $master_task->product_id = $product->id;
                 $master_task->title = "Стань рефералом в $product->description"; 
-                $master_task->description = $notes['desc']; 
+                if (isset($notes['desc'])) {
+                    $master_task->description = $notes['desc']; 
+                }
                 $master_task->proof_type = 'screenshot'; 
                 $master_task->save();
                 $master_task->refresh();
@@ -359,7 +397,7 @@ class CreateTaskCommand extends UserCommand
             }
             $task->save();
             // notify the channel
-            MasterTaskController::notifyChannelNewTask($task);
+            // MasterTaskController::notifyChannelNewTask($task);
         }
 
         // deduct referral balance

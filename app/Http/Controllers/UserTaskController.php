@@ -131,7 +131,8 @@ class UserTaskController extends Controller
             $user_task = new UserTask([
                 'master_task_id' => intval($task_id),
                 'user_id' => $user->id,
-                'expires_at' => $expires_at->toDateTimeString()
+                'expires_at' => $expires_at->toDateTimeString(),
+                'product_id' => $master_task->product_id
             ]);
             $user_task->save();
 
