@@ -14,6 +14,7 @@ class UserTask extends Model
         'master_task_id',
         'user_id',
         'expires_at',
+        'product_id'
     ];
 
     public function masterTask(): BelongsTo
