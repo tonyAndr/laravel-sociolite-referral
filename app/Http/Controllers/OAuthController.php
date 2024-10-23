@@ -92,6 +92,7 @@ class OAuthController extends Controller
                         'oauth_refresh_token' => $oAuthUser->refreshToken,
                     ]);
                 } else {
+                    $user->name = $oAuthUser->getName();
                     $user->oauth_id = $oAuthUser->getId(); 
                     $user->oauth_provider = $provider;
                     $user->avatar_url = $oAuthUser->getAvatar();

@@ -100,7 +100,7 @@
                             <x-dropdown-link :href="route('login')" :active="request()->routeIs('login')">
                                 {{ __('Log in') }}
                             </x-dropdown-link>
-                            <x-dropdown-link :href="route('register')" :active="request()->routeIs('register')">
+                            <x-dropdown-link :href="route('login')" :active="request()->routeIs('register')">
                                 {{ __('Register') }}
                             </x-dropdown-link>
                         </x-slot>
@@ -193,7 +193,7 @@
                     <x-responsive-nav-link :href="route('login')">
                         {{ __('Log in') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('register')">
+                    <x-responsive-nav-link :href="route('login')">
                         {{ __('Register') }}
                     </x-responsive-nav-link>
 

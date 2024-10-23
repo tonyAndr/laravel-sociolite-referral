@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('app:expire-tasks')->cron('*/3 * * * *')->timezone('Europe/Moscow');
         $schedule->command('app:user-task-reminder')->cron('*/30 * * * *')->timezone('Europe/Moscow');
         $schedule->command('app:tg-parser')->cron('16 */2 * * *')->timezone('Europe/Moscow');
-        $schedule->command('app:new-task-notification')->cron('30 8,13,18 * * *')->timezone('Europe/Moscow');
+        $schedule->command('app:new-task-notification')->cron('30 13 * * *')->timezone('Europe/Moscow');
     }
 
     /**
