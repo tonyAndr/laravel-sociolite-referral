@@ -13,8 +13,13 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [AuthenticatedSessionController::class, 'create'])
-                ->name('register');
+    //Route::get('register', [AuthenticatedSessionController::class, 'create'])
+    //            ->name('register');
+    
+    Route::get('register', function () {
+        return redirect()->route('login');
+    })->name('register');
+                
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
