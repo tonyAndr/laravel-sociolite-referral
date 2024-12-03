@@ -1,0 +1,52 @@
+services:
+  laravel:
+    image: laravel-roblox-wsl-image
+    container_name: laravel-roblox-wsl
+    environment:
+      - DB_HOST=luchbux-mariadb
+      - DB_DATABASE=laravel
+      - DB_USERNAME=root
+    ports:
+      - "8000:8000"
+      - "9003:9003"
+    networks:
+      - laravel-network
+    volumes:
+      - /home/dev_acc/projects/laravel-roblox-exchange:/app
+    labels:
+      group: luchbux-stack
+
+  db:
+    image: bitnami/mariadb
+    container_name: luchbux-mariadb
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_DATABASE=laravel
+    networks:
+      - laravel-network
+    volumes:
+      - mariadb_data:/bitnami/mariadb
+    labels:
+      group: luchbux-stack
+
+  phpmyadmin:
+    image: bitnami/phpmyadmin
+    container_name: phpmyadmin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: db
+    networks:
+      - laravel-network
+    labels:
+      group: luchbux-stack
+
+networks:
+  laravel-network:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    driver: local
