@@ -33,7 +33,9 @@
                                         @endif
                                     </p>  
                                 <p class="uppercase font-bold p-2 text-center">{{$ut->title}}</p>
-                                <p class="text-end rounded bg-white px-2 font-bold text-success">+ {{$ut->user_reward}} Робукс</p>
+                                @if ($ut->task_type === 0) 
+                                    <p class="text-end rounded bg-white px-2 font-bold text-success">+ {{$ut->user_reward}} Робукс</p>
+                                @endif
                                 
                             </div>
                         </a>

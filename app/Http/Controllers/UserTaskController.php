@@ -127,7 +127,7 @@ class UserTaskController extends Controller
         $in_work_count = count($active_user_tasks);
         $progress = $master_task->fullfilled + $in_work_count;
         if ($progress < $master_task->requested) {
-            $expires_at = now('Europe/Moscow')->addHour();
+            $expires_at = $master_task->task_type === 0 ? now('Europe/Moscow')->addHour() : now('Europe/Moscow')->addMonth(); 
             $user_task = new UserTask([
                 'master_task_id' => intval($task_id),
                 'user_id' => $user->id,

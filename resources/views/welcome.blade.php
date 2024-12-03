@@ -55,21 +55,19 @@
                     <div class="flex flex-wrap backdrop-blur-sm bg-white/80 bg-center">
                         <div class="grow items-center px-2 my-4">
                             <h2 class="text-center font-semibold">Зарегистрируйтесь</h2>
-                            <p class="text-center py-2">Зарегистрируйтесь, используя свое имя пользователя<br> ROBLOX
-                                или
-                                учетную запись Яндекс.</p>
+                            <p class="text-center py-2">Войдите через Телеграм - это быстро и безопасно</p>
                             <img class="img-fluid shadow mx-auto mt-auto w-100" src="/1.png"
                                 style="max-width: 349px !important; border-top-right-radius: 21px; border-top-left-radius: 21px">
                         </div>
                         <div class="grow items-center px-2 my-4">
                             <h2 class="text-center font-semibold">Выполняйте задания</h2>
-                            <p class="text-center py-2">Выполняйте задания что бы получить Робуксы.</p>
+                            <p class="text-center py-2">Выполняйте <a href="{{ url('/dashboard') }}">задания</a> что бы получить Робуксы</p>
                             <img class="img-fluid shadow mx-auto mt-auto w-100" src="/2.png"
                                 style="max-width: 349px !important; border-top-right-radius: 21px; border-top-left-radius: 21px">
                         </div>
                         <div class="grow items-center px-2 my-4">
                             <h2 class="text-center font-semibold">Выводите Робуксы</h2>
-                            <p class="text-center py-2">Перенесите свой Robux в свою учетную запись в игре ROBLOX.</p>
+                            <p class="text-center py-2">Перенесите полученные Robux в свою учетную запись в игре ROBLOX</p>
                             <img class="img-fluid shadow mx-auto mt-auto w-100" src="/3.png"
                                 style="max-width: 349px !important; border-top-right-radius: 21px; border-top-left-radius: 21px">
                         </div>
@@ -80,6 +78,7 @@
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
                     <div
                         class="flex flex-col py-10 px-4 text-center bg-black text-xl backdrop-blur-sm backdrop-invert bg-black/80 text-white">
+                        <p class="flex items-center justify-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/djs4dVZha0U?si=varpw_oVbe82lE2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
                         <p>На нашем сайте вы точно узнаете, как и где заработать робуксы по настоящему.</p>
                         <p>Даем гарантию, что
                             за

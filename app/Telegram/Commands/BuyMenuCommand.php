@@ -38,7 +38,9 @@ class BuyMenuCommand extends UserCommand
             $products = Product::all();
             foreach ($products as $key => $pr) {
                 # code...
-                $options[] = [['text' => $pr->description , 'callback_data' => 'referral_service_'.$pr->id]];
+                if (!in_array($pr->id, [1001, 1002, 1003, 1004, 1005])) {
+                    $options[] = [['text' => $pr->description , 'callback_data' => 'referral_service_'.$pr->id]];
+                }
             }
             $keyboard = new InlineKeyboard(...$options);
     
