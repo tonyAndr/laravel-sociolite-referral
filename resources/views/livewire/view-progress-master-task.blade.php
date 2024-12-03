@@ -14,7 +14,11 @@
                                 @if($ut->service_nickname)
                                     <div>Ник в сервисе: {{$ut->service_nickname}}</div>
                                 @endif
+                                Пруф:
                             </div>
+                            @if ($ut->mastertask->proof_type === 'text') 
+                            <p class="px-4"><a href="{{$ut->proof}}">{{$ut->proof}}</a>
+                            @else
                             <figure>
                                 <a href="{{Storage::url($ut->proof)}}" target="_blank">
                                     <img
@@ -22,6 +26,7 @@
                                         />
                                 </a>
                             </figure>
+                            @endif
                         </div>
                         <button class="absolute top-2 right-2 btn btn-outline btn-error btn-sm" wire:click="reject({{$ut->id}})">Отклонить</button>
                         {{-- <livewire:user-task-show-screenshots wire:key="{{$ut->id}}" user_task_id="{{$ut->id}}"/> --}}
