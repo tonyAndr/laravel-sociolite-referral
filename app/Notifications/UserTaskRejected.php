@@ -35,7 +35,7 @@ class UserTaskRejected extends Notification
             // Optional recipient user id.
             ->to($notifiable->oauth_id)
             // Markdown supported.
-            ->line("Отклонена выполненная задача ".$this->task->title." - пруф выполнения не был предоставлен. Баланс уменьшен на " . $this->task->user_reward . " робуксов.")
+            ->line("Отклонена выполненная задача ".$this->task->title." - пруф выполнения не был предоставлен. Награда за выполнение была списана с баланса.")
             ->button('Список заданий', route('dashboard'))
             ->button('Бесплатная раздача', route('giveaway'));
 

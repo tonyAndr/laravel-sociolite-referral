@@ -162,7 +162,13 @@ class UserTaskController extends Controller
             $user->robux = $user->robux - $master_task->user_reward;
             $user->save();
             // send message task failed
-            $user->notify(new UserTaskRejected($master_task));
+            try {
+                $user->notify(new UserTaskRejected($master_task));
+            } catch (\NotificationChannels\Telegram\Exceptions\CouldNotSendNotification $e) {
+                Log::error($e->getMessage());
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+            }
 
             // mt fullfilled--
             $master_task->fullfilled = $master_task->fullfilled - 1;
