@@ -78,7 +78,7 @@
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
                     <div
                         class="flex flex-col py-10 px-4 text-center bg-black text-xl backdrop-blur-sm backdrop-invert bg-black/80 text-white">
-                        <p class="flex items-center justify-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/djs4dVZha0U?si=varpw_oVbe82lE2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p>
+                        {{-- <p class="flex items-center justify-center"><iframe width="560" height="315" src="https://www.youtube.com/embed/djs4dVZha0U?si=varpw_oVbe82lE2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></p> --}}
                         <p>На нашем сайте вы точно узнаете, как и где заработать робуксы по настоящему.</p>
                         <p>Даем гарантию, что
                             за

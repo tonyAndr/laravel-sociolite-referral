@@ -10,6 +10,9 @@ class ReferralCompleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    public $userToReward;
+
+    public $invitedUser;
 
     /**
      * Create a new event instance.
@@ -18,5 +21,6 @@ class ReferralCompleted
      */
     public function __construct()
     {
+        
     }
 }

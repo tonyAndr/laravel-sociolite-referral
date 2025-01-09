@@ -16,6 +16,13 @@
                 {{-- @if (Auth::user()->is_admin) --}}
                 <h3 class="m-6">Задания</h3>
                 <div class="flex flex-col sm:flex-row sm:flex-wrap gap-4">
+                    <a href="{{ route('referrals') }}" id="yandex_task_btn">
+                        <div
+                            class="grow sm:grow-0 sm:w-60 min-h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex  items-center justify-center relative text-black">
+                            <p class="uppercase font-bold text-center"><span class="text-red-500">П</span>ригласи <span class="text-red-500">д</span>руга<p>
+                            <p class="absolute end-2 bottom-0 font-bold text-success drop-shadow-md">+ 5 Робуксов</p>
+                        </div>
+                    </a>
                     @if (count($user_tasks))
                     @foreach ($user_tasks as $ut)
                         <a href="{{ route('tasks.user_task', ['id' => $ut->id]) }}" id="user_task_btn">
@@ -44,6 +51,7 @@
                     <p>Новых заданий пока нет, но они скоро появятся!</p>
                     @endif
 
+                    
                     {{-- <a href="{{ route('tasks.yandex_reward') }}" id="yandex_task_btn">
                         <div
                             class="grow sm:grow-0 sm:w-60 min-h-32 bg-amber-400 bark:bg-gray-800 overflow-hidden shadow-sm rounded-lg flex  items-center justify-center relative text-black">

@@ -8,15 +8,16 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramMessage;
 
-class NotifyParentsRewardedReferrals extends Notification
+class ChannelPostInviteFriends extends Notification
 {
 
-    public $reward;
-    public $isNewRef = false;
 
-    public function __construct($reward, $isNewRef = false) {
-        $this->reward = $reward;
-        $this->isNewRef = $isNewRef;
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct()
+    {
+        //
     }
     /**
      * Get the notification's delivery channels.
@@ -32,19 +33,15 @@ class NotifyParentsRewardedReferrals extends Notification
     {
 
         return TelegramMessage::create()
-            // Optional recipient user id.
-            ->to($notifiable->oauth_id)
+        //test channel -1002190632363
+        //Notification::route('telegram', '-1002190632363')->notify(new \App\Notifications\ChannelPostWinnerDetails(100, 'his name'));
             // Markdown supported.
-            ->line("Ты получил бонус!")
-            ->line($this->isNewRef ? "По твоей реферальной ссылке кто-то зарегистрировался, тебе зачислено ".$this->reward." робуксов!" : "Твой реферал заработал робуксы, и тебе за это начислено " . $this->reward . " робуксов.")
-            ->button('Узнать баланс', route('giveaway'))
-            ->button('Бесплатные робуксы', route('giveaway'));
-
+            ->content("👀 Приглашай друзей и получай по 5 робуксов за каждого!")
+            ->button('Узнать подробности', route('referrals'));
             // (Optional) Blade template for the content.
             // ->view('notification', ['url' => $url])
 
             // (Optional) Inline Buttons
-
             // (Optional) Inline Button with callback. You can handle callback in your bot instance
             // ->buttonWithCallback('Confirm', 'confirm_invoice ' . $this->invoice->id);
     }
