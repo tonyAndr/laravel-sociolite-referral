@@ -5,7 +5,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
-    <title>Раздача Робуксов — получить Robux бесплатно в Roblox 2024</title>
+    <title>Раздача Робуксов — получить Robux бесплатно в Roblox 2025</title>
     <meta name="description"
         content="На этой странице Вы можете поучаствовать в раздаче Robux и получить их совершенно бесплатно на свой аккаунт в Roblox.">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

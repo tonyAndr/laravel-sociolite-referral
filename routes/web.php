@@ -47,7 +47,7 @@ Route::group(['prefix' => 'referrals'], function () {
     Route::get('/create', [ReferralController::class, 'create'])->name('referrals.create');
     Route::post('/', [ReferralController::class, 'store']);
 });
-Route::controller(GiveawayController::class)->group(function () {
+Route::middleware('quiz')->controller(GiveawayController::class)->group(function () {
 
     Route::get('/giveaway', 'index')->name('giveaway');
     Route::get('/giveaway/quiz', 'quiz')->name('giveaway.quiz');

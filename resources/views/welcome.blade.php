@@ -2,7 +2,7 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
 
 <head>
-    <title>Заработать Robux бесплатно без обмана Roblox 2024</title>
+    <title>Заработать Robux бесплатно без обмана Roblox 2025</title>
     <meta name="description"
         content="Зарабатывайте Robux за задания, проходя опросы, загружая игры на свой телефон и просматривая видео без обмана!">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

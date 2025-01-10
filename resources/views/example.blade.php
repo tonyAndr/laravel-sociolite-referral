@@ -75,7 +75,7 @@
         </div>
 
         <div class="footer">
-            <p style="text-align: center;">&copy; 2024 LuchBux.fun - сайт где можно заработать робуксы. Все права
+            <p style="text-align: center;">&copy; 2025 LuchBux.fun - сайт где можно заработать робуксы. Все права
                 защищены.<br>Мы не связаны с корпорацией ROBLOX.</p>
         </div>
     </div>
