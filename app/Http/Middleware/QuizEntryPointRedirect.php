@@ -17,11 +17,12 @@ class QuizEntryPointRedirect
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $referrer = $request->headers->get('referer');
-        $host = parse_url($referrer, PHP_URL_HOST);
-
-        if ($host !== 'luchbux.fun' && preg_match('/^\/giveaway\/quiz\?step=\d+$/', $request->getPathInfo())) {
-            return redirect()->route('giveaway')->status(301);
+        $prevUrl = $request->session()->previousUrl();
+        $isSamePrevUrl = $prevUrl && (str_contains($prevUrl, 'tonyandr.com') || str_contains($prevUrl, 'luchbux.fun'));
+        $fullPath = $request->fullUrl();
+        $isQuizStep = str_contains($fullPath, '/giveaway/quiz?step=');
+        if ($isQuizStep && !$isSamePrevUrl) {
+            return redirect()->route('giveaway', [], 302);
         }
 
         return $next($request);
