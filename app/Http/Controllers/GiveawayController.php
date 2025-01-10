@@ -108,6 +108,8 @@ class GiveawayController extends Controller
             } else {
                 return view('auth.login');
             }
+        } else {
+            return redirect()->route('giveaway');
         }
         return view('giveaway.giveaway');
     }
