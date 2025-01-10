@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'LuchBux.Fun - Вход в аккаунт')
-@section('description', 'Войди для получения бесплатных робуксов')
+@section('title', 'LuchBux.Fun - Войди для получения бесплатных робуксов')
+@section('description', 'Вход в аккаунт позволит заработать робуксы, получить деньги на Roblox бесплатно. Никаких обманов, только честные задания.')
 
 @section('content')
 
@@ -17,8 +17,9 @@
                 <!-- Session Status -->
                 <x-auth-session-status class="mb-4" :status="session('status')" />
 
-                <p>Авторизуйся для получения бесплатных робуксов</p>
+                <h1 class="mb-4 text-center">Войди для получения бесплатных робуксов</h1>
                 <x-social-login />
+                <p class="text-center text-gray-400">Это безопасно, мы не спросим твой пароль!</p>
         </div>
     </div>
 
