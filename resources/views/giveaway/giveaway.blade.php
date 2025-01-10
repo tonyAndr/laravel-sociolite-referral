@@ -72,21 +72,6 @@
             <section class="section-winners">
                 <livewire:last-giveaway-winners />
             </section>
-            <section class="section-1">
-                <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
-                    <div
-                        class="flex flex-col py-10 px-8 text-center bg-black text-lg backdrop-blur-sm backdrop-invert bg-black/90 text-white">
-                        <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
-
-                        <p>У вас уже есть Roblox на телефоне? Хотели бы получить много робуксов побыстрее и без обмана?
-                        </p>
-                        <p>Предлагаем
-                            самый простой и проверенный метод. Рабочий способ, который одинаково легко и быстро работает
-                            как на
-                            андроид, так и на айфон.</p>
-                    </div>
-                </div>
-            </section>
             <div>
                 {{-- block --}}
                 <!-- Yandex.RTB R-A-6005102-3 -->
@@ -124,6 +109,22 @@
                     })
                 </script>
             </div>
+            <section class="section-1">
+                <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
+                    <div
+                        class="flex flex-col py-10 px-8 text-center bg-black text-lg backdrop-blur-sm backdrop-invert bg-black/90 text-white">
+                        <h1>Раздача Робуксов — получить Робуксы бесплатно в Роблоксе</h1>
+
+                        <p>У вас уже есть Roblox на телефоне? Хотели бы получить много робуксов побыстрее и без обмана?
+                        </p>
+                        <p>Предлагаем
+                            самый простой и проверенный метод. Рабочий способ, который одинаково легко и быстро работает
+                            как на
+                            андроид, так и на айфон.</p>
+                    </div>
+                </div>
+            </section>
+            
             <section class="simple-info">
                 <div class="" style="background-image: url(/images/roblox_bg_3.jpg)">
                     <div
@@ -186,7 +187,7 @@
                             в вашу
                             удачу!</p>
                         <h2 class="center">Пригласи друга и получи бонус!</h2>
-                            <p>Если твой друг войдет на сайт по специальной ссылке, то ты получишь % от всех его выиграных или заработанных робуксов. <a href="/referrals">Найди свою ссылку для приглашений</a> и отправь ее всем друзьям.</p>
+                            <p>Если твой друг войдет на сайт по специальной ссылке, то ты получишь 5 робуксов + % от всех ими выиграных или заработанных робуксов. <a href="/referrals">Найди свою ссылку для приглашений</a> и отправь ее всем друзьям.</p>
                     </div>
                 </div>
             </section>
