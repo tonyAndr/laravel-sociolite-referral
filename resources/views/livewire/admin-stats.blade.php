@@ -19,6 +19,13 @@
         <li>Получено звезд: {{$task_orders[0]->total_sum ?? '0'}}
         <li>Выплачено робуксов: {{$task_orders[0]->total_reward ?? '0'}}
     </ul>
+    <h4 class="py-4 font-bold">Новых юзеров</h4>
+    <ul>
+        <li>Всего: {{$new_users[0]->user_count ?? '0'}}
+    </ul>
+    <ul>
+        <li>По реф. ссылкам: {{$new_refs[0]->ref_count ?? '0'}}
+    </ul>
 </div>
 
 
