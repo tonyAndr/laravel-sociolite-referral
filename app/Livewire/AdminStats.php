@@ -35,6 +35,7 @@ class AdminStats extends Component
     public function mount() {
         $this->changeDate();
     }
+    
 
     #[On('dateIntervalChange')] 
     public function changeDate($start = NULL, $end = NULL) {
@@ -76,23 +77,23 @@ class AdminStats extends Component
     }
 
     public function getWithdrawals() {
-        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
+        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
         return $wd;
     }
     public function getGiveaways() {
-        $ga = Giveaway::selectRaw('count(*) as ga_count, SUM(reward) as total_sum')->where('status', 'finished')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
+        $ga = Giveaway::selectRaw('count(*) as ga_count, SUM(reward) as total_sum')->where('status', 'finished')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
         return $ga;
     }
     public function getTasksOrdered() {
-        $tasks = MasterTask::selectRaw('count(*) as tasks_count, SUM(price) as total_sum, SUM(user_reward) as total_reward')->where('status', 'finished')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
+        $tasks = MasterTask::selectRaw('count(*) as tasks_count, SUM(price) as total_sum, SUM(user_reward) as total_reward')->where('status', 'finished')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
         return $tasks;
     }
     public function getReferrals() {
-        $ref = Referral::selectRaw('count(*) as ref_count')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
+        $ref = Referral::selectRaw('count(*) as ref_count')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
         return $ref;
     }
     public function getUsers() {
-        $users = User::selectRaw('count(*) as user_count')->where('updated_at', '>', )->get();
+        $users = User::selectRaw('count(*) as user_count')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
         return $users;
     }
 
