@@ -7,6 +7,7 @@ use App\Models\MasterTask;
 use App\Models\Referral;
 use App\Models\User;
 use App\Models\Withdrawal;
+use Illuminate\Support\Carbon;
 use Livewire\Component;
 use Livewire\Attributes\On; 
 
@@ -14,7 +15,6 @@ class AdminStats extends Component
 {
 
     // stats interval
-    public $date_interval = 'month'; // day, week, month
     // withdrawals 
     public $withdrawals;
     // giveaways 
@@ -29,58 +29,70 @@ class AdminStats extends Component
 
     public $user_task_id;
 
+    public $interval_start;
+    Public $interval_end;
+
     public function mount() {
         $this->changeDate();
     }
 
     #[On('dateIntervalChange')] 
-    public function changeDate($new_interval = 'month') {
-        $this->date_interval = $new_interval;
+    public function changeDate($start = NULL, $end = NULL) {
         \date_default_timezone_set('Europe/Moscow');
-        $now = now('Europe/Moscow');
-        $new_date = false;
 
-        switch($new_interval) {
-            case 'day':
-                $new_date = $now->subDay()->toDateTimeString();
-                break;
-            case 'week':
-                $new_date = $now->subWeek()->toDateTimeString();
-                break;
-            case 'month':
-                $new_date = $now->subMonth()->toDateTimeString();
-                break;
+        // fallbacks
+        if ($end === NULL) {
+            $this->interval_end = now('Europe/Moscow');
+        } else {
+            $this->interval_end = Carbon::createFromTimestampMs($end, 'Europe/Moscow');
+        }
+        if ($start === NULL) {
+            $this->interval_start = now('Europe/Moscow')->subMonth();
+        } else {
+            $this->interval_start = Carbon::createFromTimestampMs($start, 'Europe/Moscow');
         }
 
-        $this->updateStats($new_date);
+        // switch($new_interval) {
+        //     case 'day':
+        //         $new_date = $now->subDay()->toDateTimeString();
+        //         break;
+        //     case 'week':
+        //         $new_date = $now->subWeek()->toDateTimeString();
+        //         break;
+        //     case 'month':
+        //         $new_date = $now->subMonth()->toDateTimeString();
+        //         break;
+        // }
+
+        $this->updateStats();
     }
 
-    public function updateStats ($date_limit) {
-        $this->withdrawals = $this->getWithdrawals($date_limit);
-        $this->giveaways = $this->getGiveaways($date_limit);
-        $this->task_orders = $this->getTasksOrdered($date_limit);
-        $this->new_refs = $this->getReferrals($date_limit);
-        $this->new_users = $this->getUsers($date_limit);
+    public function updateStats () {
+        $this->withdrawals = $this->getWithdrawals();
+        $this->giveaways = $this->getGiveaways();
+        $this->task_orders = $this->getTasksOrdered();
+        $this->new_refs = $this->getReferrals();
+        $this->new_users = $this->getUsers();
     }
 
-    public function getWithdrawals($date_limit) {
-        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->where('updated_at', '>', $date_limit)->get();
+    public function getWithdrawals() {
+        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
         return $wd;
     }
-    public function getGiveaways($date_limit) {
-        $ga = Giveaway::selectRaw('count(*) as ga_count, SUM(reward) as total_sum')->where('status', 'finished')->where('updated_at', '>', $date_limit)->get();
+    public function getGiveaways() {
+        $ga = Giveaway::selectRaw('count(*) as ga_count, SUM(reward) as total_sum')->where('status', 'finished')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
         return $ga;
     }
-    public function getTasksOrdered($date_limit) {
-        $tasks = MasterTask::selectRaw('count(*) as tasks_count, SUM(price) as total_sum, SUM(user_reward) as total_reward')->where('status', 'finished')->where('updated_at', '>', $date_limit)->get();
+    public function getTasksOrdered() {
+        $tasks = MasterTask::selectRaw('count(*) as tasks_count, SUM(price) as total_sum, SUM(user_reward) as total_reward')->where('status', 'finished')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
         return $tasks;
     }
-    public function getReferrals($date_limit) {
-        $ref = Referral::selectRaw('count(*) as ref_count')->where('updated_at', '>', $date_limit)->get();
+    public function getReferrals() {
+        $ref = Referral::selectRaw('count(*) as ref_count')->where('updated_at', '>', $this->interval_start)->where('updated_at', '<=', $this->interval_end)->get();
         return $ref;
     }
-    public function getUsers($date_limit) {
-        $users = User::selectRaw('count(*) as user_count')->where('updated_at', '>', $date_limit)->get();
+    public function getUsers() {
+        $users = User::selectRaw('count(*) as user_count')->where('updated_at', '>', )->get();
         return $users;
     }
 
