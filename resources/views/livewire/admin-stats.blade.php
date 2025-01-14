@@ -47,9 +47,9 @@
 @script
     <script>
         const btn = document.querySelector('#change-interval-btn')
-        
-        const interval = { start: document.querySelector('#interval-start').valueAsNumber, end: document.querySelector('#interval-end').valueAsNumber }
         btn.addEventListener('click', function (e) {
+            const interval = { start: document.querySelector('#interval-start').valueAsNumber, end: document.querySelector('#interval-end').valueAsNumber }
+            console.log(interval)
             btn.setAttribute('disabled', 'disabled');
             $wire.dispatch('dateIntervalChange', interval);
         })

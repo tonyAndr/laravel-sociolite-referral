@@ -77,7 +77,7 @@ class AdminStats extends Component
     }
 
     public function getWithdrawals() {
-        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
+        $wd = Withdrawal::selectRaw('count(*) as wd_count, SUM(amount) as total_sum')->where('status', 'approved')->whereBetween('updated_at', [$this->interval_start, $this->interval_end])->get();
         return $wd;
     }
     public function getGiveaways() {
@@ -93,7 +93,7 @@ class AdminStats extends Component
         return $ref;
     }
     public function getUsers() {
-        $users = User::selectRaw('count(*) as user_count')->where('updated_at', '>', $this->interval_start->toDateTimeString())->where('updated_at', '<=', $this->interval_end->toDateTimeString())->get();
+        $users = User::selectRaw('count(*) as user_count')->whereBetween('updated_at', [$this->interval_start, $this->interval_end])->get();
         return $users;
     }
 
